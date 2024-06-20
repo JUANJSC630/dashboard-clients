@@ -21,11 +21,12 @@ export default function PageFaqs() {
           Our team has worked hard to provide detailed and easy-to-understand
           answers to ensure you find the information you need quickly and
           easily. If you do not find the answer you are looking for, do not
-          hesitate to contact us. We are here to help you every step of the way.
+          hesitate to contact us. We&apos;re here to help you every step of the
+          way.
         </p>
         <p>
           Explore our FAQs and discover how our dashboard can boost your
-          company's efficiency and success.
+          company&apos;s efficiency and success.
         </p>
       </div>
       <AccordionFaqs />
