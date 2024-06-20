@@ -14,7 +14,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const company = await prisma?.company.findUnique({
+    const company = await db.company.findUnique({
       where: {
         id: params.companyId,
       },
