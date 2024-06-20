@@ -1,0 +1,15 @@
+import { CustomIcon } from "@/components/CustomIcon";
+import { List } from "lucide-react";
+import { TableIntegrations } from "../TableIntegrations";
+
+export function ListIntegrations() {
+  return (
+    <div className="shadow-sm bg-background rounded-lg p-5 flex-1">
+      <div className="flex gap-x-2 items-center">
+        <CustomIcon icon={List} />
+        <h3 className="text-xl">List of integrations</h3>
+      </div>
+      <TableIntegrations />
+    </div>
+  );
+}
