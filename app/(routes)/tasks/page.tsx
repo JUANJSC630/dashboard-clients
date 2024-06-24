@@ -21,6 +21,11 @@ export default async function TasksPage() {
   });
 
   const events = await db.event.findMany({
+    where: {
+      companyId: {
+        in: companies.map((company) => company.id),
+      },
+    },
     orderBy: {
       createdAt: "desc",
     },

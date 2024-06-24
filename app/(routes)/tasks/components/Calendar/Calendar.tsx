@@ -54,7 +54,7 @@ export function Calendar(props: CalendarProps) {
       axios
         .post(
           `/api/company/${newEvent.companieSelected.id}/event`,
-          newEventPrisma,
+          newEventPrisma
         )
         .then(() => {
           toast({ title: "Event created" });
@@ -83,7 +83,7 @@ export function Calendar(props: CalendarProps) {
   const handleEventClick = async (selected: any) => {
     if (
       window.confirm(
-        `Are you sure you want to delete this event ${selected.event.title}`,
+        `Are you sure you want to delete this event ${selected.event.title}`
       )
     ) {
       try {

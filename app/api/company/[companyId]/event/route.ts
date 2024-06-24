@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { companyId: string } },
+  { params }: { params: { companyId: string } }
 ) {
   try {
     const { userId } = auth();
