@@ -5,7 +5,7 @@ import { Header } from "./components/Header";
 import { CompanyInformation } from "./components/CompanyInformation";
 import { FooterCompany } from "./components/FooterCompany";
 
-export default async function ComapanyIdPage({
+export default async function CompanyIdPage({
   params,
 }: {
   params: { companyId: string };

@@ -22,7 +22,7 @@ model Company {
   profileImage String  @db.Text
   nit          String  @db.Text
   phone        String  @db.Text
-  country       String  @db.Text
+  country      String  @db.Text
   website      String  @db.Text
 
   contact Contact[]
@@ -67,4 +67,58 @@ model Event {
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@index([companyId])
+}
+
+model Customer {
+  id               String    @id @default(uuid())
+  userId           String
+  firstName        String
+  lastName         String
+  email            String
+  phone            String
+  address          String
+  registrationDate DateTime  @default(now())
+  notes            String?
+  projects         Project[]
+  invoices         Invoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  customerId  String   @db.Text
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  status      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer  @relation(fields: [customerId], references: [id])
+  invoices Invoice[]
+
+  @@index([customerId])
+}
+
+model Invoice {
+  id          String   @id @default(uuid())
+  customerId  String   @db.Text
+  projectId   String   @db.Text
+  issueDate   DateTime
+  dueDate     DateTime
+  totalAmount Float
+  status      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id])
+  project  Project  @relation(fields: [projectId], references: [id])
+
+  @@index([customerId])
+  @@index([projectId])
 }

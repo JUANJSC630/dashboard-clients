@@ -20,7 +20,6 @@ export function CompanyInformation(props: CompanyInformationProps) {
             className="rounded-lg mb-2"
           />
           <p className="text-2xl font-semibold mb-6">{company.name}</p>
-          {/*TODO: Add company name*/}
           <CompanyForm company={company} />
         </div>
       </div>

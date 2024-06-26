@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SidebarItem } from "@/components/SidebarItem";
 import {
   dataGeneralSidebar,
-  dataSupportSidebar,
+  // dataSupportSidebar,
   dataToolsSidebar,
 } from "./SidebarRoutes.data";
 
@@ -27,12 +27,12 @@ export function SidebarRoutes() {
           ))}
         </div>
         <Separator />
-        <div className="p-2 md:p-4">
+        {/* <div className="p-2 md:p-4">
           <p className="text-slate-500">Support</p>
           {dataSupportSidebar.map((item) => (
             <SidebarItem key={item.label} item={item} />
           ))}
-        </div>
+        </div> */}
       </div>
       <div>
         <div className="text-center p-6">
