@@ -40,8 +40,8 @@ Dashboard is a comprehensive business management platform designed to help compa
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/dashboard-companies.git
-cd dashboard-companies
+git clone https://github.com/JUANJSC630/dashboard-clients.git
+cd dashboard-clients
 ```
 
 2. Install dependencies:
