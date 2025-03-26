@@ -1,55 +1,55 @@
-# Dashboard de Gestión Empresarial
+# Business Management Dashboard
 
-## Descripción del Negocio
+## Business Description
 
-Dashboard es una plataforma integral de gestión empresarial diseñada para ayudar a las empresas a administrar sus relaciones con clientes, empresas asociadas, proyectos y facturación. La plataforma permite:
+Dashboard is a comprehensive business management platform designed to help companies manage their relationships with customers, associated companies, projects, and billing. The platform allows:
 
-- **Gestión de Empresas:** Administración de compañías asociadas con información detallada de contacto y datos corporativos.
-- **Gestión de Clientes:** Seguimiento de clientes, sus datos de contacto e historial.
-- **Administración de Proyectos:** Creación y seguimiento de proyectos con fechas de inicio/fin, estado y descripción.
-- **Facturación:** Generación y seguimiento de facturas vinculadas a clientes y proyectos.
-- **Calendario de Eventos:** Organización de eventos y reuniones asociados a empresas.
-- **Analítica:** Visualización de datos clave del negocio mediante gráficos y estadísticas.
-- **Tareas:** Gestión de tareas y actividades pendientes.
+- **Company Management:** Administration of associated companies with detailed contact information and corporate data.
+- **Customer Management:** Tracking of customers, their contact information, and history.
+- **Project Management:** Creation and tracking of projects with start/end dates, status, and description.
+- **Invoicing:** Generation and tracking of invoices linked to customers and projects.
+- **Event Calendar:** Organization of events and meetings associated with companies.
+- **Analytics:** Visualization of key business data through graphs and statistics.
+- **Tasks:** Management of pending tasks and activities.
 
-## Tecnologías Utilizadas
+## Technologies Used
 
 ### Frontend
-- **Next.js 14:** Framework React de alto rendimiento con enrutamiento basado en archivos.
-- **TypeScript:** Lenguaje tipado para desarrollo robusto y mantenible.
-- **Tailwind CSS:** Framework de utilidades CSS para diseño responsive y moderno.
-- **shadcn/ui:** Componentes de interfaz reutilizables y accesibles.
-- **React Hook Form:** Manejo eficiente de formularios con validación.
-- **Zod:** Validación de esquemas para TypeScript.
-- **Recharts:** Biblioteca para visualización de datos y gráficos.
-- **FullCalendar:** Componente avanzado para gestión de calendarios.
-- **Clerk:** Servicio de autenticación y gestión de usuarios.
+- **Next.js 14:** High-performance React framework with file-based routing.
+- **TypeScript:** Typed language for robust and maintainable development.
+- **Tailwind CSS:** CSS utility framework for responsive and modern design.
+- **shadcn/ui:** Reusable and accessible interface components.
+- **React Hook Form:** Efficient form handling with validation.
+- **Zod:** Schema validation for TypeScript.
+- **Recharts:** Library for data visualization and graphs.
+- **FullCalendar:** Advanced component for calendar management.
+- **Clerk:** Authentication and user management service.
 
 ### Backend
-- **Prisma ORM:** Mapeo objeto-relacional para interacción con base de datos.
-- **PostgreSQL:** Base de datos relacional para almacenamiento persistente.
-- **API Routes de Next.js:** Endpoints de API serverless para operaciones de backend.
-- **Uploadthing:** Servicio para carga y gestión de archivos.
+- **Prisma ORM:** Object-relational mapping for database interaction.
+- **PostgreSQL:** Relational database for persistent storage.
+- **Next.js API Routes:** Serverless API endpoints for backend operations.
+- **Uploadthing:** Service for file upload and management.
 
-### Herramientas de Desarrollo
-- **ESLint:** Análisis estático de código para identificar problemas.
-- **PostCSS:** Herramienta para transformar CSS con plugins JavaScript.
-- **next-themes:** Soporte para temas claro/oscuro.
+### Development Tools
+- **ESLint:** Static code analysis to identify problems.
+- **PostCSS:** Tool for transforming CSS with JavaScript plugins.
+- **next-themes:** Support for light/dark themes.
 
-## Instalación y Configuración
+## Installation and Setup
 
-1. Clone el repositorio:
+1. Clone the repository:
 ```bash
-git clone https://github.com/tuusuario/dashboard-companies.git
+git clone https://github.com/yourusername/dashboard-companies.git
 cd dashboard-companies
 ```
 
-2. Instale las dependencias:
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Configure las variables de entorno creando un archivo `.env` con los siguientes valores:
+3. Configure environment variables by creating a `.env` file with the following values:
 ```
 DATABASE_URL="postgresql://..."
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
@@ -58,23 +58,23 @@ UPLOADTHING_SECRET=...
 UPLOADTHING_APP_ID=...
 ```
 
-4. Ejecute las migraciones de Prisma:
+4. Run Prisma migrations:
 ```bash
 npx prisma migrate dev
 ```
 
-5. Inicie el servidor de desarrollo:
+5. Start the development server:
 ```bash
 npm run dev
 ```
 
-6. Abra [http://localhost:3000](http://localhost:3000) en su navegador.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Estructura del Proyecto
+## Project Structure
 
-- `/app`: Contiene las rutas y páginas de la aplicación
-- `/components`: Componentes reutilizables
-- `/lib`: Utilidades y funciones de ayuda
-- `/prisma`: Esquema de la base de datos y migraciones
-- `/public`: Archivos estáticos
-- `/utils`: Funciones de utilidad generales
+- `/app`: Contains application routes and pages
+- `/components`: Reusable components
+- `/lib`: Utilities and helper functions
+- `/prisma`: Database schema and migrations
+- `/public`: Static files
+- `/utils`: General utility functions
