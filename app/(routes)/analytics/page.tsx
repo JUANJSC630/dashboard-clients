@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 import { CompaniesChart } from "./components/CompaniesChart";
 
 export default async function PageAnalytics() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect("/");

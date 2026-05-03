@@ -1,11 +1,11 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Calendar } from "./components/Calendar";
 
 export default async function TasksPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect("/");

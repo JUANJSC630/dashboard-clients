@@ -1,13 +1,14 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { companyId: string } }
+  { params }: { params: Promise<{ companyId: string }> },
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
+    const { companyId } = await params;
     const data = await req.json();
 
     if (!userId) {
@@ -16,7 +17,7 @@ export async function POST(
 
     const company = await db.company.findUnique({
       where: {
-        id: params.companyId,
+        id: companyId,
       },
     });
 
@@ -26,7 +27,7 @@ export async function POST(
 
     const event = await db.event.create({
       data: {
-        companyId: params.companyId,
+        companyId,
         ...data,
       },
     });
@@ -34,6 +35,6 @@ export async function POST(
     return NextResponse.json(event);
   } catch (error) {
     console.log("[EVENT]", error);
-    return new NextResponse("Interanl Error", { status: 500 });
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

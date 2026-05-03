@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 import { db } from "@/lib/db";
 
@@ -8,7 +8,7 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 
 export async function ListCompanies() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect("/");

@@ -3,11 +3,11 @@ import { ListContactsProps } from "./ListContacts.types";
 import { Mail, Phone } from "lucide-react";
 import { db } from "@/lib/db";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export async function ListContacts(props: ListContactsProps) {
   const { company } = props;
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     redirect("/login");

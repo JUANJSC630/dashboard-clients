@@ -1,14 +1,14 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { customerId: string } }
+  { params }: { params: Promise<{ customerId: string }> },
 ) {
   try {
-    const { userId } = auth();
-    const { customerId } = params;
+    const { userId } = await auth();
+    const { customerId } = await params;
     const values = await req.json();
 
     if (!userId) {
@@ -22,18 +22,18 @@ export async function PATCH(
 
     return NextResponse.json(customer);
   } catch (error) {
-    console.error("[COMPANY PATCH ERROR]", error);
+    console.error("[CUSTOMER PATCH ERROR]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { customerId: string } }
+  { params }: { params: Promise<{ customerId: string }> },
 ) {
   try {
-    const { userId } = auth();
-    const { customerId } = params;
+    const { userId } = await auth();
+    const { customerId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -45,7 +45,7 @@ export async function DELETE(
 
     return NextResponse.json(deleteCustomer, { status: 200 });
   } catch (error) {
-    console.error("[COMPANY DELETE ERROR]", error);
+    console.error("[CUSTOMER DELETE ERROR]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

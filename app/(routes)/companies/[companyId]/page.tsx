@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Header } from "./components/Header";
 import { CompanyInformation } from "./components/CompanyInformation";
@@ -8,9 +8,10 @@ import { FooterCompany } from "./components/FooterCompany";
 export default async function CompanyIdPage({
   params,
 }: {
-  params: { companyId: string };
+  params: Promise<{ companyId: string }>;
 }) {
-  const { userId } = auth();
+  const { userId } = await auth();
+  const { companyId } = await params;
 
   if (!userId) {
     return redirect("/");
@@ -18,7 +19,7 @@ export default async function CompanyIdPage({
 
   const company = await db.company.findUnique({
     where: {
-      id: params.companyId,
+      id: companyId,
       userId,
     },
   });
@@ -27,12 +28,11 @@ export default async function CompanyIdPage({
     return redirect("/");
   }
 
-  console.log(company);
   return (
     <div className="flex flex-col gap-4">
       <Header />
       <CompanyInformation company={company} />
-      <FooterCompany companyId={params.companyId} />
+      <FooterCompany companyId={companyId} />
     </div>
   );
 }

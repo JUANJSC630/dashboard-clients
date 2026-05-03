@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Header } from "./components/Header";
 import { CustomerInformation } from "./components/CustomerInformation";
@@ -8,9 +8,10 @@ import { FooterCustomer } from "./components/FooterCustomer/";
 export default async function CustomerIdPage({
   params,
 }: {
-  params: { customerId: string };
+  params: Promise<{ customerId: string }>;
 }) {
-  const { userId } = auth();
+  const { userId } = await auth();
+  const { customerId } = await params;
 
   if (!userId) {
     return redirect("/");
@@ -18,7 +19,7 @@ export default async function CustomerIdPage({
 
   const customer = await db.customer.findUnique({
     where: {
-      id: params.customerId,
+      id: customerId,
       userId,
     },
   });
@@ -27,12 +28,11 @@ export default async function CustomerIdPage({
     return redirect("/");
   }
 
-  console.log(customer);
   return (
     <div className="flex flex-col gap-4">
       <Header />
       <CustomerInformation customer={customer} />
-      <FooterCustomer customerId={params.customerId} />
+      <FooterCustomer customerId={customerId} />
     </div>
   );
 }

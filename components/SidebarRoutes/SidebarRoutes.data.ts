@@ -7,7 +7,7 @@ import {
   ShieldCheck,
   CircleHelpIcon,
   Calendar,
-  Users
+  Users,
 } from "lucide-react";
 
 export const dataGeneralSidebar = [

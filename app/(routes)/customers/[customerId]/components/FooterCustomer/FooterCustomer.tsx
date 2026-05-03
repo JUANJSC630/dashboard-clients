@@ -11,8 +11,6 @@ export function FooterCustomer(props: FooterCustomerProps) {
   const { customerId } = props;
   const router = useRouter();
 
-  
-
   const onDeleteCustomer = async () => {
     try {
       await axios.delete(`/api/customer/${customerId}`);

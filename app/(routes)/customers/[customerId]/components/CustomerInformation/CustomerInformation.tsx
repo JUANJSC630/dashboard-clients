@@ -1,4 +1,3 @@
-
 import { CustomerInformationProps } from "./CustomerInformation.types";
 import { CustomerForm } from "../CustomerForm";
 
