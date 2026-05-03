@@ -1,60 +1,50 @@
-import { Exo_2 } from "next/font/google";
 import {
   BarChart4,
-  Building2,
-  PanelsTopLeft,
-  Settings,
-  ShieldCheck,
-  CircleHelpIcon,
-  Calendar,
+  Globe,
+  LayoutDashboard,
   Users,
+  CreditCard,
+  AlertTriangle,
+  CircleHelpIcon,
 } from "lucide-react";
 
 export const dataGeneralSidebar = [
   {
-    icon: PanelsTopLeft,
+    icon: LayoutDashboard,
     label: "Dashboard",
     href: "/",
   },
   {
     icon: Users,
-    label: "Customers",
-    href: "/customers",
+    label: "Clients",
+    href: "/clients",
   },
   {
-    icon: Building2,
-    label: "Companies",
-    href: "/companies",
-  },
-  {
-    icon: Calendar,
-    label: "Calendar",
-    href: "/tasks",
+    icon: Globe,
+    label: "Sites",
+    href: "/sites",
   },
 ];
 
 export const dataToolsSidebar = [
   {
-    icon: CircleHelpIcon,
-    label: "Faqs",
-    href: "/faqs",
+    icon: CreditCard,
+    label: "Billing",
+    href: "/billing",
+  },
+  {
+    icon: AlertTriangle,
+    label: "Incidents",
+    href: "/incidents",
   },
   {
     icon: BarChart4,
     label: "Analytics",
     href: "/analytics",
   },
+  {
+    icon: CircleHelpIcon,
+    label: "FAQs",
+    href: "/faqs",
+  },
 ];
-
-// export const dataSupportSidebar = [
-//   {
-//     icon: Settings,
-//     label: "Setting",
-//     href: "/setting",
-//   },
-//   {
-//     icon: ShieldCheck,
-//     label: "Security",
-//     href: "/security",
-//   },
-// ];

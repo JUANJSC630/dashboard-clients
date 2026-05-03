@@ -1,0 +1,57 @@
+import Link from "next/link";
+import { ArrowLeft, ExternalLink } from "lucide-react";
+import { Site, Platform, SiteStatus } from "@prisma/client";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+const platformColors: Record<Platform, string> = {
+  VERCEL: "bg-black text-white",
+  RAILWAY: "bg-purple-600 text-white",
+  NETLIFY: "bg-teal-500 text-white",
+  RENDER: "bg-green-600 text-white",
+  HOSTINGER: "bg-violet-600 text-white",
+  CLOUDFLARE: "bg-orange-500 text-white",
+  HEROKU: "bg-indigo-600 text-white",
+  DIGITALOCEAN: "bg-blue-500 text-white",
+  CUSTOM: "bg-slate-500 text-white",
+};
+
+const statusVariant: Record<SiteStatus, "default" | "secondary" | "destructive" | "outline"> = {
+  ACTIVE: "default",
+  PAUSED: "secondary",
+  DOWN: "destructive",
+  MAINTENANCE: "outline",
+};
+
+export function SiteHeader({ site }: { site: Site }) {
+  return (
+    <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-2">
+        <Link href="/sites">
+          <Button variant="outline" size="sm">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Sites
+          </Button>
+        </Link>
+        <div className="flex items-center gap-3 mt-2">
+          <h2 className="text-2xl font-bold">{site.name}</h2>
+          <span className={`text-xs px-2 py-1 rounded-full font-medium ${platformColors[site.platform]}`}>
+            {site.platform}
+          </span>
+          <Badge variant={statusVariant[site.status]}>{site.status}</Badge>
+        </div>
+        {site.url && (
+          <a
+            href={site.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-sm text-blue-500 hover:underline"
+          >
+            {site.url}
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
