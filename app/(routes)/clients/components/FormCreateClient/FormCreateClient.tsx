@@ -26,7 +26,7 @@ const formSchema = z.object({
   address: z.string().optional(),
 });
 
-export function FormCreateClient() {
+export function FormCreateClient({ onSuccess }: { onSuccess?: () => void }) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,6 +44,8 @@ export function FormCreateClient() {
     try {
       await axios.post("/api/client", values);
       toast({ title: "Client created successfully" });
+      form.reset();
+      onSuccess?.();
       router.refresh();
     } catch {
       toast({ title: "Something went wrong", variant: "destructive" });

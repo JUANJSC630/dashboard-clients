@@ -56,7 +56,13 @@ type PartialClient = Pick<
   "id" | "firstName" | "lastName" | "businessName"
 >;
 
-export function FormCreateSite({ clients }: { clients: PartialClient[] }) {
+export function FormCreateSite({
+  clients,
+  onSuccess,
+}: {
+  clients: PartialClient[];
+  onSuccess?: () => void;
+}) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,6 +80,8 @@ export function FormCreateSite({ clients }: { clients: PartialClient[] }) {
     try {
       await axios.post("/api/site", values);
       toast({ title: "Site created successfully" });
+      form.reset();
+      onSuccess?.();
       router.refresh();
     } catch {
       toast({ title: "Something went wrong", variant: "destructive" });

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Client, Site } from "@prisma/client";
 import { Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,8 @@ interface HeaderClientsProps {
 }
 
 export function HeaderClients({ clients }: HeaderClientsProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
@@ -27,7 +30,7 @@ export function HeaderClients({ clients }: HeaderClientsProps) {
           {clients.length} client{clients.length !== 1 ? "s" : ""} registered
         </p>
       </div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
             <Users className="mr-2 h-4 w-4" />
@@ -38,7 +41,7 @@ export function HeaderClients({ clients }: HeaderClientsProps) {
           <DialogHeader>
             <DialogTitle>Add New Client</DialogTitle>
           </DialogHeader>
-          <FormCreateClient />
+          <FormCreateClient onSuccess={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

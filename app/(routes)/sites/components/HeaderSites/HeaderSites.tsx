@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Site, Client } from "@prisma/client";
 import { Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,8 @@ interface HeaderSitesProps {
 }
 
 export function HeaderSites({ sites, clients }: HeaderSitesProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
@@ -28,7 +31,7 @@ export function HeaderSites({ sites, clients }: HeaderSitesProps) {
           {sites.length} site{sites.length !== 1 ? "s" : ""} tracked
         </p>
       </div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
             <Globe className="mr-2 h-4 w-4" />
@@ -39,7 +42,7 @@ export function HeaderSites({ sites, clients }: HeaderSitesProps) {
           <DialogHeader>
             <DialogTitle>Add New Site</DialogTitle>
           </DialogHeader>
-          <FormCreateSite clients={clients} />
+          <FormCreateSite clients={clients} onSuccess={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>
