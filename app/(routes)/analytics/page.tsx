@@ -15,11 +15,23 @@ export default async function PageAnalytics() {
     }),
     db.incident.findMany({
       where: { userId },
-      select: { id: true, status: true, priority: true, type: true, createdAt: true },
+      select: {
+        id: true,
+        status: true,
+        priority: true,
+        type: true,
+        createdAt: true,
+      },
     }),
     db.billing.findMany({
       where: { userId },
-      select: { id: true, status: true, amount: true, currency: true, nextDueDate: true },
+      select: {
+        id: true,
+        status: true,
+        amount: true,
+        currency: true,
+        nextDueDate: true,
+      },
     }),
   ]);
 

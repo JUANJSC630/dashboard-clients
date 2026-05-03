@@ -13,6 +13,11 @@ import { DashboardOpenIncidents } from "./components/DashboardOpenIncidents/Dash
 import { DashboardUpcomingBilling } from "./components/DashboardUpcomingBilling/DashboardUpcomingBilling";
 import { DashboardRecentClients } from "./components/DashboardRecentClients/DashboardRecentClients";
 
+export const metadata = {
+  title: "Dashboard — Hosting Dashboard",
+  description: "Overview of your hosting portfolio",
+};
+
 export default async function Home() {
   const { userId } = await auth();
   if (!userId) return redirect("/");
@@ -35,19 +40,24 @@ export default async function Home() {
           <DashboardRecentSites userId={userId} />
         </Suspense>
 
-        <Suspense fallback={<DashboardSectionSkeleton title="Open Incidents" />}>
+        <Suspense
+          fallback={<DashboardSectionSkeleton title="Open Incidents" />}
+        >
           <DashboardOpenIncidents userId={userId} />
         </Suspense>
 
-        <Suspense fallback={<DashboardSectionSkeleton title="Upcoming Billing" />}>
+        <Suspense
+          fallback={<DashboardSectionSkeleton title="Upcoming Billing" />}
+        >
           <DashboardUpcomingBilling userId={userId} />
         </Suspense>
 
-        <Suspense fallback={<DashboardSectionSkeleton title="Recent Clients" />}>
+        <Suspense
+          fallback={<DashboardSectionSkeleton title="Recent Clients" />}
+        >
           <DashboardRecentClients userId={userId} />
         </Suspense>
       </div>
     </div>
   );
 }
-

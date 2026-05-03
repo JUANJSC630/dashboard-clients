@@ -27,8 +27,15 @@ import {
 import { toast } from "@/components/ui/use-toast";
 
 const PLATFORMS: Platform[] = [
-  "VERCEL", "RAILWAY", "NETLIFY", "RENDER", "HOSTINGER",
-  "CLOUDFLARE", "HEROKU", "DIGITALOCEAN", "CUSTOM",
+  "VERCEL",
+  "RAILWAY",
+  "NETLIFY",
+  "RENDER",
+  "HOSTINGER",
+  "CLOUDFLARE",
+  "HEROKU",
+  "DIGITALOCEAN",
+  "CUSTOM",
 ];
 
 const STATUSES: SiteStatus[] = ["ACTIVE", "PAUSED", "DOWN", "MAINTENANCE"];
@@ -37,17 +44,36 @@ const formSchema = z.object({
   name: z.string().min(1),
   url: z.string().url(),
   clientId: z.string().min(1),
-  platform: z.enum(["VERCEL","RAILWAY","NETLIFY","RENDER","HOSTINGER","CLOUDFLARE","HEROKU","DIGITALOCEAN","CUSTOM"]),
-  status: z.enum(["ACTIVE","PAUSED","DOWN","MAINTENANCE"]),
+  platform: z.enum([
+    "VERCEL",
+    "RAILWAY",
+    "NETLIFY",
+    "RENDER",
+    "HOSTINGER",
+    "CLOUDFLARE",
+    "HEROKU",
+    "DIGITALOCEAN",
+    "CUSTOM",
+  ]),
+  status: z.enum(["ACTIVE", "PAUSED", "DOWN", "MAINTENANCE"]),
   techStack: z.string().optional(),
   repositoryUrl: z.string().optional(),
   platformProjectId: z.string().optional(),
   description: z.string().optional(),
 });
 
-type PartialClient = Pick<Client, "id" | "firstName" | "lastName" | "businessName">;
+type PartialClient = Pick<
+  Client,
+  "id" | "firstName" | "lastName" | "businessName"
+>;
 
-export function SiteForm({ site, clients }: { site: Site; clients: PartialClient[] }) {
+export function SiteForm({
+  site,
+  clients,
+}: {
+  site: Site;
+  clients: PartialClient[];
+}) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,7 +112,9 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -99,7 +127,9 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
                   <FormLabel>Client</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {clients.map((c) => (
@@ -120,7 +150,9 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
             render={({ field }) => (
               <FormItem>
                 <FormLabel>URL</FormLabel>
-                <FormControl><Input {...field} /></FormControl>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -134,11 +166,15 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
                   <FormLabel>Platform</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {PLATFORMS.map((p) => (
-                        <SelectItem key={p} value={p}>{p}</SelectItem>
+                        <SelectItem key={p} value={p}>
+                          {p}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -154,11 +190,15 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
                   <FormLabel>Status</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {STATUSES.map((s) => (
-                        <SelectItem key={s} value={s}>{s}</SelectItem>
+                        <SelectItem key={s} value={s}>
+                          {s}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -172,7 +212,9 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tech Stack</FormLabel>
-                  <FormControl><Input placeholder="Next.js…" {...field} /></FormControl>
+                  <FormControl>
+                    <Input placeholder="Next.js…" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -185,7 +227,9 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Repository URL</FormLabel>
-                  <FormControl><Input placeholder="https://github.com/..." {...field} /></FormControl>
+                  <FormControl>
+                    <Input placeholder="https://github.com/..." {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -196,7 +240,9 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Platform Project ID</FormLabel>
-                  <FormControl><Input placeholder="Optional" {...field} /></FormControl>
+                  <FormControl>
+                    <Input placeholder="Optional" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -208,7 +254,9 @@ export function SiteForm({ site, clients }: { site: Site; clients: PartialClient
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Description</FormLabel>
-                <FormControl><Textarea rows={2} {...field} /></FormControl>
+                <FormControl>
+                  <Textarea rows={2} {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

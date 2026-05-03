@@ -26,7 +26,10 @@ export function SitesStatusChart({ sites }: { sites: SiteSummary[] }) {
     for (const s of sites) {
       counts[s.status] = (counts[s.status] ?? 0) + 1;
     }
-    return Object.entries(counts).map(([status, value]) => ({ name: status, value }));
+    return Object.entries(counts).map(([status, value]) => ({
+      name: status,
+      value,
+    }));
   }, [sites]);
 
   const platformData = useMemo(() => {
@@ -38,8 +41,15 @@ export function SitesStatusChart({ sites }: { sites: SiteSummary[] }) {
   }, [sites]);
 
   const PLATFORM_COLORS = [
-    "#000000", "#7c3aed", "#14b8a6", "#16a34a",
-    "#7c3aed", "#f97316", "#6366f1", "#3b82f6", "#64748b",
+    "#000000",
+    "#7c3aed",
+    "#14b8a6",
+    "#16a34a",
+    "#7c3aed",
+    "#f97316",
+    "#6366f1",
+    "#3b82f6",
+    "#64748b",
   ];
 
   return (
@@ -59,7 +69,10 @@ export function SitesStatusChart({ sites }: { sites: SiteSummary[] }) {
               {statusData.map((entry, i) => (
                 <Cell
                   key={entry.name}
-                  fill={STATUS_COLORS[entry.name as SiteStatus] ?? PLATFORM_COLORS[i % PLATFORM_COLORS.length]}
+                  fill={
+                    STATUS_COLORS[entry.name as SiteStatus] ??
+                    PLATFORM_COLORS[i % PLATFORM_COLORS.length]
+                  }
                 />
               ))}
             </Pie>
@@ -81,7 +94,10 @@ export function SitesStatusChart({ sites }: { sites: SiteSummary[] }) {
               label={({ name, value }) => `${name}: ${value}`}
             >
               {platformData.map((entry, i) => (
-                <Cell key={entry.name} fill={PLATFORM_COLORS[i % PLATFORM_COLORS.length]} />
+                <Cell
+                  key={entry.name}
+                  fill={PLATFORM_COLORS[i % PLATFORM_COLORS.length]}
+                />
               ))}
             </Pie>
             <Tooltip />

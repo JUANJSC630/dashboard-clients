@@ -21,7 +21,11 @@ type IncidentSummary = {
   createdAt: Date;
 };
 
-export function IncidentsChart({ incidents }: { incidents: IncidentSummary[] }) {
+export function IncidentsChart({
+  incidents,
+}: {
+  incidents: IncidentSummary[];
+}) {
   const byType = useMemo(() => {
     const counts: Record<string, number> = {};
     for (const inc of incidents) {
@@ -69,8 +73,18 @@ export function IncidentsChart({ incidents }: { incidents: IncidentSummary[] }) 
             <YAxis allowDecimals={false} />
             <Tooltip />
             <Legend />
-            <Bar dataKey="open" fill="#ef4444" radius={[4, 4, 0, 0]} name="Open" />
-            <Bar dataKey="resolved" fill="#22c55e" radius={[4, 4, 0, 0]} name="Resolved" />
+            <Bar
+              dataKey="open"
+              fill="#ef4444"
+              radius={[4, 4, 0, 0]}
+              name="Open"
+            />
+            <Bar
+              dataKey="resolved"
+              fill="#22c55e"
+              radius={[4, 4, 0, 0]}
+              name="Resolved"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

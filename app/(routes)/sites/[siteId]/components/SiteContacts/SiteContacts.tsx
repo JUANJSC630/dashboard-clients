@@ -21,8 +21,18 @@ export function SiteContacts({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editState, setEditState] = useState({ name: "", role: "", email: "", phone: "" });
-  const [form, setForm] = useState({ name: "", role: "", email: "", phone: "" });
+  const [editState, setEditState] = useState({
+    name: "",
+    role: "",
+    email: "",
+    phone: "",
+  });
+  const [form, setForm] = useState({
+    name: "",
+    role: "",
+    email: "",
+    phone: "",
+  });
 
   const onAdd = async () => {
     try {
@@ -120,28 +130,45 @@ export function SiteContacts({
                 <Input
                   placeholder="Name"
                   value={editState.name}
-                  onChange={(e) => setEditState({ ...editState, name: e.target.value })}
+                  onChange={(e) =>
+                    setEditState({ ...editState, name: e.target.value })
+                  }
                 />
                 <Input
                   placeholder="Role"
                   value={editState.role}
-                  onChange={(e) => setEditState({ ...editState, role: e.target.value })}
+                  onChange={(e) =>
+                    setEditState({ ...editState, role: e.target.value })
+                  }
                 />
                 <Input
                   placeholder="Email"
                   value={editState.email}
-                  onChange={(e) => setEditState({ ...editState, email: e.target.value })}
+                  onChange={(e) =>
+                    setEditState({ ...editState, email: e.target.value })
+                  }
                 />
                 <Input
                   placeholder="Phone"
                   value={editState.phone}
-                  onChange={(e) => setEditState({ ...editState, phone: e.target.value })}
+                  onChange={(e) =>
+                    setEditState({ ...editState, phone: e.target.value })
+                  }
                 />
                 <div className="flex gap-2">
-                  <Button size="sm" className="flex-1" onClick={() => saveEdit(c.id)}>
+                  <Button
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => saveEdit(c.id)}
+                  >
                     <Check className="h-3.5 w-3.5 mr-1" /> Save
                   </Button>
-                  <Button size="sm" variant="outline" className="flex-1" onClick={cancelEdit}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="flex-1"
+                    onClick={cancelEdit}
+                  >
                     <X className="h-3.5 w-3.5 mr-1" /> Cancel
                   </Button>
                 </div>

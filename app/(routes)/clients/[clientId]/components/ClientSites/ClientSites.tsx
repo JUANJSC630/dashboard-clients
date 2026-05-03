@@ -35,9 +35,7 @@ const statusVariant: Record<
 export function ClientSites({ sites }: { sites: SiteWithRelations[] }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-4">
-        Sites ({sites.length})
-      </h3>
+      <h3 className="text-lg font-semibold mb-4">Sites ({sites.length})</h3>
       {sites.length === 0 ? (
         <p className="text-sm text-muted-foreground">No sites linked yet.</p>
       ) : (
@@ -76,8 +74,14 @@ export function ClientSites({ sites }: { sites: SiteWithRelations[] }) {
                   </a>
                 )}
                 <div className="flex gap-3 text-xs text-muted-foreground">
-                  <span>{site.incidents.length} open incident{site.incidents.length !== 1 ? "s" : ""}</span>
-                  <span>{site.billings.length} billing record{site.billings.length !== 1 ? "s" : ""}</span>
+                  <span>
+                    {site.incidents.length} open incident
+                    {site.incidents.length !== 1 ? "s" : ""}
+                  </span>
+                  <span>
+                    {site.billings.length} billing record
+                    {site.billings.length !== 1 ? "s" : ""}
+                  </span>
                 </div>
                 <Link href={`/sites/${site.id}`}>
                   <Button variant="outline" size="sm" className="w-full mt-1">

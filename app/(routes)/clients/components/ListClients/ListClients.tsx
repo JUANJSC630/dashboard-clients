@@ -1,5 +1,6 @@
 import { Client, Site, SiteStatus } from "@prisma/client";
 import Link from "next/link";
+import { Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,8 +21,10 @@ const statusColor: Record<SiteStatus, string> = {
 export function ListClients({ clients }: ListClientsProps) {
   if (clients.length === 0) {
     return (
-      <div className="text-center py-16 text-muted-foreground">
-        No clients yet. Add your first client to get started.
+      <div className="flex flex-col items-center justify-center py-20 text-center gap-3 text-muted-foreground">
+        <Users className="h-10 w-10 opacity-30" />
+        <p className="font-medium">No clients found</p>
+        <p className="text-sm">Add your first client or adjust your search.</p>
       </div>
     );
   }

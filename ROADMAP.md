@@ -83,49 +83,25 @@ Herramienta personal para gestionar sitios web de clientes: plataformas de hosti
 
 ---
 
-## 🔲 Phase 4 — Features Extra
+## ✅ Phase 4 — Features Extra (completado)
 
-- [ ] **Ping manual de uptime** — botón en `/sites/[siteId]` que hace fetch al URL del sitio y actualiza el status
-- [ ] **Vista de billing por cliente** — en `/clients/[clientId]` mostrar total facturado y próximas fechas
-- [ ] **Export CSV** de billing e incidentes (librería: `papaparse`)
-- [ ] **Historial de cambios de status** de un sitio (log básico guardado en DB)
-- [ ] **Agrupación de incidentes por sitio** en la página `/incidents`
-- [ ] **Duplicar sitio** para crear uno nuevo basado en uno existente
+- [x] **Ping manual de uptime** — botón en `/sites/[siteId]` que hace fetch al URL del sitio y actualiza el status
+- [x] **Vista de billing por cliente** — en `/clients/[clientId]` muestra total facturado, pendiente y próximas fechas (`ClientBillingSummary`)
+- [x] **Export CSV** de billing e incidentes (componente reutilizable `ExportCSV` con `papaparse`)
+- [x] **Historial de cambios de status** — modelo `SiteStatusLog` en DB, log automático en PATCH y ping
+- [x] **Agrupación de incidentes por sitio** — toggle List / By Site en `/incidents`
+- [x] **Duplicar sitio** — botón en `/sites/[siteId]` crea una copia con status PAUSED
 
 ---
 
-## 🔲 Phase 5 — Polish & Performance
+## ✅ Phase 5 — Polish & Performance (completado)
 
 - [x] `loading.tsx` para `/billing` e `/incidents` (skeleton loaders)
-- [x] `<Suspense>` granular por sección en el dashboard home (DashboardStats, RecentSites, OpenIncidents, UpcomingBilling, RecentClients)
-- [ ] Error boundaries con página de error personalizada por sección
-- [ ] Empty states con ilustración/ícono cuando no hay datos
-- [ ] Responsive mobile completo (especialmente tablas de billing e incidentes)
-- [ ] Meta tags y `generateMetadata` por página
-
----
-
-## 🔧 Configuración manual requerida
-
-Estas cosas no se pueden hacer desde el código y las tienes que hacer tú:
-
-### Vercel
-- [ ] Agregar variable de entorno `DATABASE_URL` (Neon connection string)
-- [ ] Agregar variables de entorno de Clerk: `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`
-- [ ] Agregar `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in` y `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`
-- [ ] Configurar Node.js 22 en Project Settings → General → Node.js Version
-- [ ] Deshabilitar "Legacy Prerendering" si sigue apareciendo el warning
-
-### Clerk Dashboard
-- [ ] Configurar allowed redirect URLs para producción
-- [ ] Activar los métodos de login que quieras (email, Google, etc.)
-
-### Base de datos
-- [ ] En cada deploy nuevo con cambios de schema: correr `npx prisma db push` o `npx prisma migrate deploy`
-- [ ] Para Railway con MySQL: cambiar `provider = "mysql"` en `schema.prisma` y ajustar los campos `@db.Text`
-
-### UploadThing (si se usa)
-- [ ] Agregar `UPLOADTHING_SECRET` y `UPLOADTHING_APP_ID` en Vercel
+- [x] `<Suspense>` granular por sección en el dashboard home
+- [x] Error boundaries con página de error personalizada por sección (`error.tsx` en cada ruta)
+- [x] Empty states con icono cuando no hay datos (`ServerOff`, `Users`)
+- [x] Responsive mobile completo — tablas de billing e incidentes tienen layout de cards en móvil
+- [x] Meta tags y `generateMetadata` por página (estático en listas, dinámico en detalles)
 
 ---
 

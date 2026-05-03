@@ -13,7 +13,10 @@ import {
 } from "@/components/ui/dialog";
 import { FormCreateSite } from "../FormCreateSite/FormCreateSite";
 
-type PartialClient = Pick<Client, "id" | "firstName" | "lastName" | "businessName">;
+type PartialClient = Pick<
+  Client,
+  "id" | "firstName" | "lastName" | "businessName"
+>;
 
 interface HeaderSitesProps {
   sites: Site[];

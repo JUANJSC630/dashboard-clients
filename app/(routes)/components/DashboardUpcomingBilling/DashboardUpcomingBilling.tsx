@@ -37,7 +37,9 @@ export async function DashboardUpcomingBilling({ userId }: { userId: string }) {
       </div>
       <div className="divide-y">
         {billings.length === 0 ? (
-          <p className="p-4 text-sm text-muted-foreground">No upcoming bills.</p>
+          <p className="p-4 text-sm text-muted-foreground">
+            No upcoming bills.
+          </p>
         ) : (
           billings.map((b) => (
             <Link

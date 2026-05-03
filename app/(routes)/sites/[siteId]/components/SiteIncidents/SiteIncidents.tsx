@@ -27,7 +27,13 @@ import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 
 const PRIORITIES: IncidentPriority[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 const TYPES: IncidentType[] = [
-  "ERROR", "DOWNTIME", "PERFORMANCE", "DEPLOYMENT", "BILLING", "REQUEST", "OTHER",
+  "ERROR",
+  "DOWNTIME",
+  "PERFORMANCE",
+  "DEPLOYMENT",
+  "BILLING",
+  "REQUEST",
+  "OTHER",
 ];
 
 const priorityColor: Record<IncidentPriority, string> = {
@@ -66,7 +72,12 @@ export function SiteIncidents({
     try {
       await axios.post(`/api/site/${siteId}/incident`, form);
       toast({ title: "Incident created" });
-      setForm({ title: "", description: "", priority: "MEDIUM", type: "OTHER" });
+      setForm({
+        title: "",
+        description: "",
+        priority: "MEDIUM",
+        type: "OTHER",
+      });
       setOpen(false);
       router.refresh();
     } catch {
@@ -101,7 +112,9 @@ export function SiteIncidents({
     try {
       await axios.patch(`/api/incident/${id}`, {
         status,
-        ...(status === "RESOLVED" ? { resolvedAt: new Date().toISOString() } : {}),
+        ...(status === "RESOLVED"
+          ? { resolvedAt: new Date().toISOString() }
+          : {}),
       });
       router.refresh();
     } catch {
@@ -135,23 +148,35 @@ export function SiteIncidents({
           <div className="grid grid-cols-2 gap-2">
             <Select
               value={form.priority}
-              onValueChange={(v) => setForm({ ...form, priority: v as IncidentPriority })}
+              onValueChange={(v) =>
+                setForm({ ...form, priority: v as IncidentPriority })
+              }
             >
-              <SelectTrigger><SelectValue placeholder="Priority" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Priority" />
+              </SelectTrigger>
               <SelectContent>
                 {PRIORITIES.map((p) => (
-                  <SelectItem key={p} value={p}>{p}</SelectItem>
+                  <SelectItem key={p} value={p}>
+                    {p}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Select
               value={form.type}
-              onValueChange={(v) => setForm({ ...form, type: v as IncidentType })}
+              onValueChange={(v) =>
+                setForm({ ...form, type: v as IncidentType })
+              }
             >
-              <SelectTrigger><SelectValue placeholder="Type" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
               <SelectContent>
                 {TYPES.map((t) => (
-                  <SelectItem key={t} value={t}>{t}</SelectItem>
+                  <SelectItem key={t} value={t}>
+                    {t}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -164,7 +189,9 @@ export function SiteIncidents({
 
       <div className="space-y-3">
         {incidents.length === 0 && (
-          <p className="text-sm text-muted-foreground">No incidents recorded.</p>
+          <p className="text-sm text-muted-foreground">
+            No incidents recorded.
+          </p>
         )}
         {incidents.map((inc) => (
           <div key={inc.id}>
@@ -176,7 +203,9 @@ export function SiteIncidents({
                 <div className="min-w-0">
                   <p className="font-medium text-sm truncate">{inc.title}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-muted-foreground">{inc.type}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {inc.type}
+                    </span>
                     <span className="text-xs text-muted-foreground">·</span>
                     <span className="text-xs text-muted-foreground">
                       {new Date(inc.createdAt).toLocaleDateString()}
@@ -187,20 +216,28 @@ export function SiteIncidents({
               <div className="flex items-center gap-1 shrink-0">
                 <Select
                   value={inc.status}
-                  onValueChange={(v) => onStatusChange(inc.id, v as IncidentStatus)}
+                  onValueChange={(v) =>
+                    onStatusChange(inc.id, v as IncidentStatus)
+                  }
                 >
                   <SelectTrigger className="h-7 w-32 text-xs">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="OPEN" className="text-xs">
-                      <Badge variant="destructive" className="text-xs">OPEN</Badge>
+                      <Badge variant="destructive" className="text-xs">
+                        OPEN
+                      </Badge>
                     </SelectItem>
                     <SelectItem value="IN_PROGRESS" className="text-xs">
-                      <Badge variant="outline" className="text-xs">IN PROGRESS</Badge>
+                      <Badge variant="outline" className="text-xs">
+                        IN PROGRESS
+                      </Badge>
                     </SelectItem>
                     <SelectItem value="RESOLVED" className="text-xs">
-                      <Badge variant="default" className="text-xs">RESOLVED</Badge>
+                      <Badge variant="default" className="text-xs">
+                        RESOLVED
+                      </Badge>
                     </SelectItem>
                   </SelectContent>
                 </Select>

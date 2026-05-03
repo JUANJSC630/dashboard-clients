@@ -13,10 +13,28 @@ export async function PATCH(
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
+    // Fetch current status before updating to detect changes
+    const existing = await db.site.findUnique({
+      where: { id: siteId, userId },
+      select: { status: true },
+    });
+
     const site = await db.site.update({
       where: { id: siteId, userId },
       data: values,
     });
+
+    // Log status change if it changed
+    if (existing && values.status && existing.status !== values.status) {
+      await db.siteStatusLog.create({
+        data: {
+          siteId,
+          userId,
+          from: existing.status,
+          to: values.status,
+        },
+      });
+    }
 
     return NextResponse.json(site);
   } catch (error) {

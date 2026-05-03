@@ -111,9 +111,10 @@ model Site {
   lastCheckedAt     DateTime?
   uptimePercent     Float?
 
-  contacts  Contact[]
-  incidents Incident[]
-  billings  Billing[]
+  contacts   Contact[]
+  incidents  Incident[]
+  billings   Billing[]
+  statusLogs SiteStatusLog[]
 
   client Client @relation(fields: [clientId], references: [id])
 
@@ -122,6 +123,19 @@ model Site {
 
   @@index([clientId])
   @@index([userId])
+}
+
+model SiteStatusLog {
+  id        String     @id @default(uuid())
+  siteId    String
+  userId    String
+  from      SiteStatus
+  to        SiteStatus
+  changedAt DateTime   @default(now())
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@index([siteId])
 }
 
 model Contact {

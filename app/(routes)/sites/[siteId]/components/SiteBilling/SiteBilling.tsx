@@ -4,7 +4,15 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Billing, BillingCycle, BillingStatus, Currency } from "@prisma/client";
-import { Plus, DollarSign, Calendar, Trash2, Pencil, Check, X } from "lucide-react";
+import {
+  Plus,
+  DollarSign,
+  Calendar,
+  Trash2,
+  Pencil,
+  Check,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -69,7 +77,13 @@ export function SiteBilling({
         clientId,
       });
       toast({ title: "Billing record added" });
-      setForm({ amount: "", currency: "USD", cycle: "MONTHLY", nextDueDate: "", notes: "" });
+      setForm({
+        amount: "",
+        currency: "USD",
+        cycle: "MONTHLY",
+        nextDueDate: "",
+        notes: "",
+      });
       setOpen(false);
       router.refresh();
     } catch {
@@ -148,24 +162,36 @@ export function SiteBilling({
             />
             <Select
               value={form.currency}
-              onValueChange={(v) => setForm({ ...form, currency: v as Currency })}
+              onValueChange={(v) =>
+                setForm({ ...form, currency: v as Currency })
+              }
             >
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 {CURRENCIES.map((c) => (
-                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <Select
             value={form.cycle}
-            onValueChange={(v) => setForm({ ...form, cycle: v as BillingCycle })}
+            onValueChange={(v) =>
+              setForm({ ...form, cycle: v as BillingCycle })
+            }
           >
-            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {CYCLES.map((c) => (
-                <SelectItem key={c} value={c}>{c}</SelectItem>
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -187,7 +213,9 @@ export function SiteBilling({
 
       <div className="space-y-3">
         {billings.length === 0 && (
-          <p className="text-sm text-muted-foreground">No billing records yet.</p>
+          <p className="text-sm text-muted-foreground">
+            No billing records yet.
+          </p>
         )}
         {billings.map((b) => (
           <div key={b.id}>
@@ -197,46 +225,73 @@ export function SiteBilling({
                   <Input
                     type="number"
                     value={editState.amount}
-                    onChange={(e) => setEditState({ ...editState, amount: e.target.value })}
+                    onChange={(e) =>
+                      setEditState({ ...editState, amount: e.target.value })
+                    }
                   />
                   <Select
                     value={editState.currency}
-                    onValueChange={(v) => setEditState({ ...editState, currency: v as Currency })}
+                    onValueChange={(v) =>
+                      setEditState({ ...editState, currency: v as Currency })
+                    }
                   >
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       {CURRENCIES.map((c) => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <Select
                   value={editState.cycle}
-                  onValueChange={(v) => setEditState({ ...editState, cycle: v as BillingCycle })}
+                  onValueChange={(v) =>
+                    setEditState({ ...editState, cycle: v as BillingCycle })
+                  }
                 >
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
                   <SelectContent>
                     {CYCLES.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                      <SelectItem key={c} value={c}>
+                        {c}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
                 <Input
                   type="date"
                   value={editState.nextDueDate}
-                  onChange={(e) => setEditState({ ...editState, nextDueDate: e.target.value })}
+                  onChange={(e) =>
+                    setEditState({ ...editState, nextDueDate: e.target.value })
+                  }
                 />
                 <Input
                   placeholder="Notes"
                   value={editState.notes}
-                  onChange={(e) => setEditState({ ...editState, notes: e.target.value })}
+                  onChange={(e) =>
+                    setEditState({ ...editState, notes: e.target.value })
+                  }
                 />
                 <div className="flex gap-2">
-                  <Button size="sm" className="flex-1" onClick={() => saveEdit(b.id)}>
+                  <Button
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => saveEdit(b.id)}
+                  >
                     <Check className="h-3.5 w-3.5 mr-1" /> Save
                   </Button>
-                  <Button size="sm" variant="outline" className="flex-1" onClick={cancelEdit}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="flex-1"
+                    onClick={cancelEdit}
+                  >
                     <X className="h-3.5 w-3.5 mr-1" /> Cancel
                   </Button>
                 </div>
@@ -249,7 +304,9 @@ export function SiteBilling({
                     <span className="font-medium text-sm">
                       {b.amount} {b.currency}
                     </span>
-                    <span className="text-xs text-muted-foreground">/ {b.cycle}</span>
+                    <span className="text-xs text-muted-foreground">
+                      / {b.cycle}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Calendar className="h-3 w-3" />
@@ -259,7 +316,9 @@ export function SiteBilling({
                 <div className="flex items-center gap-1">
                   <Select
                     value={b.status}
-                    onValueChange={(v) => onStatusChange(b.id, v as BillingStatus)}
+                    onValueChange={(v) =>
+                      onStatusChange(b.id, v as BillingStatus)
+                    }
                   >
                     <SelectTrigger className="h-7 w-28 text-xs">
                       <SelectValue />
@@ -267,7 +326,9 @@ export function SiteBilling({
                     <SelectContent>
                       {STATUSES.map((s) => (
                         <SelectItem key={s} value={s} className="text-xs">
-                          <Badge variant={statusVariant[s]} className="text-xs">{s}</Badge>
+                          <Badge variant={statusVariant[s]} className="text-xs">
+                            {s}
+                          </Badge>
                         </SelectItem>
                       ))}
                     </SelectContent>

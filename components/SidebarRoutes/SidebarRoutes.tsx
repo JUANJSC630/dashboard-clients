@@ -3,10 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { SidebarItem } from "@/components/SidebarItem";
-import {
-  dataGeneralSidebar,
-  dataToolsSidebar,
-} from "./SidebarRoutes.data";
+import { dataGeneralSidebar, dataToolsSidebar } from "./SidebarRoutes.data";
 import { useSidebar } from "@/components/Sidebar/sidebar-context";
 import { cn } from "@/lib/utils";
 

@@ -24,13 +24,18 @@ export async function DashboardOpenIncidents({ userId }: { userId: string }) {
     <div className="bg-background rounded-lg border shadow-sm">
       <div className="flex items-center justify-between p-4 border-b">
         <h3 className="font-semibold">Open Incidents</h3>
-        <Link href="/incidents" className="text-xs text-blue-500 hover:underline">
+        <Link
+          href="/incidents"
+          className="text-xs text-blue-500 hover:underline"
+        >
           View all
         </Link>
       </div>
       <div className="divide-y">
         {incidents.length === 0 ? (
-          <p className="p-4 text-sm text-muted-foreground">No open incidents.</p>
+          <p className="p-4 text-sm text-muted-foreground">
+            No open incidents.
+          </p>
         ) : (
           incidents.map((inc) => (
             <Link

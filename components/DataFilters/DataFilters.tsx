@@ -91,8 +91,7 @@ export function DataFilters({
   };
 
   const hasActiveFilters =
-    (showSearch &&
-      !!searchParams.get(searchKey)) ||
+    (showSearch && !!searchParams.get(searchKey)) ||
     filters.some((f) => !!searchParams.get(f.key));
 
   return (

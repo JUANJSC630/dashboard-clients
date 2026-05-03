@@ -152,7 +152,11 @@ export function ClientForm({ client }: { client: Client }) {
               <FormItem>
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
-                  <Textarea rows={3} placeholder="Internal notes..." {...field} />
+                  <Textarea
+                    rows={3}
+                    placeholder="Internal notes..."
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

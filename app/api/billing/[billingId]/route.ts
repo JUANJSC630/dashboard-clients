@@ -35,7 +35,9 @@ export async function DELETE(
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
-    const deleted = await db.billing.delete({ where: { id: billingId, userId } });
+    const deleted = await db.billing.delete({
+      where: { id: billingId, userId },
+    });
 
     return NextResponse.json(deleted);
   } catch (error) {

@@ -23,9 +23,12 @@ export function FooterSite({ siteId }: { siteId: string }) {
 
   return (
     <div className="bg-background rounded-lg p-6 shadow-sm border">
-      <h3 className="text-lg font-semibold mb-2 text-destructive">Danger Zone</h3>
+      <h3 className="text-lg font-semibold mb-2 text-destructive">
+        Danger Zone
+      </h3>
       <p className="text-sm text-muted-foreground mb-4">
-        Deleting this site removes all related contacts, billing records, and incidents.
+        Deleting this site removes all related contacts, billing records, and
+        incidents.
       </p>
       <ConfirmDialog
         trigger={

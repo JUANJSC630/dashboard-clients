@@ -190,7 +190,10 @@ export function FormCreateSite({
             <FormItem>
               <FormLabel>Repository URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://github.com/... (optional)" {...field} />
+                <Input
+                  placeholder="https://github.com/... (optional)"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

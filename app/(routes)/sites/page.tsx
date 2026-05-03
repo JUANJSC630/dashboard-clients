@@ -26,10 +26,19 @@ const PLATFORM_OPTIONS = [
   { value: "CUSTOM", label: "Custom" },
 ];
 
+export const metadata = {
+  title: "Sites — Hosting Dashboard",
+  description: "Manage and monitor all your hosted sites",
+};
+
 export default async function SitesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string; status?: string; platform?: string }>;
+  searchParams: Promise<{
+    search?: string;
+    status?: string;
+    platform?: string;
+  }>;
 }) {
   const { userId } = await auth();
   if (!userId) return redirect("/");
@@ -50,8 +59,13 @@ export default async function SitesPage({
         ...(platform && { platform: platform as Platform }),
       },
       include: {
-        client: { select: { firstName: true, lastName: true, businessName: true } },
-        incidents: { where: { status: { not: "RESOLVED" } }, select: { id: true } },
+        client: {
+          select: { firstName: true, lastName: true, businessName: true },
+        },
+        incidents: {
+          where: { status: { not: "RESOLVED" } },
+          select: { id: true },
+        },
         billings: { select: { id: true, nextDueDate: true, status: true } },
       },
       orderBy: { createdAt: "desc" },
@@ -67,12 +81,22 @@ export default async function SitesPage({
     <div>
       <HeaderSites sites={sites} clients={clients} />
       <div className="mb-4">
-        <Suspense fallback={<div className="h-10 bg-muted rounded animate-pulse" />}>
+        <Suspense
+          fallback={<div className="h-10 bg-muted rounded animate-pulse" />}
+        >
           <DataFilters
             searchPlaceholder="Search by name or URL..."
             filters={[
-              { key: "status", placeholder: "Status", options: SITE_STATUS_OPTIONS },
-              { key: "platform", placeholder: "Platform", options: PLATFORM_OPTIONS },
+              {
+                key: "status",
+                placeholder: "Status",
+                options: SITE_STATUS_OPTIONS,
+              },
+              {
+                key: "platform",
+                placeholder: "Platform",
+                options: PLATFORM_OPTIONS,
+              },
             ]}
           />
         </Suspense>

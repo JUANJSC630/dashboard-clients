@@ -3,6 +3,8 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Site, Platform, SiteStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SitePingButton } from "./SitePingButton/SitePingButton";
+import { DuplicateSiteButton } from "./DuplicateSiteButton/DuplicateSiteButton";
 
 const platformColors: Record<Platform, string> = {
   VERCEL: "bg-black text-white",
@@ -16,7 +18,10 @@ const platformColors: Record<Platform, string> = {
   CUSTOM: "bg-slate-500 text-white",
 };
 
-const statusVariant: Record<SiteStatus, "default" | "secondary" | "destructive" | "outline"> = {
+const statusVariant: Record<
+  SiteStatus,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   ACTIVE: "default",
   PAUSED: "secondary",
   DOWN: "destructive",
@@ -25,7 +30,7 @@ const statusVariant: Record<SiteStatus, "default" | "secondary" | "destructive" 
 
 export function SiteHeader({ site }: { site: Site }) {
   return (
-    <div className="flex items-start justify-between">
+    <div className="flex items-start justify-between flex-wrap gap-4">
       <div className="flex flex-col gap-2">
         <Link href="/sites">
           <Button variant="outline" size="sm">
@@ -33,12 +38,19 @@ export function SiteHeader({ site }: { site: Site }) {
             Back to Sites
           </Button>
         </Link>
-        <div className="flex items-center gap-3 mt-2">
+        <div className="flex items-center gap-3 mt-2 flex-wrap">
           <h2 className="text-2xl font-bold">{site.name}</h2>
-          <span className={`text-xs px-2 py-1 rounded-full font-medium ${platformColors[site.platform]}`}>
+          <span
+            className={`text-xs px-2 py-1 rounded-full font-medium ${platformColors[site.platform]}`}
+          >
             {site.platform}
           </span>
           <Badge variant={statusVariant[site.status]}>{site.status}</Badge>
+          {site.lastCheckedAt && (
+            <span className="text-xs text-muted-foreground">
+              Last checked: {new Date(site.lastCheckedAt).toLocaleString()}
+            </span>
+          )}
         </div>
         {site.url && (
           <a
@@ -51,6 +63,10 @@ export function SiteHeader({ site }: { site: Site }) {
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         )}
+      </div>
+      <div className="flex items-center gap-2">
+        <SitePingButton siteId={site.id} siteUrl={site.url} />
+        <DuplicateSiteButton siteId={site.id} />
       </div>
     </div>
   );

@@ -6,6 +6,11 @@ import { HeaderClients } from "./components/HeaderClients/HeaderClients";
 import { ListClients } from "./components/ListClients/ListClients";
 import { DataFilters } from "@/components/DataFilters";
 
+export const metadata = {
+  title: "Clients — Hosting Dashboard",
+  description: "Manage your clients and their sites",
+};
+
 export default async function ClientsPage({
   searchParams,
 }: {
@@ -35,7 +40,9 @@ export default async function ClientsPage({
     <div>
       <HeaderClients clients={clients} />
       <div className="mb-4">
-        <Suspense fallback={<div className="h-10 bg-muted rounded animate-pulse" />}>
+        <Suspense
+          fallback={<div className="h-10 bg-muted rounded animate-pulse" />}
+        >
           <DataFilters searchPlaceholder="Search by name or business..." />
         </Suspense>
       </div>

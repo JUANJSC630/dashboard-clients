@@ -12,6 +12,7 @@ import {
   ExternalLink,
   AlertTriangle,
   CreditCard,
+  ServerOff,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,8 +48,10 @@ const statusVariant: Record<
 export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
   if (sites.length === 0) {
     return (
-      <div className="text-center py-16 text-muted-foreground">
-        No sites yet. Add your first site to start tracking.
+      <div className="flex flex-col items-center justify-center py-20 text-center gap-3 text-muted-foreground">
+        <ServerOff className="h-10 w-10 opacity-30" />
+        <p className="font-medium">No sites found</p>
+        <p className="text-sm">Add your first site or adjust your filters.</p>
       </div>
     );
   }
