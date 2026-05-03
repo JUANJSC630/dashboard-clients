@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Billing, BillingCycle, BillingStatus, Currency } from "@prisma/client";
-import { Plus, DollarSign, Calendar, Trash2 } from "lucide-react";
+import { Plus, DollarSign, Calendar, Trash2, Pencil, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 
 const CYCLES: BillingCycle[] = ["MONTHLY", "ANNUAL", "ONE_TIME"];
 const STATUSES: BillingStatus[] = ["PENDING", "PAID", "OVERDUE"];
@@ -31,6 +32,14 @@ const statusVariant: Record<
   OVERDUE: "destructive",
 };
 
+type EditState = {
+  amount: string;
+  currency: Currency;
+  cycle: BillingCycle;
+  nextDueDate: string;
+  notes: string;
+};
+
 export function SiteBilling({
   billings,
   siteId,
@@ -42,6 +51,8 @@ export function SiteBilling({
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editState, setEditState] = useState<EditState | null>(null);
   const [form, setForm] = useState({
     amount: "",
     currency: "USD" as Currency,
@@ -58,13 +69,7 @@ export function SiteBilling({
         clientId,
       });
       toast({ title: "Billing record added" });
-      setForm({
-        amount: "",
-        currency: "USD",
-        cycle: "MONTHLY",
-        nextDueDate: "",
-        notes: "",
-      });
+      setForm({ amount: "", currency: "USD", cycle: "MONTHLY", nextDueDate: "", notes: "" });
       setOpen(false);
       router.refresh();
     } catch {
@@ -85,6 +90,37 @@ export function SiteBilling({
   const onStatusChange = async (id: string, status: BillingStatus) => {
     try {
       await axios.patch(`/api/billing/${id}`, { status });
+      router.refresh();
+    } catch {
+      toast({ title: "Error", variant: "destructive" });
+    }
+  };
+
+  const startEdit = (b: Billing) => {
+    setEditingId(b.id);
+    setEditState({
+      amount: String(b.amount),
+      currency: b.currency,
+      cycle: b.cycle,
+      nextDueDate: new Date(b.nextDueDate).toISOString().split("T")[0],
+      notes: b.notes ?? "",
+    });
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditState(null);
+  };
+
+  const saveEdit = async (id: string) => {
+    if (!editState) return;
+    try {
+      await axios.patch(`/api/billing/${id}`, {
+        ...editState,
+        amount: parseFloat(editState.amount),
+      });
+      toast({ title: "Record updated" });
+      cancelEdit();
       router.refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
@@ -114,14 +150,10 @@ export function SiteBilling({
               value={form.currency}
               onValueChange={(v) => setForm({ ...form, currency: v as Currency })}
             >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
+              <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 {CURRENCIES.map((c) => (
-                  <SelectItem key={c} value={c}>
-                    {c}
-                  </SelectItem>
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -130,14 +162,10 @@ export function SiteBilling({
             value={form.cycle}
             onValueChange={(v) => setForm({ ...form, cycle: v as BillingCycle })}
           >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
+            <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
               {CYCLES.map((c) => (
-                <SelectItem key={c} value={c}>
-                  {c}
-                </SelectItem>
+                <SelectItem key={c} value={c}>{c}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -163,48 +191,113 @@ export function SiteBilling({
         )}
         {billings.map((b) => (
           <div key={b.id}>
-            <div className="flex justify-between items-start">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium text-sm">
-                    {b.amount} {b.currency}
-                  </span>
-                  <span className="text-xs text-muted-foreground">/ {b.cycle}</span>
+            {editingId === b.id && editState ? (
+              <div className="space-y-2 p-3 border rounded-md bg-muted/30">
+                <div className="grid grid-cols-2 gap-2">
+                  <Input
+                    type="number"
+                    value={editState.amount}
+                    onChange={(e) => setEditState({ ...editState, amount: e.target.value })}
+                  />
+                  <Select
+                    value={editState.currency}
+                    onValueChange={(v) => setEditState({ ...editState, currency: v as Currency })}
+                  >
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {CURRENCIES.map((c) => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Calendar className="h-3 w-3" />
-                  Due: {new Date(b.nextDueDate).toLocaleDateString()}
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
                 <Select
-                  value={b.status}
-                  onValueChange={(v) => onStatusChange(b.id, v as BillingStatus)}
+                  value={editState.cycle}
+                  onValueChange={(v) => setEditState({ ...editState, cycle: v as BillingCycle })}
                 >
-                  <SelectTrigger className="h-7 w-28 text-xs">
-                    <SelectValue />
-                  </SelectTrigger>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {STATUSES.map((s) => (
-                      <SelectItem key={s} value={s} className="text-xs">
-                        <Badge variant={statusVariant[s]} className="text-xs">
-                          {s}
-                        </Badge>
-                      </SelectItem>
+                    {CYCLES.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                  onClick={() => onDelete(b.id)}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                <Input
+                  type="date"
+                  value={editState.nextDueDate}
+                  onChange={(e) => setEditState({ ...editState, nextDueDate: e.target.value })}
+                />
+                <Input
+                  placeholder="Notes"
+                  value={editState.notes}
+                  onChange={(e) => setEditState({ ...editState, notes: e.target.value })}
+                />
+                <div className="flex gap-2">
+                  <Button size="sm" className="flex-1" onClick={() => saveEdit(b.id)}>
+                    <Check className="h-3.5 w-3.5 mr-1" /> Save
+                  </Button>
+                  <Button size="sm" variant="outline" className="flex-1" onClick={cancelEdit}>
+                    <X className="h-3.5 w-3.5 mr-1" /> Cancel
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex justify-between items-start">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium text-sm">
+                      {b.amount} {b.currency}
+                    </span>
+                    <span className="text-xs text-muted-foreground">/ {b.cycle}</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Calendar className="h-3 w-3" />
+                    Due: {new Date(b.nextDueDate).toLocaleDateString()}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Select
+                    value={b.status}
+                    onValueChange={(v) => onStatusChange(b.id, v as BillingStatus)}
+                  >
+                    <SelectTrigger className="h-7 w-28 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STATUSES.map((s) => (
+                        <SelectItem key={s} value={s} className="text-xs">
+                          <Badge variant={statusVariant[s]} className="text-xs">{s}</Badge>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                    onClick={() => startEdit(b)}
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Button>
+                  <ConfirmDialog
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    }
+                    title="Delete billing record?"
+                    description="This billing record will be permanently deleted."
+                    confirmLabel="Delete"
+                    onConfirm={() => onDelete(b.id)}
+                  />
+                </div>
+              </div>
+            )}
             <Separator className="mt-3" />
           </div>
         ))}

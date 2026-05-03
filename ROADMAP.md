@@ -58,15 +58,15 @@ Herramienta personal para gestionar sitios web de clientes: plataformas de hosti
 
 ---
 
-## 🔲 Phase 2 — UX & Safety
+## ✅ Phase 2 — UX & Safety (completado)
 
-- [ ] **AlertDialog de confirmación** antes de eliminar en todos los modelos
+- [x] **AlertDialog de confirmación** antes de eliminar en todos los modelos
   - Clientes, sitios, contactos, billing records, incidentes
-  - Usar `@/components/ui/alert-dialog` (instalar con shadcn: `npx shadcn@latest add alert-dialog`)
-- [ ] **Edición inline de contactos** — editar nombre, rol, email, teléfono directamente en la card
-- [ ] **Edición inline de billing** — editar monto y fecha sin tener que eliminar y recrear
-- [ ] **Toast de éxito con undo** en operaciones destructivas (si es posible)
-- [ ] Validación del campo `url` al crear sitio (feedback visual si no es URL válida)
+  - Componente reutilizable `ConfirmDialog` en `components/ConfirmDialog/`
+- [x] **Edición inline de contactos** — editar nombre, rol, email, teléfono directamente en la card
+- [x] **Edición inline de billing** — editar monto, fecha, ciclo y moneda sin recrear el registro
+- [x] **API PATCH/DELETE para contactos** — `app/api/contact/[contactId]/route.ts`
+- [x] Validación del campo `url` y `repositoryUrl` al crear sitio (mensaje de error visible)
 
 ---
 

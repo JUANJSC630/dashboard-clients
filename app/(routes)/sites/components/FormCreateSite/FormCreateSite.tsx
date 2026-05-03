@@ -39,11 +39,16 @@ const PLATFORMS = [
 
 const formSchema = z.object({
   name: z.string().min(1, "Required"),
-  url: z.string().url("Must be a valid URL"),
+  url: z.string().url("Must be a valid URL (include https://)"),
   clientId: z.string().min(1, "Select a client"),
   platform: z.enum(PLATFORMS),
   techStack: z.string().optional(),
-  repositoryUrl: z.string().optional(),
+  repositoryUrl: z
+    .string()
+    .optional()
+    .refine((v) => !v || v === "" || /^https?:\/\/.+/.test(v), {
+      message: "Must be a valid URL",
+    }),
 });
 
 type PartialClient = Pick<

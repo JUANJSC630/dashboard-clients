@@ -23,16 +23,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 
 const PRIORITIES: IncidentPriority[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 const TYPES: IncidentType[] = [
-  "ERROR",
-  "DOWNTIME",
-  "PERFORMANCE",
-  "DEPLOYMENT",
-  "BILLING",
-  "REQUEST",
-  "OTHER",
+  "ERROR", "DOWNTIME", "PERFORMANCE", "DEPLOYMENT", "BILLING", "REQUEST", "OTHER",
 ];
 
 const priorityColor: Record<IncidentPriority, string> = {
@@ -140,18 +135,12 @@ export function SiteIncidents({
           <div className="grid grid-cols-2 gap-2">
             <Select
               value={form.priority}
-              onValueChange={(v) =>
-                setForm({ ...form, priority: v as IncidentPriority })
-              }
+              onValueChange={(v) => setForm({ ...form, priority: v as IncidentPriority })}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Priority" />
-              </SelectTrigger>
+              <SelectTrigger><SelectValue placeholder="Priority" /></SelectTrigger>
               <SelectContent>
                 {PRIORITIES.map((p) => (
-                  <SelectItem key={p} value={p}>
-                    {p}
-                  </SelectItem>
+                  <SelectItem key={p} value={p}>{p}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -159,14 +148,10 @@ export function SiteIncidents({
               value={form.type}
               onValueChange={(v) => setForm({ ...form, type: v as IncidentType })}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
+              <SelectTrigger><SelectValue placeholder="Type" /></SelectTrigger>
               <SelectContent>
                 {TYPES.map((t) => (
-                  <SelectItem key={t} value={t}>
-                    {t}
-                  </SelectItem>
+                  <SelectItem key={t} value={t}>{t}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -209,19 +194,13 @@ export function SiteIncidents({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="OPEN" className="text-xs">
-                      <Badge variant="destructive" className="text-xs">
-                        OPEN
-                      </Badge>
+                      <Badge variant="destructive" className="text-xs">OPEN</Badge>
                     </SelectItem>
                     <SelectItem value="IN_PROGRESS" className="text-xs">
-                      <Badge variant="outline" className="text-xs">
-                        IN PROGRESS
-                      </Badge>
+                      <Badge variant="outline" className="text-xs">IN PROGRESS</Badge>
                     </SelectItem>
                     <SelectItem value="RESOLVED" className="text-xs">
-                      <Badge variant="default" className="text-xs">
-                        RESOLVED
-                      </Badge>
+                      <Badge variant="default" className="text-xs">RESOLVED</Badge>
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -236,14 +215,21 @@ export function SiteIncidents({
                     <CheckCircle2 className="h-3.5 w-3.5" />
                   </Button>
                 )}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                  onClick={() => onDelete(inc.id)}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                <ConfirmDialog
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  }
+                  title="Delete incident?"
+                  description="This incident will be permanently deleted."
+                  confirmLabel="Delete"
+                  onConfirm={() => onDelete(inc.id)}
+                />
               </div>
             </div>
             <Separator className="mt-3" />

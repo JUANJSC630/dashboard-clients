@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 
 export function FooterSite({ siteId }: { siteId: string }) {
   const router = useRouter();
@@ -22,17 +23,22 @@ export function FooterSite({ siteId }: { siteId: string }) {
 
   return (
     <div className="bg-background rounded-lg p-6 shadow-sm border">
-      <h3 className="text-lg font-semibold mb-2 text-destructive">
-        Danger Zone
-      </h3>
+      <h3 className="text-lg font-semibold mb-2 text-destructive">Danger Zone</h3>
       <p className="text-sm text-muted-foreground mb-4">
-        Deleting this site removes all related contacts, billing records, and
-        incidents.
+        Deleting this site removes all related contacts, billing records, and incidents.
       </p>
-      <Button variant="destructive" onClick={onDelete} className="w-full">
-        <Trash className="mr-2 h-4 w-4" />
-        Delete Site
-      </Button>
+      <ConfirmDialog
+        trigger={
+          <Button variant="destructive" className="w-full">
+            <Trash className="mr-2 h-4 w-4" />
+            Delete Site
+          </Button>
+        }
+        title="Delete site?"
+        description="This will permanently delete the site along with all contacts, billing records, and incidents. This action cannot be undone."
+        confirmLabel="Delete Site"
+        onConfirm={onDelete}
+      />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 
 export function FooterClient({ clientId }: { clientId: string }) {
   const router = useRouter();
@@ -22,16 +23,22 @@ export function FooterClient({ clientId }: { clientId: string }) {
 
   return (
     <div className="bg-background rounded-lg p-6 shadow-sm border">
-      <h3 className="text-lg font-semibold mb-2 text-destructive">
-        Danger Zone
-      </h3>
+      <h3 className="text-lg font-semibold mb-2 text-destructive">Danger Zone</h3>
       <p className="text-sm text-muted-foreground mb-4">
         Deleting this client is permanent and cannot be undone.
       </p>
-      <Button variant="destructive" onClick={onDelete} className="w-full">
-        <Trash className="mr-2 h-4 w-4" />
-        Delete Client
-      </Button>
+      <ConfirmDialog
+        trigger={
+          <Button variant="destructive" className="w-full">
+            <Trash className="mr-2 h-4 w-4" />
+            Delete Client
+          </Button>
+        }
+        title="Delete client?"
+        description="This will permanently delete the client and all their associated data. This action cannot be undone."
+        confirmLabel="Delete Client"
+        onConfirm={onDelete}
+      />
     </div>
   );
 }
