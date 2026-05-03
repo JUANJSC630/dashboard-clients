@@ -39,11 +39,6 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [isMounted, setIsMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const table = useReactTable({
     data,
@@ -59,10 +54,6 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <div className="p-4 mt-4 rounded-lg shadow-md bg-background">

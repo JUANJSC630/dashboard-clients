@@ -21,6 +21,9 @@ export default async function PageAnalytics() {
   });
 
   const events = await db.event.findMany({
+    where: {
+      companyId: { in: companies.map((company) => company.id) },
+    },
     orderBy: {
       createdAt: "desc",
     },

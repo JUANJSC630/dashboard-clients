@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -15,14 +16,22 @@ import { CompaniesChartProps } from "./CompaniesChart.types";
 export function CompaniesChart(props: CompaniesChartProps) {
   const { companies, events } = props;
 
-  const dataChart = companies.map((company) => ({
-    name:
-      company.name.length > 10
-        ? company.name.slice(0, 10) + "..."
-        : company.name,
-    eventsByCompany: events.filter((event) => event.companyId === company.id)
-      .length,
-  }));
+  const dataChart = useMemo(() => {
+    const eventCountByCompany = new Map<string, number>();
+    for (const event of events) {
+      eventCountByCompany.set(
+        event.companyId,
+        (eventCountByCompany.get(event.companyId) ?? 0) + 1,
+      );
+    }
+    return companies.map((company) => ({
+      name:
+        company.name.length > 10
+          ? company.name.slice(0, 10) + "..."
+          : company.name,
+      eventsByCompany: eventCountByCompany.get(company.id) ?? 0,
+    }));
+  }, [companies, events]);
 
   return (
     <div className="h-[550px]">

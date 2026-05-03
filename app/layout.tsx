@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 
-const noto = Noto_Sans_Display({ subsets: ["latin"] });
+const noto = Noto_Sans_Display({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Dashboard Companies - Next.js",
