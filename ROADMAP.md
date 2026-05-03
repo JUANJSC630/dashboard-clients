@@ -107,7 +107,7 @@ model SitePingLog {
 
 ---
 
-## 🔲 Phase 7 — Alertas & Notificaciones
+## ✅ Phase 7 — Alertas & Notificaciones (completado)
 
 > **Objetivo:** Recibir email inmediatamente cuando un sitio cae o se recupera.
 

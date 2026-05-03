@@ -114,11 +114,12 @@ model Site {
   sslExpiresAt     DateTime?
   sslDaysLeft      Int?
 
-  contacts   Contact[]
-  incidents  Incident[]
-  billings   Billing[]
-  statusLogs SiteStatusLog[]
-  pingLogs   SitePingLog[]
+  contacts    Contact[]
+  incidents   Incident[]
+  billings    Billing[]
+  statusLogs  SiteStatusLog[]
+  pingLogs    SitePingLog[]
+  alertConfig SiteAlertConfig?
 
   client Client @relation(fields: [clientId], references: [id])
 
@@ -215,4 +216,17 @@ model SitePingLog {
 
   @@index([siteId])
   @@index([checkedAt])
+}
+
+model SiteAlertConfig {
+  id               String    @id @default(uuid())
+  siteId           String    @unique
+  alertEmail       String
+  onDown           Boolean   @default(true)
+  onRecover        Boolean   @default(true)
+  cooldownMinutes  Int       @default(60)
+  lastAlertSentAt  DateTime?
+  webhookUrl       String?
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
 }

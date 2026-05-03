@@ -8,6 +8,7 @@ import { SiteContacts } from "./components/SiteContacts/SiteContacts";
 import { SiteBilling } from "./components/SiteBilling/SiteBilling";
 import { SiteIncidents } from "./components/SiteIncidents/SiteIncidents";
 import { SiteStatusHistory } from "./components/SiteStatusHistory/SiteStatusHistory";
+import { SiteAlertConfig } from "./components/SiteAlertConfig/SiteAlertConfig";
 import { FooterSite } from "./components/FooterSite/FooterSite";
 
 export async function generateMetadata({
@@ -45,6 +46,7 @@ export default async function SiteIdPage({
         billings: { orderBy: { nextDueDate: "asc" } },
         incidents: { orderBy: { createdAt: "desc" } },
         statusLogs: { orderBy: { changedAt: "desc" }, take: 20 },
+        alertConfig: true,
       },
     }),
     db.client.findMany({
@@ -70,6 +72,7 @@ export default async function SiteIdPage({
         </div>
         <div className="flex flex-col gap-6">
           <SiteContacts contacts={site.contacts} siteId={site.id} />
+          <SiteAlertConfig siteId={site.id} config={site.alertConfig} />
           <SiteStatusHistory logs={site.statusLogs} />
           <FooterSite siteId={site.id} />
         </div>
