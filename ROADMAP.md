@@ -70,15 +70,16 @@ Herramienta personal para gestionar sitios web de clientes: plataformas de hosti
 
 ---
 
-## 🔲 Phase 3 — Filtros & Búsqueda
+## ✅ Phase 3 — Filtros & Búsqueda (completado)
 
-- [ ] Buscador en `/sites` por nombre, URL o plataforma
-- [ ] Filtro por `status` en `/sites` (ACTIVE / PAUSED / DOWN / MAINTENANCE)
-- [ ] Filtro por `platform` en `/sites`
-- [ ] Buscador en `/clients` por nombre o businessName
-- [ ] Filtro por `status` en `/incidents` (OPEN / IN_PROGRESS / RESOLVED)
-- [ ] Filtro por `priority` en `/incidents`
-- [ ] Filtro por `status` en `/billing` (PENDING / PAID / OVERDUE)
+- [x] Buscador en `/sites` por nombre, URL o plataforma
+- [x] Filtro por `status` en `/sites` (ACTIVE / PAUSED / DOWN / MAINTENANCE)
+- [x] Filtro por `platform` en `/sites`
+- [x] Buscador en `/clients` por nombre o businessName
+- [x] Filtro por `status` en `/incidents` (OPEN / IN_PROGRESS / RESOLVED)
+- [x] Filtro por `priority` en `/incidents`
+- [x] Filtro por `status` en `/billing` (PENDING / PAID / OVERDUE)
+- [x] Componente reutilizable `DataFilters` en `components/DataFilters/`
 
 ---
 
@@ -95,11 +96,11 @@ Herramienta personal para gestionar sitios web de clientes: plataformas de hosti
 
 ## 🔲 Phase 5 — Polish & Performance
 
-- [ ] `loading.tsx` para `/billing`, `/incidents`, `/clients` y `/sites` (skeleton loaders)
+- [x] `loading.tsx` para `/billing` e `/incidents` (skeleton loaders)
+- [x] `<Suspense>` granular por sección en el dashboard home (DashboardStats, RecentSites, OpenIncidents, UpcomingBilling, RecentClients)
 - [ ] Error boundaries con página de error personalizada por sección
 - [ ] Empty states con ilustración/ícono cuando no hay datos
 - [ ] Responsive mobile completo (especialmente tablas de billing e incidentes)
-- [ ] `<Suspense>` granular por sección en el dashboard home
 - [ ] Meta tags y `generateMetadata` por página
 
 ---

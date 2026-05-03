@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import { BillingStatus } from "@prisma/client";
+import { DataFilters } from "@/components/DataFilters";
 
 const statusVariant: Record<
   BillingStatus,
@@ -14,11 +16,23 @@ const statusVariant: Record<
   OVERDUE: "destructive",
 };
 
-export default async function BillingPage() {
+const STATUS_OPTIONS = [
+  { value: "PENDING", label: "Pending" },
+  { value: "PAID", label: "Paid" },
+  { value: "OVERDUE", label: "Overdue" },
+];
+
+export default async function BillingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
-  const billings = await db.billing.findMany({
+  const { status } = await searchParams;
+
+  const allBillings = await db.billing.findMany({
     where: { userId },
     include: {
       site: { select: { id: true, name: true } },
@@ -27,9 +41,15 @@ export default async function BillingPage() {
     orderBy: { nextDueDate: "asc" },
   });
 
-  const overdue = billings.filter((b) => b.status === "OVERDUE");
-  const pending = billings.filter((b) => b.status === "PENDING");
-  const paid = billings.filter((b) => b.status === "PAID");
+  // Global stats (unfiltered)
+  const overdue = allBillings.filter((b) => b.status === "OVERDUE");
+  const pending = allBillings.filter((b) => b.status === "PENDING");
+  const paid = allBillings.filter((b) => b.status === "PAID");
+
+  // Filtered view for table
+  const billings = status
+    ? allBillings.filter((b) => b.status === (status as BillingStatus))
+    : allBillings;
 
   return (
     <div className="flex flex-col gap-6">
@@ -55,6 +75,15 @@ export default async function BillingPage() {
         </div>
       </div>
 
+      <Suspense fallback={<div className="h-10 bg-muted rounded animate-pulse" />}>
+        <DataFilters
+          showSearch={false}
+          filters={[
+            { key: "status", placeholder: "Status", options: STATUS_OPTIONS },
+          ]}
+        />
+      </Suspense>
+
       <div className="bg-background rounded-lg border shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -72,7 +101,9 @@ export default async function BillingPage() {
               {billings.length === 0 && (
                 <tr>
                   <td colSpan={6} className="p-8 text-center text-muted-foreground">
-                    No billing records yet. Add them from the site detail page.
+                    {allBillings.length === 0
+                      ? "No billing records yet. Add them from the site detail page."
+                      : "No records match the current filter."}
                   </td>
                 </tr>
               )}

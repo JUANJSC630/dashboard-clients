@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import { IncidentPriority, IncidentStatus } from "@prisma/client";
+import { DataFilters } from "@/components/DataFilters";
 
 const statusVariant: Record<
   IncidentStatus,
@@ -21,24 +23,49 @@ const priorityColor: Record<IncidentPriority, string> = {
   CRITICAL: "text-red-600 font-semibold",
 };
 
-export default async function IncidentsPage() {
+const STATUS_OPTIONS = [
+  { value: "OPEN", label: "Open" },
+  { value: "IN_PROGRESS", label: "In Progress" },
+  { value: "RESOLVED", label: "Resolved" },
+];
+
+const PRIORITY_OPTIONS = [
+  { value: "LOW", label: "Low" },
+  { value: "MEDIUM", label: "Medium" },
+  { value: "HIGH", label: "High" },
+  { value: "CRITICAL", label: "Critical" },
+];
+
+export default async function IncidentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string; priority?: string }>;
+}) {
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
-  const incidents = await db.incident.findMany({
+  const { status, priority } = await searchParams;
+
+  // Fetch all for stats cards (global totals), apply filters only to the table
+  const allIncidents = await db.incident.findMany({
     where: { userId },
-    include: {
-      site: { select: { id: true, name: true } },
-    },
+    include: { site: { select: { id: true, name: true } } },
     orderBy: { createdAt: "desc" },
   });
 
-  const open = incidents.filter((i) => i.status === "OPEN");
-  const inProgress = incidents.filter((i) => i.status === "IN_PROGRESS");
-  const resolved = incidents.filter((i) => i.status === "RESOLVED");
-  const critical = incidents.filter(
+  const open = allIncidents.filter((i) => i.status === "OPEN");
+  const inProgress = allIncidents.filter((i) => i.status === "IN_PROGRESS");
+  const resolved = allIncidents.filter((i) => i.status === "RESOLVED");
+  const critical = allIncidents.filter(
     (i) => i.priority === "CRITICAL" && i.status !== "RESOLVED",
   );
+
+  // Apply client-side filters for table (avoids a second DB round-trip)
+  const incidents = allIncidents.filter((i) => {
+    if (status && i.status !== (status as IncidentStatus)) return false;
+    if (priority && i.priority !== (priority as IncidentPriority)) return false;
+    return true;
+  });
 
   return (
     <div className="flex flex-col gap-6">
@@ -68,47 +95,42 @@ export default async function IncidentsPage() {
         </div>
       </div>
 
+      <Suspense fallback={<div className="h-10 bg-muted rounded animate-pulse" />}>
+        <DataFilters
+          showSearch={false}
+          filters={[
+            { key: "status", placeholder: "Status", options: STATUS_OPTIONS },
+            { key: "priority", placeholder: "Priority", options: PRIORITY_OPTIONS },
+          ]}
+        />
+      </Suspense>
+
       <div className="bg-background rounded-lg border shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">
-                <th className="text-left p-4 font-medium text-muted-foreground">
-                  Title
-                </th>
-                <th className="text-left p-4 font-medium text-muted-foreground">
-                  Site
-                </th>
-                <th className="text-left p-4 font-medium text-muted-foreground">
-                  Type
-                </th>
-                <th className="text-left p-4 font-medium text-muted-foreground">
-                  Priority
-                </th>
-                <th className="text-left p-4 font-medium text-muted-foreground">
-                  Status
-                </th>
-                <th className="text-left p-4 font-medium text-muted-foreground">
-                  Date
-                </th>
+                <th className="text-left p-4 font-medium text-muted-foreground">Title</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">Site</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">Type</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">Priority</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">Status</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">Date</th>
               </tr>
             </thead>
             <tbody>
               {incidents.length === 0 && (
                 <tr>
                   <td colSpan={6} className="p-8 text-center text-muted-foreground">
-                    No incidents recorded. Add them from the site detail page.
+                    {allIncidents.length === 0
+                      ? "No incidents recorded. Add them from the site detail page."
+                      : "No incidents match the current filters."}
                   </td>
                 </tr>
               )}
               {incidents.map((inc) => (
-                <tr
-                  key={inc.id}
-                  className="border-b last:border-0 hover:bg-muted/30"
-                >
-                  <td className="p-4 font-medium max-w-[240px] truncate">
-                    {inc.title}
-                  </td>
+                <tr key={inc.id} className="border-b last:border-0 hover:bg-muted/30">
+                  <td className="p-4 font-medium max-w-[240px] truncate">{inc.title}</td>
                   <td className="p-4">
                     <Link
                       href={`/sites/${inc.site.id}`}
@@ -118,9 +140,7 @@ export default async function IncidentsPage() {
                     </Link>
                   </td>
                   <td className="p-4 text-muted-foreground">{inc.type}</td>
-                  <td className={`p-4 ${priorityColor[inc.priority]}`}>
-                    {inc.priority}
-                  </td>
+                  <td className={`p-4 ${priorityColor[inc.priority]}`}>{inc.priority}</td>
                   <td className="p-4">
                     <Badge variant={statusVariant[inc.status]}>{inc.status}</Badge>
                   </td>
