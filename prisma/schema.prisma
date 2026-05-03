@@ -108,13 +108,17 @@ model Site {
   status            SiteStatus @default(ACTIVE)
   profileImage      String?    @db.Text
   description       String?    @db.Text
-  lastCheckedAt     DateTime?
-  uptimePercent     Float?
+  lastCheckedAt    DateTime?
+  uptimePercent    Float?
+  checkIntervalMin Int       @default(5)
+  sslExpiresAt     DateTime?
+  sslDaysLeft      Int?
 
   contacts   Contact[]
   incidents  Incident[]
   billings   Billing[]
   statusLogs SiteStatusLog[]
+  pingLogs   SitePingLog[]
 
   client Client @relation(fields: [clientId], references: [id])
 
@@ -196,4 +200,19 @@ model Incident {
 
   @@index([siteId])
   @@index([userId])
+}
+
+model SitePingLog {
+  id           String   @id @default(uuid())
+  siteId       String
+  isUp         Boolean
+  statusCode   Int?
+  latencyMs    Int?
+  errorMessage String?
+  checkedAt    DateTime @default(now())
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@index([siteId])
+  @@index([checkedAt])
 }
