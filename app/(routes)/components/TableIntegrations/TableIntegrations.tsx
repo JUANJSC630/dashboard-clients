@@ -108,7 +108,7 @@ export const columns: ColumnDef<TableIntegrationsProps>[] = [
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Profit
-        <ChevronUp className="ml-2 h-4 w-4" />
+        <ChevronUp className="ml-2 size-4" />
       </Button>
     ),
     cell: ({ row }) => {

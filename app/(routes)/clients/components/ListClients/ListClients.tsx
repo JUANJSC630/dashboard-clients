@@ -22,7 +22,7 @@ export function ListClients({ clients }: ListClientsProps) {
   if (clients.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center gap-3 text-muted-foreground">
-        <Users className="h-10 w-10 opacity-30" />
+        <Users className="size-10 opacity-30" />
         <p className="font-medium">No clients found</p>
         <p className="text-sm">Add your first client or adjust your search.</p>
       </div>
@@ -60,7 +60,7 @@ export function ListClients({ clients }: ListClientsProps) {
                   {client.sites.map((site) => (
                     <span
                       key={site.id}
-                      className={`w-2 h-2 rounded-full ${statusColor[site.status]}`}
+                      className={`size-2 rounded-full ${statusColor[site.status]}`}
                       title={site.status}
                     />
                   ))}

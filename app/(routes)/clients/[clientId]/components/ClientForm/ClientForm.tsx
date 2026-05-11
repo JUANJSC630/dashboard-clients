@@ -32,7 +32,7 @@ const formSchema = z.object({
 });
 
 export function ClientForm({ client }: { client: Client }) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,7 +51,7 @@ export function ClientForm({ client }: { client: Client }) {
     try {
       await axios.patch(`/api/client/${client.id}`, values);
       toast({ title: "Client updated successfully" });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error updating client", variant: "destructive" });
     }

@@ -27,7 +27,7 @@ export function SidebarItem(props: SidebarItemProps) {
         isCollapsed && "justify-center",
       )}
     >
-      <Icon className="h-5 w-5 shrink-0" strokeWidth={1} />
+      <Icon className="size-5 shrink-0" strokeWidth={1} />
       {!isCollapsed && <span>{label}</span>}
     </Link>
   );

@@ -7,9 +7,7 @@ export async function PATCH(
   { params }: { params: Promise<{ billingId: string }> },
 ) {
   try {
-    const { userId } = await auth();
-    const { billingId } = await params;
-    const values = await req.json();
+    const [{ userId }, { billingId }, values] = await Promise.all([auth(), params, req.json()]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -30,8 +28,7 @@ export async function DELETE(
   { params }: { params: Promise<{ billingId: string }> },
 ) {
   try {
-    const { userId } = await auth();
-    const { billingId } = await params;
+    const [{ userId }, { billingId }] = await Promise.all([auth(), params]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 

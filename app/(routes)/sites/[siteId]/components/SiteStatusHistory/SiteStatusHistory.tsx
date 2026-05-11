@@ -35,12 +35,12 @@ export function SiteStatusHistory({ logs }: SiteStatusHistoryProps) {
                 <Badge variant={statusVariant[log.from]} className="text-xs">
                   {log.from}
                 </Badge>
-                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
+                <ArrowRight className="size-3.5 text-muted-foreground" />
                 <Badge variant={statusVariant[log.to]} className="text-xs">
                   {log.to}
                 </Badge>
               </div>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground" suppressHydrationWarning>
                 {new Date(log.changedAt).toLocaleString()}
               </span>
             </div>

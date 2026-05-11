@@ -19,7 +19,7 @@ export function GraphicSuscribers() {
       <div className="flex gap-x-5 mb-5">
         <div className="flex items-center gap-2 px-3 bg-[#16c8c7] text-white rounded-xl w-fit">
           8,5%
-          <TrendingUp strokeWidth={1} className="h-4 w-4" />
+          <TrendingUp strokeWidth={1} className="size-4" />
         </div>
         <p className="text-slate-500">+431 increased</p>
       </div>

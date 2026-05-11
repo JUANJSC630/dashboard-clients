@@ -68,9 +68,9 @@ export function ClientSites({ sites }: { sites: SiteWithRelations[] }) {
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 text-xs text-blue-500 hover:underline truncate"
                   >
-                    <Globe className="h-3 w-3 shrink-0" />
+                    <Globe className="size-3 shrink-0" />
                     {site.url}
-                    <ExternalLink className="h-3 w-3 shrink-0" />
+                    <ExternalLink className="size-3 shrink-0" />
                   </a>
                 )}
                 <div className="flex gap-3 text-xs text-muted-foreground">

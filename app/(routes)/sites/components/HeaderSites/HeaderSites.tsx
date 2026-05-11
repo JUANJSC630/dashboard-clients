@@ -29,7 +29,7 @@ export function HeaderSites({ sites, clients }: HeaderSitesProps) {
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
-        <h2 className="text-2xl font-bold">Sites</h2>
+        <h2 className="text-2xl font-semibold">Sites</h2>
         <p className="text-sm text-muted-foreground">
           {sites.length} site{sites.length !== 1 ? "s" : ""} tracked
         </p>
@@ -37,7 +37,7 @@ export function HeaderSites({ sites, clients }: HeaderSitesProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
-            <Globe className="mr-2 h-4 w-4" />
+            <Globe className="mr-2 size-4" />
             New Site
           </Button>
         </DialogTrigger>

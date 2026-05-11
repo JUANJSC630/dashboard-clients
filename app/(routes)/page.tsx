@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-2xl font-bold">Dashboard</h2>
+        <h2 className="text-2xl font-semibold">Dashboard</h2>
         <p className="text-sm text-muted-foreground mt-1">
           Overview of your hosting portfolio
         </p>

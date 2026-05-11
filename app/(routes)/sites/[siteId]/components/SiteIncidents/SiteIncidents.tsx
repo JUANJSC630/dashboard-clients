@@ -59,7 +59,7 @@ export function SiteIncidents({
   incidents: Incident[];
   siteId: string;
 }) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     title: "",
@@ -79,7 +79,7 @@ export function SiteIncidents({
         type: "OTHER",
       });
       setOpen(false);
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -89,7 +89,7 @@ export function SiteIncidents({
     try {
       await axios.delete(`/api/incident/${id}`);
       toast({ title: "Incident deleted" });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -102,7 +102,7 @@ export function SiteIncidents({
         resolvedAt: new Date().toISOString(),
       });
       toast({ title: "Incident resolved" });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -116,7 +116,7 @@ export function SiteIncidents({
           ? { resolvedAt: new Date().toISOString() }
           : {}),
       });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -127,7 +127,7 @@ export function SiteIncidents({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Incidents</h3>
         <Button variant="outline" size="sm" onClick={() => setOpen((v) => !v)}>
-          <Plus className="h-4 w-4 mr-1" />
+          <Plus className="size-4 mr-1" />
           Add
         </Button>
       </div>
@@ -137,19 +137,19 @@ export function SiteIncidents({
           <Input
             placeholder="Title"
             value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            onChange={(e) => setForm(prev => ({ ...prev, title: e.target.value }))}
           />
           <Textarea
             placeholder="Description (optional)"
             rows={2}
             value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
           />
           <div className="grid grid-cols-2 gap-2">
             <Select
               value={form.priority}
               onValueChange={(v) =>
-                setForm({ ...form, priority: v as IncidentPriority })
+                setForm(prev => ({ ...prev, priority: v as IncidentPriority }))
               }
             >
               <SelectTrigger>
@@ -166,7 +166,7 @@ export function SiteIncidents({
             <Select
               value={form.type}
               onValueChange={(v) =>
-                setForm({ ...form, type: v as IncidentType })
+                setForm(prev => ({ ...prev, type: v as IncidentType }))
               }
             >
               <SelectTrigger>
@@ -198,7 +198,7 @@ export function SiteIncidents({
             <div className="flex justify-between items-start gap-2">
               <div className="flex items-start gap-2 min-w-0">
                 <AlertTriangle
-                  className={`h-4 w-4 mt-0.5 shrink-0 ${priorityColor[inc.priority]}`}
+                  className={`size-4 mt-0.5 shrink-0 ${priorityColor[inc.priority]}`}
                 />
                 <div className="min-w-0">
                   <p className="font-medium text-sm truncate">{inc.title}</p>
@@ -207,7 +207,7 @@ export function SiteIncidents({
                       {inc.type}
                     </span>
                     <span className="text-xs text-muted-foreground">·</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-muted-foreground" suppressHydrationWarning>
                       {new Date(inc.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -245,11 +245,11 @@ export function SiteIncidents({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 text-muted-foreground hover:text-green-600"
+                    className="size-7 text-muted-foreground hover:text-green-600"
                     onClick={() => onResolve(inc.id)}
                     title="Mark resolved"
                   >
-                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <CheckCircle2 className="size-3.5" />
                   </Button>
                 )}
                 <ConfirmDialog
@@ -257,9 +257,9 @@ export function SiteIncidents({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                      className="size-7 text-muted-foreground hover:text-destructive"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash2 className="size-3.5" />
                     </Button>
                   }
                   title="Delete incident?"

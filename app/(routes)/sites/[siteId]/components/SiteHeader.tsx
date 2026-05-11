@@ -34,12 +34,12 @@ export function SiteHeader({ site }: { site: Site }) {
       <div className="flex flex-col gap-2">
         <Link href="/sites">
           <Button variant="outline" size="sm">
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="mr-2 size-4" />
             Back to Sites
           </Button>
         </Link>
         <div className="flex items-center gap-3 mt-2 flex-wrap">
-          <h2 className="text-2xl font-bold">{site.name}</h2>
+          <h2 className="text-2xl font-semibold">{site.name}</h2>
           <span
             className={`text-xs px-2 py-1 rounded-full font-medium ${platformColors[site.platform]}`}
           >
@@ -47,7 +47,7 @@ export function SiteHeader({ site }: { site: Site }) {
           </span>
           <Badge variant={statusVariant[site.status]}>{site.status}</Badge>
           {site.lastCheckedAt && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground" suppressHydrationWarning>
               Last checked: {new Date(site.lastCheckedAt).toLocaleString()}
             </span>
           )}
@@ -60,7 +60,7 @@ export function SiteHeader({ site }: { site: Site }) {
             className="flex items-center gap-1 text-sm text-blue-500 hover:underline"
           >
             {site.url}
-            <ExternalLink className="h-3.5 w-3.5" />
+            <ExternalLink className="size-3.5" />
           </a>
         )}
       </div>

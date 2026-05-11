@@ -6,7 +6,7 @@ export function CustomIcon(props: CustomIconsProps) {
 
   return (
     <div className="p-2 bg-slate-400/20 rounded-lg">
-      <Icon strokeWidth={1} className="w-4 h-4" />
+      <Icon strokeWidth={1} className="size-4" />
     </div>
   );
 }

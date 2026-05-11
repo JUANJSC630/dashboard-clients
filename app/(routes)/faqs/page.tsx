@@ -1,5 +1,10 @@
 import { AccordionFaqs } from "./components/AccordionFaqs";
 
+export const metadata = {
+  title: "FAQs — Hosting Dashboard",
+  description: "Frequently asked questions about the dashboard",
+};
+
 export default function PageFaqs() {
   return (
     <div className="max-w-4xl p-6 mx-auto rounded-lg shadow-md bg-background">

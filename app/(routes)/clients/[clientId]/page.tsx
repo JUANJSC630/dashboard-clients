@@ -29,8 +29,7 @@ export default async function ClientIdPage({
 }: {
   params: Promise<{ clientId: string }>;
 }) {
-  const { userId } = await auth();
-  const { clientId } = await params;
+  const [{ userId }, { clientId }] = await Promise.all([auth(), params]);
 
   if (!userId) return redirect("/");
 

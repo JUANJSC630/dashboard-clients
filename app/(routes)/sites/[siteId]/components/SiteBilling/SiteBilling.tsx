@@ -57,7 +57,7 @@ export function SiteBilling({
   siteId: string;
   clientId: string;
 }) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editState, setEditState] = useState<EditState | null>(null);
@@ -85,7 +85,7 @@ export function SiteBilling({
         notes: "",
       });
       setOpen(false);
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -95,7 +95,7 @@ export function SiteBilling({
     try {
       await axios.delete(`/api/billing/${id}`);
       toast({ title: "Record deleted" });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -104,7 +104,7 @@ export function SiteBilling({
   const onStatusChange = async (id: string, status: BillingStatus) => {
     try {
       await axios.patch(`/api/billing/${id}`, { status });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -135,7 +135,7 @@ export function SiteBilling({
       });
       toast({ title: "Record updated" });
       cancelEdit();
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -146,7 +146,7 @@ export function SiteBilling({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Billing</h3>
         <Button variant="outline" size="sm" onClick={() => setOpen((v) => !v)}>
-          <Plus className="h-4 w-4 mr-1" />
+          <Plus className="size-4 mr-1" />
           Add
         </Button>
       </div>
@@ -158,12 +158,12 @@ export function SiteBilling({
               placeholder="Amount"
               type="number"
               value={form.amount}
-              onChange={(e) => setForm({ ...form, amount: e.target.value })}
+              onChange={(e) => setForm(prev => ({ ...prev, amount: e.target.value }))}
             />
             <Select
               value={form.currency}
               onValueChange={(v) =>
-                setForm({ ...form, currency: v as Currency })
+                setForm(prev => ({ ...prev, currency: v as Currency }))
               }
             >
               <SelectTrigger>
@@ -181,7 +181,7 @@ export function SiteBilling({
           <Select
             value={form.cycle}
             onValueChange={(v) =>
-              setForm({ ...form, cycle: v as BillingCycle })
+              setForm(prev => ({ ...prev, cycle: v as BillingCycle }))
             }
           >
             <SelectTrigger>
@@ -198,12 +198,12 @@ export function SiteBilling({
           <Input
             type="date"
             value={form.nextDueDate}
-            onChange={(e) => setForm({ ...form, nextDueDate: e.target.value })}
+            onChange={(e) => setForm(prev => ({ ...prev, nextDueDate: e.target.value }))}
           />
           <Input
             placeholder="Notes (optional)"
             value={form.notes}
-            onChange={(e) => setForm({ ...form, notes: e.target.value })}
+            onChange={(e) => setForm(prev => ({ ...prev, notes: e.target.value }))}
           />
           <Button size="sm" className="w-full" onClick={onAdd}>
             Save Record
@@ -226,13 +226,13 @@ export function SiteBilling({
                     type="number"
                     value={editState.amount}
                     onChange={(e) =>
-                      setEditState({ ...editState, amount: e.target.value })
+                      setEditState(prev => ({ ...prev, amount: e.target.value }))
                     }
                   />
                   <Select
                     value={editState.currency}
                     onValueChange={(v) =>
-                      setEditState({ ...editState, currency: v as Currency })
+                      setEditState(prev => ({ ...prev, currency: v as Currency }))
                     }
                   >
                     <SelectTrigger>
@@ -250,7 +250,7 @@ export function SiteBilling({
                 <Select
                   value={editState.cycle}
                   onValueChange={(v) =>
-                    setEditState({ ...editState, cycle: v as BillingCycle })
+                    setEditState(prev => ({ ...prev, cycle: v as BillingCycle }))
                   }
                 >
                   <SelectTrigger>
@@ -268,14 +268,14 @@ export function SiteBilling({
                   type="date"
                   value={editState.nextDueDate}
                   onChange={(e) =>
-                    setEditState({ ...editState, nextDueDate: e.target.value })
+                    setEditState(prev => ({ ...prev, nextDueDate: e.target.value }))
                   }
                 />
                 <Input
                   placeholder="Notes"
                   value={editState.notes}
                   onChange={(e) =>
-                    setEditState({ ...editState, notes: e.target.value })
+                    setEditState(prev => ({ ...prev, notes: e.target.value }))
                   }
                 />
                 <div className="flex gap-2">
@@ -284,7 +284,7 @@ export function SiteBilling({
                     className="flex-1"
                     onClick={() => saveEdit(b.id)}
                   >
-                    <Check className="h-3.5 w-3.5 mr-1" /> Save
+                    <Check className="size-3.5 mr-1" /> Save
                   </Button>
                   <Button
                     size="sm"
@@ -292,7 +292,7 @@ export function SiteBilling({
                     className="flex-1"
                     onClick={cancelEdit}
                   >
-                    <X className="h-3.5 w-3.5 mr-1" /> Cancel
+                    <X className="size-3.5 mr-1" /> Cancel
                   </Button>
                 </div>
               </div>
@@ -300,7 +300,7 @@ export function SiteBilling({
               <div className="flex justify-between items-start">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    <DollarSign className="size-4 text-muted-foreground" />
                     <span className="font-medium text-sm">
                       {b.amount} {b.currency}
                     </span>
@@ -308,8 +308,8 @@ export function SiteBilling({
                       / {b.cycle}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Calendar className="h-3 w-3" />
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground" suppressHydrationWarning>
+                    <Calendar className="size-3" />
                     Due: {new Date(b.nextDueDate).toLocaleDateString()}
                   </div>
                 </div>
@@ -336,19 +336,19 @@ export function SiteBilling({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                    className="size-7 text-muted-foreground hover:text-foreground"
                     onClick={() => startEdit(b)}
                   >
-                    <Pencil className="h-3.5 w-3.5" />
+                    <Pencil className="size-3.5" />
                   </Button>
                   <ConfirmDialog
                     trigger={
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                        className="size-7 text-muted-foreground hover:text-destructive"
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Trash2 className="size-3.5" />
                       </Button>
                     }
                     title="Delete billing record?"

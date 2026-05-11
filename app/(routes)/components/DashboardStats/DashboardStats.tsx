@@ -25,7 +25,7 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <div className="bg-background rounded-lg p-5 border shadow-sm">
         <div className="flex items-center gap-2 text-muted-foreground mb-2">
-          <Globe className="h-4 w-4" />
+          <Globe className="size-4" />
           <span className="text-sm">Sites</span>
         </div>
         <p className="text-2xl font-bold">{totalSites}</p>
@@ -35,14 +35,14 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
       </div>
       <div className="bg-background rounded-lg p-5 border shadow-sm">
         <div className="flex items-center gap-2 text-muted-foreground mb-2">
-          <Users className="h-4 w-4" />
+          <Users className="size-4" />
           <span className="text-sm">Clients</span>
         </div>
         <p className="text-2xl font-bold">{totalClients}</p>
       </div>
       <div className="bg-background rounded-lg p-5 border shadow-sm">
         <div className="flex items-center gap-2 text-muted-foreground mb-2">
-          <AlertTriangle className="h-4 w-4" />
+          <AlertTriangle className="size-4" />
           <span className="text-sm">Open Incidents</span>
         </div>
         <p
@@ -53,7 +53,7 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
       </div>
       <div className="bg-background rounded-lg p-5 border shadow-sm">
         <div className="flex items-center gap-2 text-muted-foreground mb-2">
-          <DollarSign className="h-4 w-4" />
+          <DollarSign className="size-4" />
           <span className="text-sm">Overdue Bills</span>
         </div>
         <p

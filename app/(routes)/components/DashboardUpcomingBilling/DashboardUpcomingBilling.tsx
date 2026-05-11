@@ -49,7 +49,7 @@ export async function DashboardUpcomingBilling({ userId }: { userId: string }) {
             >
               <div>
                 <p className="text-sm font-medium">{b.site.name}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground" suppressHydrationWarning>
                   Due {new Date(b.nextDueDate).toLocaleDateString()}
                 </p>
               </div>

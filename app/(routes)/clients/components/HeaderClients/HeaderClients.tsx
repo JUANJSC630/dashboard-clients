@@ -25,7 +25,7 @@ export function HeaderClients({ clients }: HeaderClientsProps) {
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
-        <h2 className="text-2xl font-bold">Clients</h2>
+        <h2 className="text-2xl font-semibold">Clients</h2>
         <p className="text-sm text-muted-foreground">
           {clients.length} client{clients.length !== 1 ? "s" : ""} registered
         </p>
@@ -33,7 +33,7 @@ export function HeaderClients({ clients }: HeaderClientsProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
-            <Users className="mr-2 h-4 w-4" />
+            <Users className="mr-2 size-4" />
             New Client
           </Button>
         </DialogTrigger>

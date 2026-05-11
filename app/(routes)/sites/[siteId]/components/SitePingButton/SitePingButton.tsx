@@ -13,7 +13,7 @@ interface SitePingButtonProps {
 }
 
 export function SitePingButton({ siteId, siteUrl }: SitePingButtonProps) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handlePing = async () => {
@@ -28,7 +28,7 @@ export function SitePingButton({ siteId, siteUrl }: SitePingButtonProps) {
           : `${siteUrl} did not respond`,
         variant: isUp ? "default" : "destructive",
       });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Ping failed", variant: "destructive" });
     } finally {
@@ -39,9 +39,9 @@ export function SitePingButton({ siteId, siteUrl }: SitePingButtonProps) {
   return (
     <Button variant="outline" size="sm" onClick={handlePing} disabled={loading}>
       {loading ? (
-        <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+        <Loader2 className="size-4 mr-1.5 animate-spin" />
       ) : (
-        <Wifi className="h-4 w-4 mr-1.5" />
+        <Wifi className="size-4 mr-1.5" />
       )}
       Ping
     </Button>

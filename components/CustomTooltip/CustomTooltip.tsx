@@ -14,7 +14,7 @@ export default function CustomTooltip(props: CustomTooltipProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <Info strokeWidth={1} className="w-5 h-5" />
+          <Info strokeWidth={1} className="size-5" />
         </TooltipTrigger>
         <TooltipContent>
           <p>{content}</p>

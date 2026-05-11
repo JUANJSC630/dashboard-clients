@@ -45,7 +45,7 @@ export function SidebarRoutes() {
           </div>
           <Separator />
           <footer className="mt-3 p-3 text-center">
-            <p className="text-xs text-slate-500">© 2024 All rights reserved</p>
+            <p className="text-xs text-zinc-500">© 2024 All rights reserved</p>
           </footer>
         </div>
       )}

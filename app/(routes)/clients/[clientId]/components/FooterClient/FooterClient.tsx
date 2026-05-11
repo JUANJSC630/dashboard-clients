@@ -8,14 +8,14 @@ import { toast } from "@/components/ui/use-toast";
 import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 
 export function FooterClient({ clientId }: { clientId: string }) {
-  const router = useRouter();
+  const { push, refresh } = useRouter();
 
   const onDelete = async () => {
     try {
       await axios.delete(`/api/client/${clientId}`);
       toast({ title: "Client deleted" });
-      router.push("/clients");
-      router.refresh();
+      push("/clients");
+      refresh();
     } catch {
       toast({ title: "Error deleting client", variant: "destructive" });
     }
@@ -32,7 +32,7 @@ export function FooterClient({ clientId }: { clientId: string }) {
       <ConfirmDialog
         trigger={
           <Button variant="destructive" className="w-full">
-            <Trash className="mr-2 h-4 w-4" />
+            <Trash className="mr-2 size-4" />
             Delete Client
           </Button>
         }

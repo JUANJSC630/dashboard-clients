@@ -60,7 +60,7 @@ function IncidentRow({ inc }: { inc: IncidentWithSite }) {
       <td className="p-4">
         <Badge variant={statusVariant[inc.status]}>{inc.status}</Badge>
       </td>
-      <td className="p-4 text-muted-foreground">
+      <td className="p-4 text-muted-foreground" suppressHydrationWarning>
         {new Date(inc.createdAt).toLocaleDateString()}
       </td>
     </tr>
@@ -72,15 +72,39 @@ export const metadata = {
   description: "Track and resolve incidents across all your sites",
 };
 
+const tableHead = (
+  <thead>
+    <tr className="border-b">
+      <th className="text-left p-4 font-medium text-muted-foreground">
+        Title
+      </th>
+      <th className="text-left p-4 font-medium text-muted-foreground">
+        Site
+      </th>
+      <th className="text-left p-4 font-medium text-muted-foreground">
+        Type
+      </th>
+      <th className="text-left p-4 font-medium text-muted-foreground">
+        Priority
+      </th>
+      <th className="text-left p-4 font-medium text-muted-foreground">
+        Status
+      </th>
+      <th className="text-left p-4 font-medium text-muted-foreground">
+        Date
+      </th>
+    </tr>
+  </thead>
+);
+
 export default async function IncidentsPage({
   searchParams,
 }: {
   searchParams: Promise<{ status?: string; priority?: string; group?: string }>;
 }) {
-  const { userId } = await auth();
+  const [{ userId }, { status, priority, group }] = await Promise.all([auth(), searchParams]);
   if (!userId) return redirect("/");
 
-  const { status, priority, group } = await searchParams;
   const grouped = group === "site";
 
   const allIncidents = await db.incident.findMany({
@@ -122,36 +146,11 @@ export default async function IncidentsPage({
       }, {})
     : null;
 
-  const tableHead = (
-    <thead>
-      <tr className="border-b">
-        <th className="text-left p-4 font-medium text-muted-foreground">
-          Title
-        </th>
-        <th className="text-left p-4 font-medium text-muted-foreground">
-          Site
-        </th>
-        <th className="text-left p-4 font-medium text-muted-foreground">
-          Type
-        </th>
-        <th className="text-left p-4 font-medium text-muted-foreground">
-          Priority
-        </th>
-        <th className="text-left p-4 font-medium text-muted-foreground">
-          Status
-        </th>
-        <th className="text-left p-4 font-medium text-muted-foreground">
-          Date
-        </th>
-      </tr>
-    </thead>
-  );
-
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Incidents</h2>
+          <h2 className="text-2xl font-semibold">Incidents</h2>
           <p className="text-sm text-muted-foreground mt-1">
             Track and resolve issues across all your sites
           </p>
@@ -163,7 +162,9 @@ export default async function IncidentsPage({
             type: i.type,
             priority: i.priority,
             status: i.status,
+            // react-doctor-disable-next-line react-doctor/rendering-hydration-mismatch-time
             createdAt: new Date(i.createdAt).toLocaleDateString(),
+            // react-doctor-disable-next-line react-doctor/rendering-hydration-mismatch-time
             resolvedAt: i.resolvedAt
               ? new Date(i.resolvedAt).toLocaleDateString()
               : "",
@@ -215,14 +216,14 @@ export default async function IncidentsPage({
             href={`/incidents?${new URLSearchParams({ ...(status ? { status } : {}), ...(priority ? { priority } : {}) }).toString()}`}
           >
             <Button variant={grouped ? "ghost" : "secondary"} size="sm">
-              <LayoutList className="h-4 w-4 mr-1" /> List
+              <LayoutList className="size-4 mr-1" /> List
             </Button>
           </Link>
           <Link
             href={`/incidents?${new URLSearchParams({ ...(status ? { status } : {}), ...(priority ? { priority } : {}), group: "site" }).toString()}`}
           >
             <Button variant={grouped ? "secondary" : "ghost"} size="sm">
-              <Layers className="h-4 w-4 mr-1" /> By Site
+              <Layers className="size-4 mr-1" /> By Site
             </Button>
           </Link>
         </div>
@@ -323,7 +324,7 @@ export default async function IncidentsPage({
                   <span className={priorityColor[inc.priority]}>
                     {inc.priority}
                   </span>
-                  <span>{new Date(inc.createdAt).toLocaleDateString()}</span>
+                  <span suppressHydrationWarning>{new Date(inc.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
             ))}

@@ -26,12 +26,12 @@ export default function CardSummary(props: CardSummaryProps) {
         >
           <span>{average}%</span>
           {average < 20 && (
-            <MoveDownRight strokeWidth={2} className="h-4 w-4" />
+            <MoveDownRight strokeWidth={2} className="size-4" />
           )}
           {average > 20 && average < 70 && (
-            <MoveUpRight strokeWidth={2} className="h-4 w-4" />
+            <MoveUpRight strokeWidth={2} className="size-4" />
           )}
-          {average > 70 && <TrendingUp strokeWidth={2} className="h-4 w-4" />}
+          {average > 70 && <TrendingUp strokeWidth={2} className="size-4" />}
         </div>
       </div>
     </div>

@@ -7,9 +7,7 @@ export async function POST(
   { params }: { params: Promise<{ siteId: string }> },
 ) {
   try {
-    const { userId } = await auth();
-    const { siteId } = await params;
-    const data = await req.json();
+    const [{ userId }, { siteId }, data] = await Promise.all([auth(), params, req.json()]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -34,8 +32,7 @@ export async function DELETE(
   { params }: { params: Promise<{ siteId: string }> },
 ) {
   try {
-    const { userId } = await auth();
-    const { siteId } = await params;
+    const [{ userId }, { siteId }] = await Promise.all([auth(), params]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 

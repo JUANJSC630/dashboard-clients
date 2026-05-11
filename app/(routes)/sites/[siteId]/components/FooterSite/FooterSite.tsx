@@ -8,14 +8,14 @@ import { toast } from "@/components/ui/use-toast";
 import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 
 export function FooterSite({ siteId }: { siteId: string }) {
-  const router = useRouter();
+  const { push, refresh } = useRouter();
 
   const onDelete = async () => {
     try {
       await axios.delete(`/api/site/${siteId}`);
       toast({ title: "Site deleted" });
-      router.push("/sites");
-      router.refresh();
+      push("/sites");
+      refresh();
     } catch {
       toast({ title: "Error deleting site", variant: "destructive" });
     }
@@ -33,7 +33,7 @@ export function FooterSite({ siteId }: { siteId: string }) {
       <ConfirmDialog
         trigger={
           <Button variant="destructive" className="w-full">
-            <Trash className="mr-2 h-4 w-4" />
+            <Trash className="mr-2 size-4" />
             Delete Site
           </Button>
         }

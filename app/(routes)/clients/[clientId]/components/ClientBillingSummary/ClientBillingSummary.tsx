@@ -61,14 +61,14 @@ export function ClientBillingSummary({ billings }: ClientBillingSummaryProps) {
 
       <div className="space-y-2 mb-4 text-sm">
         <div className="flex items-center gap-2 text-muted-foreground">
-          <DollarSign className="h-4 w-4 shrink-0" />
+          <DollarSign className="size-4 shrink-0" />
           <span>Total paid:</span>
           <span className="font-medium text-foreground">
             {sumByCurrency(paid)}
           </span>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <Clock className="h-4 w-4 shrink-0" />
+          <Clock className="size-4 shrink-0" />
           <span>Total pending:</span>
           <span className="font-medium text-foreground">
             {sumByCurrency(pending)}
@@ -76,7 +76,7 @@ export function ClientBillingSummary({ billings }: ClientBillingSummaryProps) {
         </div>
         {overdue.length > 0 && (
           <div className="flex items-center gap-2 text-destructive">
-            <AlertTriangle className="h-4 w-4 shrink-0" />
+            <AlertTriangle className="size-4 shrink-0" />
             <span>Total overdue:</span>
             <span className="font-medium">{sumByCurrency(overdue)}</span>
           </div>
@@ -94,7 +94,7 @@ export function ClientBillingSummary({ billings }: ClientBillingSummaryProps) {
                 key={b.id}
                 className="flex items-center justify-between text-sm"
               >
-                <span className="text-muted-foreground">
+                <span className="text-muted-foreground" suppressHydrationWarning>
                   {new Date(b.nextDueDate).toLocaleDateString()}
                 </span>
                 <div className="flex items-center gap-2">

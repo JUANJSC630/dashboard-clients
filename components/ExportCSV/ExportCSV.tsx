@@ -35,7 +35,7 @@ export function ExportCSV<T extends object>({
       onClick={handleExport}
       disabled={data.length === 0}
     >
-      <Download className="h-4 w-4 mr-1.5" />
+      <Download className="size-4 mr-1.5" />
       {label}
     </Button>
   );

@@ -8,7 +8,7 @@ export default function IncidentsLoading() {
       <div className="grid grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="bg-background rounded-lg p-4 border">
-            <div className="h-8 w-8 bg-muted rounded mx-auto" />
+            <div className="size-8 bg-muted rounded mx-auto" />
             <div className="h-4 w-16 bg-muted rounded mx-auto mt-2" />
           </div>
         ))}

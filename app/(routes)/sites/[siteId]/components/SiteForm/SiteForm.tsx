@@ -74,7 +74,7 @@ export function SiteForm({
   site: Site;
   clients: PartialClient[];
 }) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -94,7 +94,7 @@ export function SiteForm({
     try {
       await axios.patch(`/api/site/${site.id}`, values);
       toast({ title: "Site updated successfully" });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error updating site", variant: "destructive" });
     }

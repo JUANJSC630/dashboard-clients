@@ -4,6 +4,11 @@ import { db } from "@/lib/db";
 import { SitesStatusChart } from "./components/SitesStatusChart";
 import { IncidentsChart } from "./components/IncidentsChart";
 
+export const metadata = {
+  title: "Analytics — Hosting Dashboard",
+  description: "Overview and insights for your hosting portfolio",
+};
+
 export default async function PageAnalytics() {
   const { userId } = await auth();
   if (!userId) return redirect("/");
@@ -38,7 +43,7 @@ export default async function PageAnalytics() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-2xl font-bold">Analytics</h2>
+        <h2 className="text-2xl font-semibold">Analytics</h2>
         <p className="text-sm text-muted-foreground mt-1">
           Overview of your hosting portfolio
         </p>

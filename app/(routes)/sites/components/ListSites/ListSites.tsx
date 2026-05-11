@@ -49,7 +49,7 @@ export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
   if (sites.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center gap-3 text-muted-foreground">
-        <ServerOff className="h-10 w-10 opacity-30" />
+        <ServerOff className="size-10 opacity-30" />
         <p className="font-medium">No sites found</p>
         <p className="text-sm">Add your first site or adjust your filters.</p>
       </div>
@@ -91,7 +91,7 @@ export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
                 </Badge>
               </div>
               <div className="flex items-center gap-1 mt-0.5">
-                <Globe className="h-3 w-3 text-muted-foreground shrink-0" />
+                <Globe className="size-3 text-muted-foreground shrink-0" />
                 <a
                   href={site.url}
                   target="_blank"
@@ -100,7 +100,7 @@ export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
                 >
                   {site.url}
                 </a>
-                <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
+                <ExternalLink className="size-3 text-muted-foreground shrink-0" />
               </div>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {site.client.businessName ??
@@ -112,13 +112,13 @@ export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
           <div className="flex items-center gap-3 shrink-0">
             {site.incidents.length > 0 && (
               <div className="flex items-center gap-1 text-xs text-destructive">
-                <AlertTriangle className="h-3.5 w-3.5" />
+                <AlertTriangle className="size-3.5" />
                 {site.incidents.length}
               </div>
             )}
             {overdueCount(site.billings) > 0 && (
               <div className="flex items-center gap-1 text-xs text-orange-500">
-                <CreditCard className="h-3.5 w-3.5" />
+                <CreditCard className="size-3.5" />
                 overdue
               </div>
             )}

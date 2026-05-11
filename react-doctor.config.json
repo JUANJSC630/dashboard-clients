@@ -1,0 +1,75 @@
+{
+  "ignore": {
+    "rules": [
+      "react-doctor/no-react19-deprecated-apis",
+      "react-doctor/no-giant-component"
+    ],
+    "files": [
+      "components/ui/**",
+      "lib/formatDate.ts",
+      "lib/formatPrice.ts",
+      "utils/uploadthing.ts",
+      "components/CustomIcon/**",
+      "components/CustomTooltip/**",
+      "components/Logo/index.ts",
+      "components/Sidebar/index.ts",
+      "components/ToggleTheme/index.ts",
+      "components/Navbar/index.ts",
+      "app/(routes)/components/CustomersTable/**",
+      "app/(routes)/components/CardSummary/**",
+      "app/(routes)/components/LastCustomers/**",
+      "app/(routes)/components/GraphicSuscribers/**",
+      "app/(routes)/components/ListIntegrations/**",
+      "app/(routes)/components/TotalSuscribers/**",
+      "app/(routes)/components/TableIntegrations/**",
+      "app/(routes)/components/Salesdistributors/**"
+    ],
+    "overrides": [
+      {
+        "files": ["components/DataFilters/**", "components/ExportCSV/**"],
+        "rules": ["knip/types"]
+      },
+      {
+        "files": ["app/(routes)/analytics/components/**"],
+        "rules": ["react-doctor/prefer-dynamic-import"]
+      },
+      {
+        "files": ["app/api/site/[siteId]/ping/route.ts", "app/api/cron/health-check/route.ts"],
+        "rules": ["react-doctor/server-fetch-without-revalidate"]
+      },
+      {
+        "files": ["lib/uptime.ts"],
+        "rules": ["react-doctor/async-defer-await"]
+      },
+      {
+        "files": ["components/DataFilters/DataFilters.tsx"],
+        "rules": ["react-doctor/nextjs-no-use-search-params-without-suspense", "react-doctor/react-compiler-destructure-method"]
+      },
+      {
+        "files": [
+          "app/(routes)/billing/page.tsx",
+          "app/(routes)/incidents/page.tsx",
+          "app/(routes)/sites/[siteId]/page.tsx",
+          "app/(routes)/clients/[clientId]/page.tsx"
+        ],
+        "rules": ["react-doctor/async-defer-await", "react-doctor/rendering-hydration-mismatch-time"]
+      },
+      {
+        "files": [
+          "app/(routes)/components/DashboardUpcomingBilling/DashboardUpcomingBilling.tsx",
+          "app/(routes)/clients/[clientId]/components/ClientBillingSummary/ClientBillingSummary.tsx",
+          "app/(routes)/sites/[siteId]/components/SiteStatusHistory/SiteStatusHistory.tsx",
+          "app/(routes)/sites/[siteId]/components/SiteIncidents/SiteIncidents.tsx",
+          "app/(routes)/sites/[siteId]/components/SiteAlertConfig/SiteAlertConfig.tsx",
+          "app/(routes)/sites/[siteId]/components/SiteHeader.tsx",
+          "app/(routes)/sites/[siteId]/components/SiteBilling/SiteBilling.tsx"
+        ],
+        "rules": ["react-doctor/rendering-hydration-mismatch-time"]
+      },
+      {
+        "files": ["app/api/uploadthing/core.ts"],
+        "rules": ["knip/types"]
+      }
+    ]
+  }
+}

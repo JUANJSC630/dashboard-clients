@@ -27,7 +27,7 @@ const formSchema = z.object({
 });
 
 export function FormCreateClient({ onSuccess }: { onSuccess?: () => void }) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,7 +46,7 @@ export function FormCreateClient({ onSuccess }: { onSuccess?: () => void }) {
       toast({ title: "Client created successfully" });
       form.reset();
       onSuccess?.();
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Something went wrong", variant: "destructive" });
     }

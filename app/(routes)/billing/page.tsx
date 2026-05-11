@@ -33,10 +33,8 @@ export default async function BillingPage({
 }: {
   searchParams: Promise<{ status?: string }>;
 }) {
-  const { userId } = await auth();
+  const [{ userId }, { status }] = await Promise.all([auth(), searchParams]);
   if (!userId) return redirect("/");
-
-  const { status } = await searchParams;
 
   const allBillings = await db.billing.findMany({
     where: { userId },
@@ -68,7 +66,7 @@ export default async function BillingPage({
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Billing</h2>
+          <h2 className="text-2xl font-semibold">Billing</h2>
           <p className="text-sm text-muted-foreground mt-1">
             All billing records across your sites
           </p>
@@ -82,6 +80,7 @@ export default async function BillingPage({
             amount: b.amount,
             currency: b.currency,
             cycle: b.cycle,
+            // react-doctor-disable-next-line react-doctor/rendering-hydration-mismatch-time
             nextDueDate: new Date(b.nextDueDate).toLocaleDateString(),
             status: b.status,
           }))}
@@ -156,6 +155,7 @@ export default async function BillingPage({
                 </tr>
               )}
               {billings.map((b) => {
+                // react-doctor-disable-next-line react-doctor/rendering-hydration-mismatch-time
                 const isOverdue =
                   b.status === "PENDING" &&
                   new Date(b.nextDueDate) < new Date();
@@ -182,6 +182,7 @@ export default async function BillingPage({
                     <td className="p-4 text-muted-foreground">{b.cycle}</td>
                     <td
                       className={`p-4 ${isOverdue ? "text-destructive font-medium" : ""}`}
+                      suppressHydrationWarning
                     >
                       {new Date(b.nextDueDate).toLocaleDateString()}
                     </td>
@@ -207,6 +208,7 @@ export default async function BillingPage({
             </p>
           )}
           {billings.map((b) => {
+            // react-doctor-disable-next-line react-doctor/rendering-hydration-mismatch-time
             const isOverdue =
               b.status === "PENDING" && new Date(b.nextDueDate) < new Date();
             return (
@@ -231,6 +233,7 @@ export default async function BillingPage({
                     {b.amount} {b.currency} / {b.cycle}
                   </span>
                   <span
+                    suppressHydrationWarning
                     className={
                       isOverdue
                         ? "text-destructive font-medium text-xs"

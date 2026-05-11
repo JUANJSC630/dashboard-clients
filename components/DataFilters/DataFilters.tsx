@@ -32,13 +32,15 @@ export interface DataFiltersProps {
   showSearch?: boolean;
 }
 
+const EMPTY_FILTERS: FilterConfig[] = [];
+
 export function DataFilters({
   searchKey = "search",
   searchPlaceholder = "Search...",
-  filters = [],
+  filters = EMPTY_FILTERS,
   showSearch = true,
 }: DataFiltersProps) {
-  const router = useRouter();
+  const { push } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -71,14 +73,14 @@ export function DataFilters({
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       startTransition(() => {
-        router.push(`${pathname}?${buildQuery({ [searchKey]: value })}`);
+        push(`${pathname}?${buildQuery({ [searchKey]: value })}`);
       });
     }, 350);
   };
 
   const handleFilter = (key: string, value: string) => {
     startTransition(() => {
-      router.push(
+      push(
         `${pathname}?${buildQuery({ [key]: value === "_all" ? "" : value })}`,
       );
     });
@@ -87,7 +89,7 @@ export function DataFilters({
   const clearAll = () => {
     if (inputRef.current) inputRef.current.value = "";
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    startTransition(() => router.push(pathname));
+    startTransition(() => push(pathname));
   };
 
   const hasActiveFilters =
@@ -98,7 +100,7 @@ export function DataFilters({
     <div className="flex items-center gap-2 flex-wrap">
       {showSearch && (
         <div className="relative flex-1 min-w-[180px] max-w-xs">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
           <Input
             ref={inputRef}
             defaultValue={searchParams.get(searchKey) ?? ""}
@@ -138,7 +140,7 @@ export function DataFilters({
           onClick={clearAll}
           className="gap-1 text-muted-foreground hover:text-foreground"
         >
-          <X className="h-3.5 w-3.5" />
+          <X className="size-3.5" />
           Clear filters
         </Button>
       )}

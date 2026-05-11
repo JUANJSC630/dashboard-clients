@@ -13,7 +13,7 @@ export function NavbarToggle() {
       onClick={toggle}
       aria-label="Toggle sidebar"
     >
-      <PanelLeft className="h-5 w-5" />
+      <PanelLeft className="size-5" />
     </Button>
   );
 }

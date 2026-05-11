@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
 export function DuplicateSiteButton({ siteId }: { siteId: string }) {
-  const router = useRouter();
+  const { push, refresh } = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleDuplicate = async () => {
@@ -19,8 +19,8 @@ export function DuplicateSiteButton({ siteId }: { siteId: string }) {
         title: "Site duplicated",
         description: `Created "${data.name}"`,
       });
-      router.push(`/sites/${data.id}`);
-      router.refresh();
+      push(`/sites/${data.id}`);
+      refresh();
     } catch {
       toast({ title: "Error duplicating site", variant: "destructive" });
     } finally {
@@ -36,9 +36,9 @@ export function DuplicateSiteButton({ siteId }: { siteId: string }) {
       disabled={loading}
     >
       {loading ? (
-        <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+        <Loader2 className="size-4 mr-1.5 animate-spin" />
       ) : (
-        <Copy className="h-4 w-4 mr-1.5" />
+        <Copy className="size-4 mr-1.5" />
       )}
       Duplicate
     </Button>

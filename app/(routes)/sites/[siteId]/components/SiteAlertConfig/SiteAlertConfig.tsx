@@ -18,7 +18,7 @@ interface SiteAlertConfigProps {
 }
 
 export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const [form, setForm] = useState({
     alertEmail: config?.alertEmail ?? "",
     onDown: config?.onDown ?? true,
@@ -40,7 +40,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
         webhookUrl: form.webhookUrl || null,
       });
       toast({ title: config ? "Alert config updated" : "Alerts enabled" });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error saving config", variant: "destructive" });
     } finally {
@@ -59,7 +59,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
         cooldownMinutes: 60,
         webhookUrl: "",
       });
-      router.refresh();
+      refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
     }
@@ -68,7 +68,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
   return (
     <div className="bg-background rounded-lg p-6 shadow-sm border">
       <div className="flex items-center gap-2 mb-1">
-        <Bell className="h-4 w-4" />
+        <Bell className="size-4" />
         <h3 className="text-lg font-semibold">Alert Settings</h3>
         {config && (
           <span className="ml-auto text-xs text-green-600 font-medium bg-green-50 dark:bg-green-950 px-2 py-0.5 rounded-full">
@@ -88,7 +88,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
             type="email"
             placeholder="you@example.com"
             value={form.alertEmail}
-            onChange={(e) => setForm({ ...form, alertEmail: e.target.value })}
+            onChange={(e) => setForm(prev => ({ ...prev, alertEmail: e.target.value }))}
           />
         </div>
 
@@ -96,18 +96,18 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
           <label className="flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border accent-primary"
+              className="size-4 rounded border accent-primary"
               checked={form.onDown}
-              onChange={(e) => setForm({ ...form, onDown: e.target.checked })}
+              onChange={(e) => setForm(prev => ({ ...prev, onDown: e.target.checked }))}
             />
             <span className="text-sm">Alert when site goes down</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border accent-primary"
+              className="size-4 rounded border accent-primary"
               checked={form.onRecover}
-              onChange={(e) => setForm({ ...form, onRecover: e.target.checked })}
+              onChange={(e) => setForm(prev => ({ ...prev, onRecover: e.target.checked }))}
             />
             <span className="text-sm">Alert when site recovers</span>
           </label>
@@ -122,7 +122,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
             max={1440}
             value={form.cooldownMinutes}
             onChange={(e) =>
-              setForm({ ...form, cooldownMinutes: parseInt(e.target.value) || 60 })
+              setForm(prev => ({ ...prev, cooldownMinutes: parseInt(e.target.value) || 60 }))
             }
             className="w-32"
           />
@@ -140,7 +140,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
             type="url"
             placeholder="https://hooks.slack.com/... or https://discord.com/api/webhooks/..."
             value={form.webhookUrl}
-            onChange={(e) => setForm({ ...form, webhookUrl: e.target.value })}
+            onChange={(e) => setForm(prev => ({ ...prev, webhookUrl: e.target.value }))}
           />
           <p className="text-xs text-muted-foreground">
             Receives a POST with <code className="text-xs bg-muted px-1 rounded">{"{ event, site, timestamp }"}</code>. Compatible with Slack and Discord.
@@ -149,14 +149,14 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
 
         <div className="flex gap-2 pt-1">
           <Button className="flex-1" onClick={onSave} disabled={saving}>
-            <Bell className="h-4 w-4 mr-2" />
+            <Bell className="size-4 mr-2" />
             {saving ? "Saving…" : config ? "Update Alerts" : "Enable Alerts"}
           </Button>
           {config && (
             <ConfirmDialog
               trigger={
                 <Button variant="outline" size="icon">
-                  <BellOff className="h-4 w-4 text-muted-foreground" />
+                  <BellOff className="size-4 text-muted-foreground" />
                 </Button>
               }
               title="Disable alerts?"
@@ -168,7 +168,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
         </div>
 
         {config?.lastAlertSentAt && (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground" suppressHydrationWarning>
             Last alert sent:{" "}
             {new Date(config.lastAlertSentAt).toLocaleString()}
           </p>
