@@ -8,8 +8,10 @@ import {
   IncidentPriority,
   IncidentStatus,
   IncidentType,
+  IncidentUpdate,
+  IncidentUpdateStatus,
 } from "@prisma/client";
-import { Plus, AlertTriangle, Trash2, CheckCircle2 } from "lucide-react";
+import { Plus, AlertTriangle, Trash2, CheckCircle2, MessageSquarePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -52,15 +54,34 @@ const statusVariant: Record<
   RESOLVED: "default",
 };
 
+const UPDATE_STATUSES: IncidentUpdateStatus[] = [
+  "INVESTIGATING",
+  "IDENTIFIED",
+  "MONITORING",
+  "RESOLVED",
+];
+
+const updateStatusColor: Record<IncidentUpdateStatus, string> = {
+  INVESTIGATING: "text-yellow-600",
+  IDENTIFIED: "text-orange-600",
+  MONITORING: "text-blue-600",
+  RESOLVED: "text-green-600",
+};
+
 export function SiteIncidents({
   incidents,
   siteId,
 }: {
-  incidents: Incident[];
+  incidents: (Incident & { updates?: IncidentUpdate[] })[];
   siteId: string;
 }) {
   const { refresh } = useRouter();
   const [open, setOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState<string | null>(null);
+  const [updateForm, setUpdateForm] = useState({
+    status: "INVESTIGATING" as IncidentUpdateStatus,
+    message: "",
+  });
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -132,6 +153,27 @@ export function SiteIncidents({
         }),
       });
       if (!res.ok) throw new Error();
+      refresh();
+    } catch {
+      toast({ title: "Error", variant: "destructive" });
+    }
+  };
+
+  const onPostUpdate = async (incidentId: string) => {
+    if (!updateForm.message.trim()) {
+      toast({ title: "Message required", variant: "destructive" });
+      return;
+    }
+    try {
+      const res = await fetch(`/api/incident/${incidentId}/updates`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateForm),
+      });
+      if (!res.ok) throw new Error();
+      toast({ title: "Update posted" });
+      setUpdateForm({ status: "INVESTIGATING", message: "" });
+      setUpdateOpen(null);
       refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
@@ -285,6 +327,90 @@ export function SiteIncidents({
                 />
               </div>
             </div>
+
+            {/* Post Update button & timeline */}
+            {inc.status !== "RESOLVED" && (
+              <div className="ml-6 mt-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs h-7 px-2 text-muted-foreground"
+                  onClick={() =>
+                    setUpdateOpen(updateOpen === inc.id ? null : inc.id)
+                  }
+                >
+                  <MessageSquarePlus className="size-3.5 mr-1" />
+                  Post Update
+                </Button>
+
+                {updateOpen === inc.id && (
+                  <div className="mt-2 p-3 border rounded-md bg-muted/30 space-y-2">
+                    <Select
+                      value={updateForm.status}
+                      onValueChange={(v) =>
+                        setUpdateForm((prev) => ({
+                          ...prev,
+                          status: v as IncidentUpdateStatus,
+                        }))
+                      }
+                    >
+                      <SelectTrigger className="h-8 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {UPDATE_STATUSES.map((s) => (
+                          <SelectItem key={s} value={s} className="text-xs">
+                            {s}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Textarea
+                      placeholder="What's the current situation?"
+                      rows={2}
+                      className="text-xs"
+                      value={updateForm.message}
+                      onChange={(e) =>
+                        setUpdateForm((prev) => ({
+                          ...prev,
+                          message: e.target.value,
+                        }))
+                      }
+                    />
+                    <Button
+                      size="sm"
+                      className="w-full h-7 text-xs"
+                      onClick={() => onPostUpdate(inc.id)}
+                    >
+                      Post Update
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Existing updates timeline */}
+            {inc.updates && inc.updates.length > 0 && (
+              <div className="ml-6 mt-2 space-y-1.5">
+                {inc.updates.map((u) => (
+                  <div key={u.id} className="flex items-start gap-2 text-xs">
+                    <span
+                      className={`font-semibold shrink-0 ${updateStatusColor[u.status]}`}
+                    >
+                      {u.status}
+                    </span>
+                    <span className="text-muted-foreground">{u.message}</span>
+                    <span
+                      className="text-muted-foreground/60 ml-auto shrink-0"
+                      suppressHydrationWarning
+                    >
+                      {new Date(u.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <Separator className="mt-3" />
           </div>
         ))}

@@ -109,7 +109,7 @@ async function checkSite(site: {
 
     // Auto-create incident when site goes down
     if (newStatus === "DOWN") {
-      await db.incident.create({
+      const incident = await db.incident.create({
         data: {
           userId: site.userId,
           siteId: site.id,
@@ -122,6 +122,32 @@ async function checkSite(site: {
           type: "DOWNTIME",
         },
       });
+      await db.incidentUpdate.create({
+        data: {
+          incidentId: incident.id,
+          status: "INVESTIGATING",
+          message: errorMessage
+            ? `Automated detection: ${errorMessage}`
+            : `Automated detection: HTTP ${statusCode ?? "N/A"} (latency: ${latencyMs}ms)`,
+        },
+      });
+    }
+
+    // Auto-resolve incidents and add RESOLVED update when site recovers
+    if (newStatus === "ACTIVE") {
+      const openIncidents = await db.incident.findMany({
+        where: { siteId: site.id, status: { in: ["OPEN", "IN_PROGRESS"] } },
+        select: { id: true },
+      });
+      for (const inc of openIncidents) {
+        await db.incidentUpdate.create({
+          data: {
+            incidentId: inc.id,
+            status: "RESOLVED",
+            message: "Automated: Site is back online and responding normally.",
+          },
+        });
+      }
     }
 
     // ─── Send alerts if configured ────────────────────────────────────────

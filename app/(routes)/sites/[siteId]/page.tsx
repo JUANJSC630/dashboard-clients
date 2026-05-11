@@ -44,7 +44,10 @@ export default async function SiteIdPage({
         client: true,
         contacts: { orderBy: { createdAt: "desc" } },
         billings: { orderBy: { nextDueDate: "asc" } },
-        incidents: { orderBy: { createdAt: "desc" } },
+        incidents: {
+          orderBy: { createdAt: "desc" },
+          include: { updates: { orderBy: { createdAt: "asc" } } },
+        },
         statusLogs: { orderBy: { changedAt: "desc" }, take: 20 },
         pingLogs: { orderBy: { checkedAt: "desc" }, take: 100 },
         alertConfig: true,

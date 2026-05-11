@@ -6,6 +6,7 @@ import {
   CreditCard,
   AlertTriangle,
   CircleHelpIcon,
+  Radio,
 } from "lucide-react";
 
 export const dataGeneralSidebar = [
@@ -41,6 +42,11 @@ export const dataToolsSidebar = [
     icon: BarChart4,
     label: "Analytics",
     href: "/analytics",
+  },
+  {
+    icon: Radio,
+    label: "Status Pages",
+    href: "/status-pages",
   },
   {
     icon: CircleHelpIcon,

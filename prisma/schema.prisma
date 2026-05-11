@@ -73,6 +73,19 @@ enum IncidentType {
   OTHER
 }
 
+enum IncidentUpdateStatus {
+  INVESTIGATING
+  IDENTIFIED
+  MONITORING
+  RESOLVED
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+}
+
 // ─── Models ───────────────────────────────────────────────────────────────────
 
 model Client {
@@ -196,7 +209,8 @@ model Incident {
   type        IncidentType     @default(OTHER)
   resolvedAt  DateTime?
 
-  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  site    Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  updates IncidentUpdate[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -231,4 +245,76 @@ model SiteAlertConfig {
   webhookUrl       String?
 
   site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+}
+
+// ─── Incident Updates (timeline messages) ─────────────────────────────────────
+
+model IncidentUpdate {
+  id         String               @id @default(uuid())
+  incidentId String
+  status     IncidentUpdateStatus
+  message    String               @db.Text
+
+  incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([incidentId])
+}
+
+// ─── Status Page ──────────────────────────────────────────────────────────────
+
+model StatusPage {
+  id          String  @id @default(uuid())
+  userId      String
+  slug        String  @unique
+  title       String
+  description String? @db.Text
+  logoUrl     String? @db.Text
+  faviconUrl  String? @db.Text
+  brandColor  String  @default("#22c55e")
+  customCss   String? @db.Text
+  isPublic    Boolean @default(true)
+
+  components          StatusPageComponent[]
+  scheduledMaintenances ScheduledMaintenance[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([slug])
+}
+
+model StatusPageComponent {
+  id           String @id @default(uuid())
+  statusPageId String
+  siteId       String
+  displayName  String
+  description  String?
+  sortOrder    Int    @default(0)
+
+  statusPage StatusPage @relation(fields: [statusPageId], references: [id], onDelete: Cascade)
+
+  @@index([statusPageId])
+  @@index([siteId])
+}
+
+// ─── Scheduled Maintenance ────────────────────────────────────────────────────
+
+model ScheduledMaintenance {
+  id           String            @id @default(uuid())
+  statusPageId String
+  title        String
+  description  String?           @db.Text
+  status       MaintenanceStatus @default(SCHEDULED)
+  startsAt     DateTime
+  endsAt       DateTime
+
+  statusPage StatusPage @relation(fields: [statusPageId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([statusPageId])
 }
