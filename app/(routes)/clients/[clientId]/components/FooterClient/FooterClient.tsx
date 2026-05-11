@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,8 @@ export function FooterClient({ clientId }: { clientId: string }) {
 
   const onDelete = async () => {
     try {
-      await axios.delete(`/api/client/${clientId}`);
+      const res = await fetch(`/api/client/${clientId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
       toast({ title: "Client deleted" });
       push("/clients");
       refresh();

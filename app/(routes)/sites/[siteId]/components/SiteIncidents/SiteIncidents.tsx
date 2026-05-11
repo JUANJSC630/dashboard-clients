@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import {
   Incident,
@@ -70,7 +70,12 @@ export function SiteIncidents({
 
   const onAdd = async () => {
     try {
-      await axios.post(`/api/site/${siteId}/incident`, form);
+      const res = await fetch(`/api/site/${siteId}/incident`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Incident created" });
       setForm({
         title: "",
@@ -87,7 +92,8 @@ export function SiteIncidents({
 
   const onDelete = async (id: string) => {
     try {
-      await axios.delete(`/api/incident/${id}`);
+      const res = await fetch(`/api/incident/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
       toast({ title: "Incident deleted" });
       refresh();
     } catch {
@@ -97,10 +103,15 @@ export function SiteIncidents({
 
   const onResolve = async (id: string) => {
     try {
-      await axios.patch(`/api/incident/${id}`, {
-        status: "RESOLVED",
-        resolvedAt: new Date().toISOString(),
+      const res = await fetch(`/api/incident/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status: "RESOLVED",
+          resolvedAt: new Date().toISOString(),
+        }),
       });
+      if (!res.ok) throw new Error();
       toast({ title: "Incident resolved" });
       refresh();
     } catch {
@@ -110,12 +121,17 @@ export function SiteIncidents({
 
   const onStatusChange = async (id: string, status: IncidentStatus) => {
     try {
-      await axios.patch(`/api/incident/${id}`, {
-        status,
-        ...(status === "RESOLVED"
-          ? { resolvedAt: new Date().toISOString() }
-          : {}),
+      const res = await fetch(`/api/incident/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status,
+          ...(status === "RESOLVED"
+            ? { resolvedAt: new Date().toISOString() }
+            : {}),
+        }),
       });
+      if (!res.ok) throw new Error();
       refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Contact } from "@prisma/client";
 import { Plus, Mail, Phone, Trash2, Pencil, Check, X } from "lucide-react";
@@ -36,7 +36,12 @@ export function SiteContacts({
 
   const onAdd = async () => {
     try {
-      await axios.post(`/api/site/${siteId}/contact`, form);
+      const res = await fetch(`/api/site/${siteId}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Contact added" });
       setForm({ name: "", role: "", email: "", phone: "" });
       setOpen(false);
@@ -48,7 +53,8 @@ export function SiteContacts({
 
   const onDelete = async (id: string) => {
     try {
-      await axios.delete(`/api/contact/${id}`);
+      const res = await fetch(`/api/contact/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
       toast({ title: "Contact deleted" });
       refresh();
     } catch {
@@ -72,7 +78,12 @@ export function SiteContacts({
 
   const saveEdit = async (id: string) => {
     try {
-      await axios.patch(`/api/contact/${id}`, editState);
+      const res = await fetch(`/api/contact/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editState),
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Contact updated" });
       cancelEdit();
       refresh();

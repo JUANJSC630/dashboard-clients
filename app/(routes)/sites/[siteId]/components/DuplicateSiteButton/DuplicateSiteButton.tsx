@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+
 import { Copy, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -14,7 +14,11 @@ export function DuplicateSiteButton({ siteId }: { siteId: string }) {
   const handleDuplicate = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post(`/api/site/${siteId}/duplicate`);
+      const res = await fetch(`/api/site/${siteId}/duplicate`, {
+        method: "POST",
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
       toast({
         title: "Site duplicated",
         description: `Created "${data.name}"`,

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Site, Client, Platform, SiteStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
@@ -92,7 +92,12 @@ export function SiteForm({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/site/${site.id}`, values);
+      const res = await fetch(`/api/site/${site.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Site updated successfully" });
       refresh();
     } catch {

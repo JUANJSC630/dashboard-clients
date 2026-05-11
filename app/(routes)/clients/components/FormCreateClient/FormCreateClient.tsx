@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,7 +42,12 @@ export function FormCreateClient({ onSuccess }: { onSuccess?: () => void }) {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/client", values);
+      const res = await fetch("/api/client", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Client created successfully" });
       form.reset();
       onSuccess?.();

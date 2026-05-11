@@ -1,15 +1,21 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { updateSiteSchema } from "@/lib/schemas";
 
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ siteId: string }> },
 ) {
   try {
-    const [{ userId }, { siteId }, values] = await Promise.all([auth(), params, req.json()]);
+    const [{ userId }, { siteId }, body] = await Promise.all([auth(), params, req.json()]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+    const parsed = updateSiteSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(parsed.error.flatten(), { status: 400 });
+    }
 
     // Fetch current status before updating to detect changes
     const existing = await db.site.findUnique({
@@ -19,17 +25,17 @@ export async function PATCH(
 
     const site = await db.site.update({
       where: { id: siteId, userId },
-      data: values,
+      data: parsed.data,
     });
 
     // Log status change if it changed
-    if (existing && values.status && existing.status !== values.status) {
+    if (existing && parsed.data.status && existing.status !== parsed.data.status) {
       await db.siteStatusLog.create({
         data: {
           siteId,
           userId,
           from: existing.status,
-          to: values.status,
+          to: parsed.data.status,
         },
       });
     }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+
 import { Wifi, WifiOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -19,7 +19,11 @@ export function SitePingButton({ siteId, siteUrl }: SitePingButtonProps) {
   const handlePing = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post(`/api/site/${siteId}/ping`);
+      const res = await fetch(`/api/site/${siteId}/ping`, {
+        method: "POST",
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
       const isUp = data.status === "ACTIVE";
       toast({
         title: isUp ? "Site is UP" : "Site is DOWN",

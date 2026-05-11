@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Billing, BillingCycle, BillingStatus, Currency } from "@prisma/client";
 import {
@@ -71,11 +71,16 @@ export function SiteBilling({
 
   const onAdd = async () => {
     try {
-      await axios.post(`/api/site/${siteId}/billing`, {
-        ...form,
-        amount: parseFloat(form.amount),
-        clientId,
+      const res = await fetch(`/api/site/${siteId}/billing`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          amount: parseFloat(form.amount),
+          clientId,
+        }),
       });
+      if (!res.ok) throw new Error();
       toast({ title: "Billing record added" });
       setForm({
         amount: "",
@@ -93,7 +98,8 @@ export function SiteBilling({
 
   const onDelete = async (id: string) => {
     try {
-      await axios.delete(`/api/billing/${id}`);
+      const res = await fetch(`/api/billing/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
       toast({ title: "Record deleted" });
       refresh();
     } catch {
@@ -103,7 +109,12 @@ export function SiteBilling({
 
   const onStatusChange = async (id: string, status: BillingStatus) => {
     try {
-      await axios.patch(`/api/billing/${id}`, { status });
+      const res = await fetch(`/api/billing/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error();
       refresh();
     } catch {
       toast({ title: "Error", variant: "destructive" });
@@ -129,10 +140,15 @@ export function SiteBilling({
   const saveEdit = async (id: string) => {
     if (!editState) return;
     try {
-      await axios.patch(`/api/billing/${id}`, {
-        ...editState,
-        amount: parseFloat(editState.amount),
+      const res = await fetch(`/api/billing/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...editState,
+          amount: parseFloat(editState.amount),
+        }),
       });
+      if (!res.ok) throw new Error();
       toast({ title: "Record updated" });
       cancelEdit();
       refresh();
@@ -226,13 +242,13 @@ export function SiteBilling({
                     type="number"
                     value={editState.amount}
                     onChange={(e) =>
-                      setEditState(prev => ({ ...prev, amount: e.target.value }))
+                      setEditState(prev => prev ? ({ ...prev, amount: e.target.value }) : prev)
                     }
                   />
                   <Select
                     value={editState.currency}
                     onValueChange={(v) =>
-                      setEditState(prev => ({ ...prev, currency: v as Currency }))
+                      setEditState(prev => prev ? ({ ...prev, currency: v as Currency }) : prev)
                     }
                   >
                     <SelectTrigger>
@@ -250,7 +266,7 @@ export function SiteBilling({
                 <Select
                   value={editState.cycle}
                   onValueChange={(v) =>
-                    setEditState(prev => ({ ...prev, cycle: v as BillingCycle }))
+                    setEditState(prev => prev ? ({ ...prev, cycle: v as BillingCycle }) : prev)
                   }
                 >
                   <SelectTrigger>
@@ -268,14 +284,14 @@ export function SiteBilling({
                   type="date"
                   value={editState.nextDueDate}
                   onChange={(e) =>
-                    setEditState(prev => ({ ...prev, nextDueDate: e.target.value }))
+                    setEditState(prev => prev ? ({ ...prev, nextDueDate: e.target.value }) : prev)
                   }
                 />
                 <Input
                   placeholder="Notes"
                   value={editState.notes}
                   onChange={(e) =>
-                    setEditState(prev => ({ ...prev, notes: e.target.value }))
+                    setEditState(prev => prev ? ({ ...prev, notes: e.target.value }) : prev)
                   }
                 />
                 <div className="flex gap-2">

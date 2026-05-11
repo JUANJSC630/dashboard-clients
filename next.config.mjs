@@ -2,7 +2,12 @@
 const nextConfig = {
   poweredByHeader: false,
   experimental: {
-    optimizePackageImports: ["lucide-react", "recharts"],
+    optimizePackageImports: [
+      "lucide-react",
+      "recharts",
+      "@tanstack/react-table",
+      "date-fns",
+    ],
   },
   images: {
     remotePatterns: [

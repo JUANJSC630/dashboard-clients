@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Bell, BellOff, Trash2 } from "lucide-react";
 import { SiteAlertConfig as AlertConfigType } from "@prisma/client";
@@ -35,10 +35,15 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
     }
     setSaving(true);
     try {
-      await axios.post(`/api/site/${siteId}/alert-config`, {
-        ...form,
-        webhookUrl: form.webhookUrl || null,
+      const res = await fetch(`/api/site/${siteId}/alert-config`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          webhookUrl: form.webhookUrl || null,
+        }),
       });
+      if (!res.ok) throw new Error();
       toast({ title: config ? "Alert config updated" : "Alerts enabled" });
       refresh();
     } catch {
@@ -50,7 +55,10 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
 
   const onDelete = async () => {
     try {
-      await axios.delete(`/api/site/${siteId}/alert-config`);
+      const res = await fetch(`/api/site/${siteId}/alert-config`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Alerts disabled" });
       setForm({
         alertEmail: "",

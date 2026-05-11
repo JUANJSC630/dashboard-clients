@@ -4,7 +4,7 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
+  useLayoutEffect,
   type ReactNode,
 } from "react";
 
@@ -21,7 +21,7 @@ const SidebarContext = createContext<SidebarContextType>({
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stored = localStorage.getItem("sidebar-collapsed");
     if (stored !== null) setIsCollapsed(stored === "true");
   }, []);

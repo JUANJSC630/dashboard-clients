@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { calculateUptime } from "@/lib/uptime";
 import { sendDownAlert, sendRecoverAlert, sendWebhook } from "@/lib/email";
 import { SiteStatus } from "@prisma/client";
+import * as tls from "tls";
 
 export async function GET(request: Request) {
   // ─── Auth ────────────────────────────────────────────────────────────────
@@ -106,6 +107,23 @@ async function checkSite(site: {
         : []),
     ]);
 
+    // Auto-create incident when site goes down
+    if (newStatus === "DOWN") {
+      await db.incident.create({
+        data: {
+          userId: site.userId,
+          siteId: site.id,
+          title: `${site.name} is down`,
+          description: errorMessage
+            ? `Health check failed: ${errorMessage}`
+            : `Health check returned HTTP ${statusCode ?? "N/A"} (latency: ${latencyMs}ms)`,
+          priority: "HIGH",
+          status: "OPEN",
+          type: "DOWNTIME",
+        },
+      });
+    }
+
     // ─── Send alerts if configured ────────────────────────────────────────
     if (site.alertConfig) {
       const cfg = site.alertConfig;
@@ -123,7 +141,11 @@ async function checkSite(site: {
       if (shouldAlert && cooldownPassed) {
         // Send email
         if (newStatus === "DOWN") {
-          await sendDownAlert(cfg.alertEmail, siteInfo).catch(console.error);
+          await sendDownAlert(cfg.alertEmail, siteInfo, {
+            latencyMs,
+            statusCode,
+            errorMessage,
+          }).catch(console.error);
         } else {
           await sendRecoverAlert(cfg.alertEmail, siteInfo).catch(console.error);
         }
@@ -157,5 +179,48 @@ async function checkSite(site: {
     await db.site.update({ where: { id: site.id }, data: { uptimePercent } });
   }
 
+  // ─── Check SSL certificate ──────────────────────────────────────────────
+  await checkSsl(site.id, site.url).catch(() => {});
+
   return { isUp, statusCode, latencyMs, newStatus, alerted: statusChanged };
+}
+
+// ─── SSL certificate check ──────────────────────────────────────────────────
+
+async function checkSsl(siteId: string, url: string) {
+  let hostname: string;
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:") return;
+    hostname = parsed.hostname;
+  } catch {
+    return;
+  }
+
+  const cert = await new Promise<tls.PeerCertificate | null>(
+    (resolve) => {
+      const socket = tls.connect(
+        { host: hostname, port: 443, servername: hostname, timeout: 5000 },
+        () => {
+          const c = socket.getPeerCertificate();
+          socket.destroy();
+          resolve(c && c.valid_to ? c : null);
+        },
+      );
+      socket.on("error", () => { socket.destroy(); resolve(null); });
+      socket.on("timeout", () => { socket.destroy(); resolve(null); });
+    },
+  );
+
+  if (!cert?.valid_to) return;
+
+  const sslExpiresAt = new Date(cert.valid_to);
+  const sslDaysLeft = Math.ceil(
+    (sslExpiresAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24),
+  );
+
+  await db.site.update({
+    where: { id: siteId },
+    data: { sslExpiresAt, sslDaysLeft },
+  });
 }

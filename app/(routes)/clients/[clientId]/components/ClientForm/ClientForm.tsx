@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Client } from "@prisma/client";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,12 @@ export function ClientForm({ client }: { client: Client }) {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/client/${client.id}`, values);
+      const res = await fetch(`/api/client/${client.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Client updated successfully" });
       refresh();
     } catch {

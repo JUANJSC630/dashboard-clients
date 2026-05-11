@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,8 @@ export function FooterSite({ siteId }: { siteId: string }) {
 
   const onDelete = async () => {
     try {
-      await axios.delete(`/api/site/${siteId}`);
+      const res = await fetch(`/api/site/${siteId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
       toast({ title: "Site deleted" });
       push("/sites");
       refresh();

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { Client } from "@prisma/client";
 import { Button } from "@/components/ui/button";
@@ -78,7 +78,12 @@ export function FormCreateSite({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/site", values);
+      const res = await fetch("/api/site", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (!res.ok) throw new Error();
       toast({ title: "Site created successfully" });
       form.reset();
       onSuccess?.();

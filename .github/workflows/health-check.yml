@@ -3,7 +3,7 @@ name: Site Health Check
 on:
   schedule:
     - cron: "*/5 * * * *"
-  workflow_dispatch: # permite correrlo manualmente desde GitHub
+  workflow_dispatch:
 
 jobs:
   ping:
@@ -14,3 +14,9 @@ jobs:
           curl --fail --silent --show-error \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             "${{ secrets.APP_URL }}/api/cron/health-check"
+
+      - name: Check overdue billing
+        run: |
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/cron/billing-overdue"
