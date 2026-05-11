@@ -150,6 +150,7 @@ export function HeaderStatusPages({ sites }: { sites: SiteOption[] }) {
                   >
                     <input
                       type="checkbox"
+                      aria-label={`Select ${site.name}`}
                       className="size-4 rounded border accent-primary"
                       checked={selectedSites.includes(site.id)}
                       onChange={() => toggleSite(site.id)}

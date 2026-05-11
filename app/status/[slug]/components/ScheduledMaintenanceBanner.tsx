@@ -51,24 +51,31 @@ export function ScheduledMaintenanceBanner({
                     {m.description}
                   </p>
                 )}
-                <p
-                  className="text-xs text-[#9ca3af] mt-1"
-                  suppressHydrationWarning
-                >
-                  {new Date(m.startsAt).toLocaleString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                <p className="text-xs text-[#9ca3af] mt-1">
+                  <time
+                    dateTime={new Date(m.startsAt).toISOString()}
+                    suppressHydrationWarning
+                  >
+                    {new Date(m.startsAt).toLocaleString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </time>
                   {" → "}
-                  {new Date(m.endsAt).toLocaleString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    timeZoneName: "short",
-                  })}
+                  <time
+                    dateTime={new Date(m.endsAt).toISOString()}
+                    suppressHydrationWarning
+                  >
+                    {new Date(m.endsAt).toLocaleString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      timeZoneName: "short",
+                    })}
+                  </time>
                 </p>
               </div>
             </div>

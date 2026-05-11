@@ -78,7 +78,7 @@ export function StatusPageList({
         <h3 className="text-lg font-semibold mb-1">No status pages yet</h3>
         <p className="text-sm text-muted-foreground max-w-sm">
           Create a public status page to give your clients real-time visibility
-          into the health of their services — like GitHub Status or
+          into the health of their services, like GitHub Status or
           Downdetector.
         </p>
       </div>

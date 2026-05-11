@@ -109,9 +109,9 @@ export function SiteUptimeChart({ pingLogs }: { pingLogs: PingLog[] }) {
 
       {/* Status dots */}
       <div className="flex gap-0.5 mt-3">
-        {data.map((d, i) => (
+        {data.map((d) => (
           <div
-            key={i}
+            key={d.time}
             className={`h-2 flex-1 rounded-sm ${
               d.status === 1 ? "bg-green-500" : "bg-red-500"
             }`}

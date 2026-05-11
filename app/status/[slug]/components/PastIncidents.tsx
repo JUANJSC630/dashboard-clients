@@ -54,6 +54,7 @@ export function PastIncidents({
   const grouped = groupByDay(incidents);
 
   // Build the last 14 days for display
+  const groupedMap = new Map(grouped);
   const days: { label: string; incidents: PastIncident[] }[] = [];
   for (let i = 0; i < 14; i++) {
     const d = new Date();
@@ -63,8 +64,7 @@ export function PastIncidents({
       month: "long",
       day: "numeric",
     });
-    const dayGroup = grouped.find(([k]) => k === label);
-    days.push({ label, incidents: dayGroup ? dayGroup[1] : [] });
+    days.push({ label, incidents: groupedMap.get(label) ?? [] });
   }
 
   return (
@@ -115,15 +115,19 @@ export function PastIncidents({
                             </p>
                             <p
                               className="text-[10px] text-[#9ca3af] mt-0.5"
-                              suppressHydrationWarning
                             >
-                              {new Date(upd.createdAt).toLocaleString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                timeZoneName: "short",
-                              })}
+                              <time
+                                dateTime={new Date(upd.createdAt).toISOString()}
+                                suppressHydrationWarning
+                              >
+                                {new Date(upd.createdAt).toLocaleString("en-US", {
+                                  month: "short",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  timeZoneName: "short",
+                                })}
+                              </time>
                             </p>
                           </div>
                         ))}

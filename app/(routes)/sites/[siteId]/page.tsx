@@ -9,7 +9,14 @@ import { SiteBilling } from "./components/SiteBilling/SiteBilling";
 import { SiteIncidents } from "./components/SiteIncidents/SiteIncidents";
 import { SiteStatusHistory } from "./components/SiteStatusHistory/SiteStatusHistory";
 import { SiteAlertConfig } from "./components/SiteAlertConfig/SiteAlertConfig";
-import { SiteUptimeChart } from "./components/SiteUptimeChart/SiteUptimeChart";
+import dynamic from "next/dynamic";
+const SiteUptimeChart = dynamic(
+  () =>
+    import("./components/SiteUptimeChart/SiteUptimeChart").then(
+      (m) => m.SiteUptimeChart,
+    ),
+  { ssr: false },
+);
 import { FooterSite } from "./components/FooterSite/FooterSite";
 
 export async function generateMetadata({

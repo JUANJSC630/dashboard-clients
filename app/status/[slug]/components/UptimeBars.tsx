@@ -33,9 +33,10 @@ function buildDayBuckets(pingLogs: PingLog[], days: number) {
     buckets.push({ date: dateStr, up: 0, total: 0 });
   }
 
+  const bucketMap = new Map(buckets.map((b) => [b.date, b]));
   for (const log of pingLogs) {
     const dateStr = new Date(log.checkedAt).toISOString().split("T")[0];
-    const bucket = buckets.find((b) => b.date === dateStr);
+    const bucket = bucketMap.get(dateStr);
     if (bucket) {
       bucket.total++;
       if (log.isUp) bucket.up++;
@@ -74,7 +75,7 @@ function DayBar({
       {/* Tooltip */}
       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10">
         <div className="bg-[#1f2937] dark:bg-white text-white dark:text-[#111827] text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg">
-          <p className="font-medium">
+          <p className="font-medium" suppressHydrationWarning>
             {new Date(date + "T12:00:00").toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",

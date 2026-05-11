@@ -72,15 +72,19 @@ export function ActiveIncidents({
                   </p>
                   <p
                     className="text-[10px] text-[#9ca3af] mt-0.5"
-                    suppressHydrationWarning
                   >
-                    {new Date(upd.createdAt).toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      timeZoneName: "short",
-                    })}
+                    <time
+                      dateTime={new Date(upd.createdAt).toISOString()}
+                      suppressHydrationWarning
+                    >
+                      {new Date(upd.createdAt).toLocaleString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZoneName: "short",
+                      })}
+                    </time>
                   </p>
                 </div>
               ))}

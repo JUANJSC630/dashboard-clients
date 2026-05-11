@@ -109,9 +109,9 @@ export default async function PublicStatusPage({
   }));
 
   // Calculate overall status
-  const statuses = components
-    .map((c) => c.site?.status)
-    .filter(Boolean) as string[];
+  const statuses = components.flatMap((c) =>
+    c.site?.status ? [c.site.status] : [],
+  );
   const overallStatus = statuses.includes("DOWN")
     ? "major_outage"
     : statuses.includes("MAINTENANCE")
