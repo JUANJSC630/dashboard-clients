@@ -72,6 +72,7 @@ export function ActiveIncidents({
                   </p>
                   <p
                     className="text-[10px] text-[#9ca3af] mt-0.5"
+                    suppressHydrationWarning
                   >
                     <time
                       dateTime={new Date(upd.createdAt).toISOString()}

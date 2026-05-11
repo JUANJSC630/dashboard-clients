@@ -34,6 +34,10 @@
         "rules": ["react-doctor/prefer-dynamic-import"]
       },
       {
+        "files": ["app/(routes)/sites/[siteId]/components/SiteUptimeChart/**"],
+        "rules": ["react-doctor/prefer-dynamic-import"]
+      },
+      {
         "files": ["app/api/site/[siteId]/ping/route.ts", "app/api/cron/health-check/route.ts"],
         "rules": ["react-doctor/server-fetch-without-revalidate"]
       },
@@ -63,6 +67,15 @@
           "app/(routes)/sites/[siteId]/components/SiteAlertConfig/SiteAlertConfig.tsx",
           "app/(routes)/sites/[siteId]/components/SiteHeader.tsx",
           "app/(routes)/sites/[siteId]/components/SiteBilling/SiteBilling.tsx"
+        ],
+        "rules": ["react-doctor/rendering-hydration-mismatch-time"]
+      },
+      {
+        "files": [
+          "app/status/[slug]/components/PastIncidents.tsx",
+          "app/status/[slug]/components/ActiveIncidents.tsx",
+          "app/status/[slug]/components/ScheduledMaintenanceBanner.tsx",
+          "app/status/[slug]/components/UptimeBars.tsx"
         ],
         "rules": ["react-doctor/rendering-hydration-mismatch-time"]
       },
