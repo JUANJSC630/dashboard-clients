@@ -22,12 +22,19 @@ export function SidebarItem(props: SidebarItemProps) {
     <Link
       href={href}
       className={cn(
-        "flex gap-x-2 mt-2 p-2 rounded text-sm items-center hover:bg-slate-300/20 cursor-pointer transition-colors",
-        activePath && "bg-slate-300/20",
-        isCollapsed && "justify-center",
+        "flex gap-x-2.5 mt-1 px-3 py-2 rounded-md text-sm items-center cursor-pointer transition-colors duration-150",
+        "text-muted-foreground hover:text-foreground hover:bg-foreground/[0.05]",
+        activePath && "bg-foreground/[0.07] text-foreground font-medium",
+        isCollapsed && "justify-center w-10 h-10 mx-auto px-0",
       )}
     >
-      <Icon className="size-5 shrink-0" strokeWidth={1} />
+      <Icon
+        className={cn(
+          "size-4 shrink-0 transition-colors",
+          activePath ? "opacity-100" : "opacity-60",
+        )}
+        strokeWidth={1.75}
+      />
       {!isCollapsed && <span>{label}</span>}
     </Link>
   );

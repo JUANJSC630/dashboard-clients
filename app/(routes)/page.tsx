@@ -23,11 +23,11 @@ export default async function Home() {
   if (!userId) return redirect("/");
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-2xl font-semibold">Dashboard</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Overview of your hosting portfolio
+    <div className="flex flex-col gap-6 max-w-screen-xl mx-auto">
+      <div className="pt-1">
+        <h2 className="text-xl font-semibold tracking-tight">Dashboard</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">
+          Hosting portfolio overview
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export default async function Home() {
         <DashboardStats userId={userId} />
       </Suspense>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <Suspense fallback={<DashboardSectionSkeleton title="Recent Sites" />}>
           <DashboardRecentSites userId={userId} />
         </Suspense>

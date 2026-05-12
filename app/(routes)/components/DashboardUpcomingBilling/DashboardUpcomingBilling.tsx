@@ -29,36 +29,41 @@ export async function DashboardUpcomingBilling({ userId }: { userId: string }) {
   });
 
   return (
-    <div className="bg-background rounded-lg border shadow-sm">
-      <div className="flex items-center justify-between p-4 border-b">
-        <h3 className="font-semibold">Upcoming Billing (30 days)</h3>
-        <Link href="/billing" className="text-xs text-blue-500 hover:underline">
+    <div className="bg-background rounded-xl border flex flex-col">
+      <div className="flex items-center justify-between px-5 py-4 border-b">
+        <h3 className="text-sm font-semibold">Upcoming Billing</h3>
+        <Link
+          href="/billing"
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+        >
           View all
         </Link>
       </div>
-      <div className="divide-y">
+      <div className="divide-y flex-1">
         {billings.length === 0 ? (
-          <p className="p-4 text-sm text-muted-foreground">
-            No upcoming bills.
-          </p>
+          <div className="px-5 py-8 text-center">
+            <p className="text-sm text-muted-foreground">
+              No upcoming bills in the next 30 days.
+            </p>
+          </div>
         ) : (
           billings.map((b) => (
             <Link
               key={b.id}
               href={`/sites/${b.site.id}`}
-              className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors"
+              className="flex items-center justify-between px-5 py-3.5 hover:bg-foreground/[0.02] transition-colors"
             >
               <div>
                 <p className="text-sm font-medium">{b.site.name}</p>
                 <p
-                  className="text-xs text-muted-foreground"
+                  className="text-xs text-muted-foreground mt-0.5"
                   suppressHydrationWarning
                 >
                   Due {new Date(b.nextDueDate).toLocaleDateString()}
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">
+                <span className="text-sm font-semibold tabular-nums">
                   {formatPrice(b.amount, b.currency)}
                 </span>
                 <Badge variant={statusVariant[b.status]}>{b.status}</Badge>

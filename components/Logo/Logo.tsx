@@ -12,13 +12,15 @@ export default function Logo() {
     <Link
       href="/"
       className={cn(
-        "min-h-20 h-20 flex items-center border-b gap-2 transition-all duration-300",
-        isCollapsed ? "justify-center px-3" : "px-6",
+        "h-16 flex items-center border-b gap-2.5 transition-all duration-300 hover:bg-foreground/[0.03]",
+        isCollapsed ? "justify-center px-3" : "px-5",
       )}
     >
-      <Image src="/logo.svg" alt="Logo" width={40} height={40} priority />
+      <Image src="/logo.svg" alt="Logo" width={26} height={26} priority />
       {!isCollapsed && (
-        <h1 className="text-xl font-semibold whitespace-nowrap">Word Code</h1>
+        <span className="text-sm font-semibold tracking-tight whitespace-nowrap">
+          Word Code
+        </span>
       )}
     </Link>
   );

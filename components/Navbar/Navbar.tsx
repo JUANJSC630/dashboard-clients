@@ -7,14 +7,14 @@ import { NavbarToggle } from "./NavbarToggle";
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center px-2 gap-x-4 md:px-6 justify-between w-full bg-background border-b h-20">
+    <nav className="flex items-center px-4 md:px-6 gap-x-4 justify-between w-full bg-background border-b h-16 sticky top-0 z-30">
       <div className="flex items-center gap-x-2">
         <div className="block xl:hidden">
           <Sheet>
-            <SheetTrigger className="flex items-center">
-              <Menu />
+            <SheetTrigger className="flex items-center p-1.5 rounded-md hover:bg-foreground/[0.05] transition-colors">
+              <Menu className="size-5" strokeWidth={1.75} />
             </SheetTrigger>
-            <SheetContent side="left">
+            <SheetContent side="left" className="p-0">
               <SidebarRoutes />
             </SheetContent>
           </Sheet>
@@ -23,7 +23,7 @@ export default function Navbar() {
           <NavbarToggle />
         </div>
       </div>
-      <div className="flex gap-x-4 items-center">
+      <div className="flex gap-x-3 items-center">
         <ToggleTheme />
         <UserButton />
       </div>

@@ -10,34 +10,40 @@ export async function DashboardRecentClients({ userId }: { userId: string }) {
   });
 
   return (
-    <div className="bg-background rounded-lg border shadow-sm">
-      <div className="flex items-center justify-between p-4 border-b">
-        <h3 className="font-semibold">Recent Clients</h3>
-        <Link href="/clients" className="text-xs text-blue-500 hover:underline">
+    <div className="bg-background rounded-xl border flex flex-col">
+      <div className="flex items-center justify-between px-5 py-4 border-b">
+        <h3 className="text-sm font-semibold">Recent Clients</h3>
+        <Link
+          href="/clients"
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+        >
           View all
         </Link>
       </div>
-      <div className="divide-y">
+      <div className="divide-y flex-1">
         {clients.length === 0 ? (
-          <p className="p-4 text-sm text-muted-foreground">
-            No clients yet.{" "}
-            <Link href="/clients" className="text-blue-500 hover:underline">
+          <div className="px-5 py-8 text-center">
+            <p className="text-sm text-muted-foreground">No clients yet.</p>
+            <Link
+              href="/clients"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors mt-1 inline-block font-medium"
+            >
               Add your first client
             </Link>
-          </p>
+          </div>
         ) : (
           clients.map((c) => (
             <Link
               key={c.id}
               href={`/clients/${c.id}`}
-              className="flex items-center p-4 hover:bg-muted/30 transition-colors"
+              className="flex items-center justify-between px-5 py-3.5 hover:bg-foreground/[0.02] transition-colors"
             >
               <div>
                 <p className="text-sm font-medium">
                   {c.businessName || `${c.firstName} ${c.lastName}`}
                 </p>
                 {c.businessName && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {c.firstName} {c.lastName}
                   </p>
                 )}

@@ -11,11 +11,11 @@ export function SidebarRoutes() {
   const { isCollapsed } = useSidebar();
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col justify-between h-full overflow-y-auto">
       <div>
-        <div className={cn("p-2", !isCollapsed && "md:p-6")}>
+        <div className={cn("px-3 py-4", !isCollapsed && "px-5")}>
           {!isCollapsed && (
-            <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">
+            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2 px-3">
               General
             </p>
           )}
@@ -24,9 +24,9 @@ export function SidebarRoutes() {
           ))}
         </div>
         <Separator />
-        <div className={cn("p-2", !isCollapsed && "md:p-6")}>
+        <div className={cn("px-3 py-4", !isCollapsed && "px-5")}>
           {!isCollapsed && (
-            <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">
+            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2 px-3">
               Tools
             </p>
           )}
@@ -38,14 +38,10 @@ export function SidebarRoutes() {
       {!isCollapsed && (
         <div>
           <Separator />
-          <div className="p-6">
-            <Button variant="outline" className="w-full">
-              Upgrade Plan
-            </Button>
-          </div>
-          <Separator />
-          <footer className="mt-3 p-3 text-center">
-            <p className="text-xs text-zinc-500">© 2024 All rights reserved</p>
+          <footer className="py-3 px-5 text-center">
+            <p className="text-[10px] text-muted-foreground/50">
+              © {new Date().getFullYear()} Word Code
+            </p>
           </footer>
         </div>
       )}
