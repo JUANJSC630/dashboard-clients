@@ -105,7 +105,7 @@ export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
                 <ExternalLink className="size-3 text-muted-foreground shrink-0" />
               </div>
               <p className="text-xs text-muted-foreground mt-0.5">
-                {site.client.businessName ??
+                {site.client.businessName ||
                   `${site.client.firstName} ${site.client.lastName}`}
               </p>
             </div>

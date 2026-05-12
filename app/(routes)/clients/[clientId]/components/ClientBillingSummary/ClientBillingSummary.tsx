@@ -1,6 +1,7 @@
 import { Billing, BillingStatus, Currency } from "@prisma/client";
 import { DollarSign, Clock, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { formatPrice } from "@/lib/formatPrice";
 
 const statusVariant: Record<
   BillingStatus,
@@ -22,7 +23,7 @@ function sumByCurrency(records: Billing[]): string {
   }
   return (
     Object.entries(totals)
-      .map(([cur, amt]) => `${(amt as number).toFixed(2)} ${cur}`)
+      .map(([cur, amt]) => formatPrice(amt as number, cur))
       .join(" · ") || "—"
   );
 }
@@ -102,7 +103,7 @@ export function ClientBillingSummary({ billings }: ClientBillingSummaryProps) {
                 </span>
                 <div className="flex items-center gap-2">
                   <span className="font-medium">
-                    {b.amount} {b.currency}
+                    {formatPrice(b.amount, b.currency)}
                   </span>
                   <Badge variant={statusVariant[b.status]} className="text-xs">
                     {b.status}

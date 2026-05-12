@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
+import { db, getOrCreatePersonalClient } from "@/lib/db";
 import { Platform, SiteStatus } from "@prisma/client";
 import { HeaderSites } from "./components/HeaderSites/HeaderSites";
 import { ListSites } from "./components/ListSites/ListSites";
@@ -45,7 +45,7 @@ export default async function SitesPage({
 
   const { search, status, platform } = await searchParams;
 
-  const [sites, clients] = await Promise.all([
+  const [sites, otherClients, personalClient] = await Promise.all([
     db.site.findMany({
       where: {
         userId,
@@ -75,7 +75,14 @@ export default async function SitesPage({
       select: { id: true, firstName: true, lastName: true, businessName: true },
       orderBy: { firstName: "asc" },
     }),
+    getOrCreatePersonalClient(userId),
   ]);
+
+  // Personal client first, then the rest (deduplicated)
+  const clients = [
+    personalClient,
+    ...otherClients.filter((c) => c.id !== personalClient.id),
+  ];
 
   return (
     <div>

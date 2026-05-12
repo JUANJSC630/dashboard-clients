@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { BillingStatus } from "@prisma/client";
 import { DataFilters } from "@/components/DataFilters";
 import { BillingExportButton } from "./components/BillingExportButton";
+import { formatPrice } from "@/lib/formatPrice";
 
 const statusVariant: Record<
   BillingStatus,
@@ -75,7 +76,7 @@ export default async function BillingPage({
           rows={billings.map((b) => ({
             site: b.site.name,
             client:
-              b.client.businessName ??
+              b.client.businessName ||
               `${b.client.firstName} ${b.client.lastName}`,
             amount: b.amount,
             currency: b.currency,
@@ -173,11 +174,11 @@ export default async function BillingPage({
                       </Link>
                     </td>
                     <td className="p-4 text-muted-foreground">
-                      {b.client.businessName ??
+                      {b.client.businessName ||
                         `${b.client.firstName} ${b.client.lastName}`}
                     </td>
                     <td className="p-4 font-medium">
-                      {b.amount} {b.currency}
+                      {formatPrice(b.amount, b.currency)}
                     </td>
                     <td className="p-4 text-muted-foreground">{b.cycle}</td>
                     <td
@@ -225,12 +226,12 @@ export default async function BillingPage({
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {b.client.businessName ??
+                  {b.client.businessName ||
                     `${b.client.firstName} ${b.client.lastName}`}
                 </p>
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-medium">
-                    {b.amount} {b.currency} / {b.cycle}
+                    {formatPrice(b.amount, b.currency)} / {b.cycle}
                   </span>
                   <span
                     suppressHydrationWarning

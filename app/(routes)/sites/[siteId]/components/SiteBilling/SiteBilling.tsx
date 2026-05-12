@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
+import { formatPrice, parseAmount } from "@/lib/formatPrice";
 
 const CYCLES: BillingCycle[] = ["MONTHLY", "ANNUAL", "ONE_TIME"];
 const STATUSES: BillingStatus[] = ["PENDING", "PAID", "OVERDUE"];
@@ -76,7 +77,7 @@ export function SiteBilling({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          amount: parseFloat(form.amount),
+          amount: parseAmount(form.amount),
           clientId,
         }),
       });
@@ -145,7 +146,7 @@ export function SiteBilling({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...editState,
-          amount: parseFloat(editState.amount),
+          amount: parseAmount(editState.amount),
         }),
       });
       if (!res.ok) throw new Error();
@@ -171,8 +172,9 @@ export function SiteBilling({
         <div className="space-y-2 mb-4 p-4 border rounded-md bg-muted/30">
           <div className="grid grid-cols-2 gap-2">
             <Input
-              placeholder="Amount"
-              type="number"
+              placeholder="Amount (e.g. 50000 or 50.000)"
+              type="text"
+              inputMode="decimal"
               value={form.amount}
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, amount: e.target.value }))
@@ -245,7 +247,8 @@ export function SiteBilling({
               <div className="space-y-2 p-3 border rounded-md bg-muted/30">
                 <div className="grid grid-cols-2 gap-2">
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     value={editState.amount}
                     onChange={(e) =>
                       setEditState((prev) =>
@@ -334,7 +337,7 @@ export function SiteBilling({
                   <div className="flex items-center gap-2">
                     <DollarSign className="size-4 text-muted-foreground" />
                     <span className="font-medium text-sm">
-                      {b.amount} {b.currency}
+                      {formatPrice(b.amount, b.currency)}
                     </span>
                     <span className="text-xs text-muted-foreground">
                       / {b.cycle}

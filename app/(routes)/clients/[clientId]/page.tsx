@@ -19,7 +19,7 @@ export async function generateMetadata({
     select: { firstName: true, lastName: true, businessName: true },
   });
   const name =
-    client?.businessName ??
+    client?.businessName ||
     (client ? `${client.firstName} ${client.lastName}` : "Client");
   return { title: `${name} — Clients` };
 }

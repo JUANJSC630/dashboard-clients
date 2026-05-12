@@ -34,7 +34,7 @@ export async function DashboardRecentClients({ userId }: { userId: string }) {
             >
               <div>
                 <p className="text-sm font-medium">
-                  {c.businessName ?? `${c.firstName} ${c.lastName}`}
+                  {c.businessName || `${c.firstName} ${c.lastName}`}
                 </p>
                 {c.businessName && (
                   <p className="text-xs text-muted-foreground">

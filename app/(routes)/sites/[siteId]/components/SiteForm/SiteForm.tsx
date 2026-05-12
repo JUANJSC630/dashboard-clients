@@ -139,7 +139,7 @@ export function SiteForm({
                     <SelectContent>
                       {clients.map((c) => (
                         <SelectItem key={c.id} value={c.id}>
-                          {c.businessName ?? `${c.firstName} ${c.lastName}`}
+                          {c.businessName || `${c.firstName} ${c.lastName}`}
                         </SelectItem>
                       ))}
                     </SelectContent>

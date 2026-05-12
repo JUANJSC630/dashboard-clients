@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 import { BillingStatus } from "@prisma/client";
+import { formatPrice } from "@/lib/formatPrice";
 
 const statusVariant: Record<
   BillingStatus,
@@ -58,7 +59,7 @@ export async function DashboardUpcomingBilling({ userId }: { userId: string }) {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">
-                  {b.amount} {b.currency}
+                  {formatPrice(b.amount, b.currency)}
                 </span>
                 <Badge variant={statusVariant[b.status]}>{b.status}</Badge>
               </div>

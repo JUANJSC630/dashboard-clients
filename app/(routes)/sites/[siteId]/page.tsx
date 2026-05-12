@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
+import { db, getOrCreatePersonalClient } from "@/lib/db";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteForm } from "./components/SiteForm/SiteForm";
 import { SiteContacts } from "./components/SiteContacts/SiteContacts";
@@ -42,7 +42,7 @@ export default async function SiteIdPage({
 
   if (!userId) return redirect("/");
 
-  const [site, clients] = await Promise.all([
+  const [site, otherClients, personalClient] = await Promise.all([
     db.site.findUnique({
       where: { id: siteId, userId },
       include: {
@@ -62,7 +62,13 @@ export default async function SiteIdPage({
       where: { userId },
       select: { id: true, firstName: true, lastName: true, businessName: true },
     }),
+    getOrCreatePersonalClient(userId),
   ]);
+
+  const clients = [
+    personalClient,
+    ...otherClients.filter((c) => c.id !== personalClient.id),
+  ];
 
   if (!site) return redirect("/sites");
 
