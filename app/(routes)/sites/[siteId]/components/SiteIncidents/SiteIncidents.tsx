@@ -260,6 +260,11 @@ export function SiteIncidents({
                 />
                 <div className="min-w-0">
                   <p className="font-medium text-sm truncate">{inc.title}</p>
+                  {inc.description && (
+                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                      {inc.description}
+                    </p>
+                  )}
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-muted-foreground">
                       {inc.type}

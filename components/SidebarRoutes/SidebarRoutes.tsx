@@ -20,7 +20,7 @@ export function SidebarRoutes() {
             </p>
           )}
           {dataGeneralSidebar.map((item) => (
-            <SidebarItem key={item.label} item={item} />
+            <SidebarItem key={item.href} item={item} />
           ))}
         </div>
         <Separator />
@@ -31,7 +31,7 @@ export function SidebarRoutes() {
             </p>
           )}
           {dataToolsSidebar.map((item) => (
-            <SidebarItem key={item.label} item={item} />
+            <SidebarItem key={item.href} item={item} />
           ))}
         </div>
       </div>

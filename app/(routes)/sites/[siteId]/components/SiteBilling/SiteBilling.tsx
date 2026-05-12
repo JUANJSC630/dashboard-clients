@@ -328,6 +328,11 @@ export function SiteBilling({
                     <Calendar className="size-3" />
                     Due: {new Date(b.nextDueDate).toLocaleDateString()}
                   </div>
+                  {b.notes && (
+                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                      {b.notes}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center gap-1">
                   <Select

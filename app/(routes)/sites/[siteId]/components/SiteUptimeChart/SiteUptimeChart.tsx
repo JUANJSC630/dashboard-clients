@@ -16,7 +16,13 @@ type PingLog = {
   checkedAt: Date | string;
 };
 
-export function SiteUptimeChart({ pingLogs }: { pingLogs: PingLog[] }) {
+export function SiteUptimeChart({
+  pingLogs,
+  uptimePercent: dbUptime,
+}: {
+  pingLogs: PingLog[];
+  uptimePercent?: number | null;
+}) {
   const data = pingLogs
     .slice()
     .reverse()
@@ -52,9 +58,16 @@ export function SiteUptimeChart({ pingLogs }: { pingLogs: PingLog[] }) {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Uptime & Latency</h3>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          {dbUptime != null && (
+            <span>
+              Uptime (24h):{" "}
+              <strong className="text-foreground">{dbUptime.toFixed(1)}%</strong>
+            </span>
+          )}
           <span>
-            Uptime:{" "}
+            Recent:{" "}
             <strong className="text-foreground">{uptimePercent}%</strong>
+            <span className="text-xs ml-1">({data.length} checks)</span>
           </span>
           <span>
             Avg:{" "}
@@ -109,9 +122,9 @@ export function SiteUptimeChart({ pingLogs }: { pingLogs: PingLog[] }) {
 
       {/* Status dots */}
       <div className="flex gap-0.5 mt-3">
-        {data.map((d) => (
+        {data.map((d, i) => (
           <div
-            key={d.time}
+            key={`${d.time}-${i}`}
             className={`h-2 flex-1 rounded-sm ${
               d.status === 1 ? "bg-green-500" : "bg-red-500"
             }`}

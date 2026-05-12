@@ -27,8 +27,7 @@ function buildDayBuckets(pingLogs: PingLog[], days: number) {
   const now = new Date();
 
   for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - i);
+    const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate() - i, 12));
     const dateStr = d.toISOString().split("T")[0];
     buckets.push({ date: dateStr, up: 0, total: 0 });
   }

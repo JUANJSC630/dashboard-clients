@@ -15,7 +15,6 @@ const SiteUptimeChart = dynamic(
     import("./components/SiteUptimeChart/SiteUptimeChart").then(
       (m) => m.SiteUptimeChart,
     ),
-  { ssr: false },
 );
 import { FooterSite } from "./components/FooterSite/FooterSite";
 
@@ -73,7 +72,7 @@ export default async function SiteIdPage({
       <SiteHeader site={site} />
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2 flex flex-col gap-6">
-          <SiteUptimeChart pingLogs={site.pingLogs} />
+          <SiteUptimeChart pingLogs={site.pingLogs} uptimePercent={site.uptimePercent} />
           <SiteForm site={site} clients={clients} />
           <SiteIncidents incidents={site.incidents} siteId={site.id} />
           <SiteBilling

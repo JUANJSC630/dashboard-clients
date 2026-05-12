@@ -13,6 +13,8 @@ import {
   AlertTriangle,
   CreditCard,
   ServerOff,
+  Shield,
+  ShieldAlert,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -110,6 +112,31 @@ export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
             </div>
           </div>
           <div className="flex items-center gap-3 shrink-0">
+            {site.uptimePercent != null && (
+              <span
+                className={`text-xs font-medium ${
+                  site.uptimePercent >= 99
+                    ? "text-green-600"
+                    : site.uptimePercent >= 95
+                      ? "text-yellow-600"
+                      : "text-red-600"
+                }`}
+              >
+                {site.uptimePercent.toFixed(1)}%
+              </span>
+            )}
+            {site.sslDaysLeft != null && site.sslDaysLeft <= 30 && (
+              <span className="flex items-center gap-0.5 text-xs">
+                {site.sslDaysLeft <= 0 ? (
+                  <ShieldAlert className="size-3.5 text-red-500" />
+                ) : (
+                  <ShieldAlert className="size-3.5 text-yellow-500" />
+                )}
+              </span>
+            )}
+            {site.sslDaysLeft != null && site.sslDaysLeft > 30 && (
+              <Shield className="size-3.5 text-green-500" />
+            )}
             {site.incidents.length > 0 && (
               <div className="flex items-center gap-1 text-xs text-destructive">
                 <AlertTriangle className="size-3.5" />
