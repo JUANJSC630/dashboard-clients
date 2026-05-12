@@ -12,7 +12,9 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "cron:health-check": "curl -s -H \"Authorization: Bearer $CRON_SECRET\" http://localhost:3000/api/cron/health-check | jq",
+    "cron:billing-overdue": "curl -s -H \"Authorization: Bearer $CRON_SECRET\" http://localhost:3000/api/cron/billing-overdue | jq"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.3",
