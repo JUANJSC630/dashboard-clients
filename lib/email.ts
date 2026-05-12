@@ -1,6 +1,10 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
 
 // Change to noreply@yourdomain.com once you verify a domain on resend.com/domains
 const FROM = "Hosting Dashboard <onboarding@resend.dev>";
@@ -177,7 +181,7 @@ export async function sendDownAlert(
   `,
   );
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: `🔴 [DOWN] ${site.name} is not responding`,
@@ -283,7 +287,7 @@ export async function sendRecoverAlert(
   `,
   );
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: `🟢 [RECOVERED] ${site.name} is back online`,
