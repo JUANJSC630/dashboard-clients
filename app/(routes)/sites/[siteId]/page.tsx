@@ -81,7 +81,18 @@ export default async function SiteIdPage({
         actions={
           <>
             <SiteForm
-              site={site}
+              site={{
+                id: site.id,
+                name: site.name,
+                url: site.url,
+                clientId: site.clientId,
+                platform: site.platform,
+                status: site.status,
+                techStack: site.techStack,
+                repositoryUrl: site.repositoryUrl,
+                platformProjectId: site.platformProjectId,
+                description: site.description,
+              }}
               clients={clients}
               trigger={
                 <Button variant="outline" size="sm">

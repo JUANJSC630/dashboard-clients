@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useRouter } from "next/navigation";
-import { Site, Client, Platform, SiteStatus } from "@prisma/client";
+import { Client, Platform, SiteStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -75,12 +75,25 @@ type PartialClient = Pick<
   "id" | "firstName" | "lastName" | "businessName"
 >;
 
+type SiteFormData = {
+  id: string;
+  name: string;
+  url: string;
+  clientId: string;
+  platform: Platform;
+  status: SiteStatus;
+  techStack: string | null;
+  repositoryUrl: string | null;
+  platformProjectId: string | null;
+  description: string | null;
+};
+
 export function SiteForm({
   site,
   clients,
   trigger,
 }: {
-  site: Site;
+  site: SiteFormData;
   clients: PartialClient[];
   trigger: React.ReactNode;
 }) {
