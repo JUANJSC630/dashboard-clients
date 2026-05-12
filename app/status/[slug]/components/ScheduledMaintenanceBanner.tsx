@@ -51,7 +51,10 @@ export function ScheduledMaintenanceBanner({
                     {m.description}
                   </p>
                 )}
-                <p className="text-xs text-[#9ca3af] mt-1" suppressHydrationWarning>
+                <p
+                  className="text-xs text-[#9ca3af] mt-1"
+                  suppressHydrationWarning
+                >
                   <time
                     dateTime={new Date(m.startsAt).toISOString()}
                     suppressHydrationWarning

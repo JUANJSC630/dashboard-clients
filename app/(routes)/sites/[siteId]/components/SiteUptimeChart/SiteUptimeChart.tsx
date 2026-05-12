@@ -61,7 +61,9 @@ export function SiteUptimeChart({
           {dbUptime != null && (
             <span>
               Uptime (24h):{" "}
-              <strong className="text-foreground">{dbUptime.toFixed(1)}%</strong>
+              <strong className="text-foreground">
+                {dbUptime.toFixed(1)}%
+              </strong>
             </span>
           )}
           <span>
@@ -70,8 +72,7 @@ export function SiteUptimeChart({
             <span className="text-xs ml-1">({data.length} checks)</span>
           </span>
           <span>
-            Avg:{" "}
-            <strong className="text-foreground">{avgLatency}ms</strong>
+            Avg: <strong className="text-foreground">{avgLatency}ms</strong>
           </span>
         </div>
       </div>
@@ -81,8 +82,16 @@ export function SiteUptimeChart({
           <AreaChart data={data}>
             <defs>
               <linearGradient id="latencyGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity={0.3}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />

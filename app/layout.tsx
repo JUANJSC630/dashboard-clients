@@ -14,7 +14,8 @@ const noto = Noto_Sans_Display({
 
 export const metadata: Metadata = {
   title: "Dashboard Companies - Next.js",
-  description: "SaaS dashboard for managing hosting clients, sites, billing, and uptime monitoring.",
+  description:
+    "SaaS dashboard for managing hosting clients, sites, billing, and uptime monitoring.",
 };
 
 export default function RootLayout({

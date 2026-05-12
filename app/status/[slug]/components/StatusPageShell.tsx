@@ -55,8 +55,15 @@ export function StatusPageShell({
               Hosting Dashboard
             </span>
           </p>
-          <p className="text-xs text-[#6b7280] dark:text-[#9ca3af]" suppressHydrationWarning>
-            Last updated {new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
+          <p
+            className="text-xs text-[#6b7280] dark:text-[#9ca3af]"
+            suppressHydrationWarning
+          >
+            Last updated{" "}
+            {new Date().toLocaleString("en-US", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })}
           </p>
         </div>
       </footer>

@@ -9,7 +9,11 @@ export async function POST(
   { params }: { params: Promise<{ siteId: string }> },
 ) {
   try {
-    const [{ userId }, { siteId }, body] = await Promise.all([auth(), params, req.json()]);
+    const [{ userId }, { siteId }, body] = await Promise.all([
+      auth(),
+      params,
+      req.json(),
+    ]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -21,8 +25,16 @@ export async function POST(
     const site = await db.site.findUnique({ where: { id: siteId } });
     if (!site) return new NextResponse("Site not found", { status: 404 });
 
+    const { nextDueDate, ...rest } = parsed.data;
+
     const billing = await db.billing.create({
-      data: { siteId, clientId: site.clientId, userId, ...parsed.data },
+      data: {
+        siteId,
+        clientId: site.clientId,
+        userId,
+        ...rest,
+        nextDueDate: new Date(nextDueDate),
+      },
     });
 
     return NextResponse.json(billing);

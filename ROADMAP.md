@@ -6,27 +6,27 @@ Herramienta personal para gestionar sitios web de clientes con **monitoreo autom
 
 ## Stack actual
 
-| Capa            | Tecnología                       |
-| --------------- | -------------------------------- |
-| Framework       | Next.js 15 (App Router)          |
-| Auth            | Clerk 6                          |
-| ORM             | Prisma 6                         |
-| DB              | PostgreSQL — Neon                |
-| UI              | Tailwind CSS + shadcn/ui         |
-| Charts          | Recharts                         |
-| Deploy          | Vercel                           |
-| File upload     | UploadThing                      |
+| Capa        | Tecnología               |
+| ----------- | ------------------------ |
+| Framework   | Next.js 15 (App Router)  |
+| Auth        | Clerk 6                  |
+| ORM         | Prisma 6                 |
+| DB          | PostgreSQL — Neon        |
+| UI          | Tailwind CSS + shadcn/ui |
+| Charts      | Recharts                 |
+| Deploy      | Vercel                   |
+| File upload | UploadThing              |
 
 ## Stack a agregar (monitoreo)
 
-| Necesidad             | Herramienta                            | Por qué                                                           |
-| --------------------- | -------------------------------------- | ----------------------------------------------------------------- |
-| Cron jobs             | **Vercel Cron Jobs** (`vercel.json`)   | Built-in, sin costo extra, hasta 1/min en Pro                     |
-| Queue individual      | **Upstash QStash**                     | Checks por sitio, reintentos automáticos, free 500/día            |
-| Email alerts          | **Resend** (`resend` npm)              | API simple, 3 000 emails/mes gratis, React Email templates        |
-| Real-time UI          | **SSE nativo** (Next.js Route Handler) | `ReadableStream`, sin WebSocket server, funciona en Vercel Edge   |
-| SSL check             | **`node:tls`** (built-in)              | Sin dependencias extra, lee el certificado TLS del sitio          |
-| Cache de estado       | **Upstash Redis** (opcional)           | Lectura O(1) del último status, evita queries a Neon en tiempo real |
+| Necesidad        | Herramienta                            | Por qué                                                             |
+| ---------------- | -------------------------------------- | ------------------------------------------------------------------- |
+| Cron jobs        | **Vercel Cron Jobs** (`vercel.json`)   | Built-in, sin costo extra, hasta 1/min en Pro                       |
+| Queue individual | **Upstash QStash**                     | Checks por sitio, reintentos automáticos, free 500/día              |
+| Email alerts     | **Resend** (`resend` npm)              | API simple, 3 000 emails/mes gratis, React Email templates          |
+| Real-time UI     | **SSE nativo** (Next.js Route Handler) | `ReadableStream`, sin WebSocket server, funciona en Vercel Edge     |
+| SSL check        | **`node:tls`** (built-in)              | Sin dependencias extra, lee el certificado TLS del sitio            |
+| Cache de estado  | **Upstash Redis** (opcional)           | Lectura O(1) del último status, evita queries a Neon en tiempo real |
 
 ---
 
@@ -220,13 +220,17 @@ model SiteAlertConfig {
 ```ts
 import tls from "node:tls";
 
-function checkSsl(hostname: string): Promise<{ expiresAt: Date; daysLeft: number }> {
+function checkSsl(
+  hostname: string,
+): Promise<{ expiresAt: Date; daysLeft: number }> {
   return new Promise((resolve, reject) => {
     const socket = tls.connect(443, hostname, { servername: hostname }, () => {
       const cert = socket.getPeerCertificate();
       socket.destroy();
       const expiresAt = new Date(cert.valid_to);
-      const daysLeft = Math.floor((expiresAt.getTime() - Date.now()) / 86_400_000);
+      const daysLeft = Math.floor(
+        (expiresAt.getTime() - Date.now()) / 86_400_000,
+      );
       resolve({ expiresAt, daysLeft });
     });
     socket.on("error", reject);

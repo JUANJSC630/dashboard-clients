@@ -47,7 +47,10 @@ export async function POST(
         where: { id: incidentId },
         data: { status: "RESOLVED", resolvedAt: new Date() },
       });
-    } else if (parsed.data.status === "IDENTIFIED" || parsed.data.status === "MONITORING") {
+    } else if (
+      parsed.data.status === "IDENTIFIED" ||
+      parsed.data.status === "MONITORING"
+    ) {
       await db.incident.update({
         where: { id: incidentId },
         data: { status: "IN_PROGRESS" },

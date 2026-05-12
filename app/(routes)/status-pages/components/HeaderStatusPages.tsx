@@ -185,11 +185,7 @@ export function HeaderStatusPages({ sites }: { sites: SiteOption[] }) {
                 selected
               </p>
             </div>
-            <Button
-              className="w-full"
-              onClick={onCreate}
-              disabled={loading}
-            >
+            <Button className="w-full" onClick={onCreate} disabled={loading}>
               {loading ? "Creating…" : "Create Status Page"}
             </Button>
           </div>

@@ -46,11 +46,7 @@ function groupByDay(incidents: PastIncident[]) {
   return Object.entries(groups);
 }
 
-export function PastIncidents({
-  incidents,
-}: {
-  incidents: PastIncident[];
-}) {
+export function PastIncidents({ incidents }: { incidents: PastIncident[] }) {
   const grouped = groupByDay(incidents);
 
   // Build the last 14 days for display
@@ -84,9 +80,7 @@ export function PastIncidents({
             </h3>
 
             {day.incidents.length === 0 ? (
-              <p className="text-xs text-[#9ca3af]">
-                No incidents reported.
-              </p>
+              <p className="text-xs text-[#9ca3af]">No incidents reported.</p>
             ) : (
               <div className="space-y-5">
                 {day.incidents.map((inc) => (
@@ -121,13 +115,16 @@ export function PastIncidents({
                                 dateTime={new Date(upd.createdAt).toISOString()}
                                 suppressHydrationWarning
                               >
-                                {new Date(upd.createdAt).toLocaleString("en-US", {
-                                  month: "short",
-                                  day: "numeric",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  timeZoneName: "short",
-                                })}
+                                {new Date(upd.createdAt).toLocaleString(
+                                  "en-US",
+                                  {
+                                    month: "short",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    timeZoneName: "short",
+                                  },
+                                )}
                               </time>
                             </p>
                           </div>

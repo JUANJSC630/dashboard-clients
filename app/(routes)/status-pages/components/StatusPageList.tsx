@@ -78,8 +78,7 @@ export function StatusPageList({
         <h3 className="text-lg font-semibold mb-1">No status pages yet</h3>
         <p className="text-sm text-muted-foreground max-w-sm">
           Create a public status page to give your clients real-time visibility
-          into the health of their services, like GitHub Status or
-          Downdetector.
+          into the health of their services, like GitHub Status or Downdetector.
         </p>
       </div>
     );
@@ -93,10 +92,7 @@ export function StatusPageList({
           className="bg-background rounded-lg border shadow-sm overflow-hidden"
         >
           {/* Color bar */}
-          <div
-            className="h-1.5"
-            style={{ backgroundColor: page.brandColor }}
-          />
+          <div className="h-1.5" style={{ backgroundColor: page.brandColor }} />
 
           <div className="p-5">
             <div className="flex items-start justify-between mb-3">

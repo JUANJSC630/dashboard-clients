@@ -9,7 +9,11 @@ export async function PATCH(
   { params }: { params: Promise<{ clientId: string }> },
 ) {
   try {
-    const [{ userId }, { clientId }, body] = await Promise.all([auth(), params, req.json()]);
+    const [{ userId }, { clientId }, body] = await Promise.all([
+      auth(),
+      params,
+      req.json(),
+    ]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 

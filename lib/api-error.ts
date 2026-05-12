@@ -84,6 +84,14 @@ export function handleApiError(error: unknown, label: string): NextResponse {
     );
   }
 
+  if (error instanceof Prisma.PrismaClientValidationError) {
+    console.error(`[${label}] Prisma validation:`, error.message);
+    return NextResponse.json(
+      { error: "Invalid data provided." },
+      { status: 400 },
+    );
+  }
+
   // ─── General errors ─────────────────────────────────────────────────
 
   console.error(`[${label}]`, error);

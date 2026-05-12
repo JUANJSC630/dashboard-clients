@@ -96,7 +96,9 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
             type="email"
             placeholder="you@example.com"
             value={form.alertEmail}
-            onChange={(e) => setForm(prev => ({ ...prev, alertEmail: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, alertEmail: e.target.value }))
+            }
           />
         </div>
 
@@ -106,7 +108,9 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
               type="checkbox"
               className="size-4 rounded border accent-primary"
               checked={form.onDown}
-              onChange={(e) => setForm(prev => ({ ...prev, onDown: e.target.checked }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, onDown: e.target.checked }))
+              }
             />
             <span className="text-sm">Alert when site goes down</span>
           </label>
@@ -115,7 +119,9 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
               type="checkbox"
               className="size-4 rounded border accent-primary"
               checked={form.onRecover}
-              onChange={(e) => setForm(prev => ({ ...prev, onRecover: e.target.checked }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, onRecover: e.target.checked }))
+              }
             />
             <span className="text-sm">Alert when site recovers</span>
           </label>
@@ -130,7 +136,10 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
             max={1440}
             value={form.cooldownMinutes}
             onChange={(e) =>
-              setForm(prev => ({ ...prev, cooldownMinutes: parseInt(e.target.value) || 60 }))
+              setForm((prev) => ({
+                ...prev,
+                cooldownMinutes: parseInt(e.target.value) || 60,
+              }))
             }
             className="w-32"
           />
@@ -148,10 +157,16 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
             type="url"
             placeholder="https://hooks.slack.com/... or https://discord.com/api/webhooks/..."
             value={form.webhookUrl}
-            onChange={(e) => setForm(prev => ({ ...prev, webhookUrl: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, webhookUrl: e.target.value }))
+            }
           />
           <p className="text-xs text-muted-foreground">
-            Receives a POST with <code className="text-xs bg-muted px-1 rounded">{"{ event, site, timestamp }"}</code>. Compatible with Slack and Discord.
+            Receives a POST with{" "}
+            <code className="text-xs bg-muted px-1 rounded">
+              {"{ event, site, timestamp }"}
+            </code>
+            . Compatible with Slack and Discord.
           </p>
         </div>
 
@@ -177,8 +192,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
 
         {config?.lastAlertSentAt && (
           <p className="text-xs text-muted-foreground" suppressHydrationWarning>
-            Last alert sent:{" "}
-            {new Date(config.lastAlertSentAt).toLocaleString()}
+            Last alert sent: {new Date(config.lastAlertSentAt).toLocaleString()}
           </p>
         )}
       </div>

@@ -40,7 +40,10 @@ export function SiteStatusHistory({ logs }: SiteStatusHistoryProps) {
                   {log.to}
                 </Badge>
               </div>
-              <span className="text-xs text-muted-foreground" suppressHydrationWarning>
+              <span
+                className="text-xs text-muted-foreground"
+                suppressHydrationWarning
+              >
                 {new Date(log.changedAt).toLocaleString()}
               </span>
             </div>

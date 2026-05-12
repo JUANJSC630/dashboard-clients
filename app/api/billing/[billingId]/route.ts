@@ -9,7 +9,11 @@ export async function PATCH(
   { params }: { params: Promise<{ billingId: string }> },
 ) {
   try {
-    const [{ userId }, { billingId }, body] = await Promise.all([auth(), params, req.json()]);
+    const [{ userId }, { billingId }, body] = await Promise.all([
+      auth(),
+      params,
+      req.json(),
+    ]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -18,9 +22,14 @@ export async function PATCH(
       return NextResponse.json(parsed.error.flatten(), { status: 400 });
     }
 
+    const { nextDueDate, ...rest } = parsed.data;
+
     const billing = await db.billing.update({
       where: { id: billingId, userId },
-      data: parsed.data,
+      data: {
+        ...rest,
+        ...(nextDueDate && { nextDueDate: new Date(nextDueDate) }),
+      },
     });
 
     return NextResponse.json(billing);

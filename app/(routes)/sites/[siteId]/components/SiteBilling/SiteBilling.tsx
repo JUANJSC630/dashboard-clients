@@ -174,12 +174,14 @@ export function SiteBilling({
               placeholder="Amount"
               type="number"
               value={form.amount}
-              onChange={(e) => setForm(prev => ({ ...prev, amount: e.target.value }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, amount: e.target.value }))
+              }
             />
             <Select
               value={form.currency}
               onValueChange={(v) =>
-                setForm(prev => ({ ...prev, currency: v as Currency }))
+                setForm((prev) => ({ ...prev, currency: v as Currency }))
               }
             >
               <SelectTrigger>
@@ -197,7 +199,7 @@ export function SiteBilling({
           <Select
             value={form.cycle}
             onValueChange={(v) =>
-              setForm(prev => ({ ...prev, cycle: v as BillingCycle }))
+              setForm((prev) => ({ ...prev, cycle: v as BillingCycle }))
             }
           >
             <SelectTrigger>
@@ -214,12 +216,16 @@ export function SiteBilling({
           <Input
             type="date"
             value={form.nextDueDate}
-            onChange={(e) => setForm(prev => ({ ...prev, nextDueDate: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, nextDueDate: e.target.value }))
+            }
           />
           <Input
             placeholder="Notes (optional)"
             value={form.notes}
-            onChange={(e) => setForm(prev => ({ ...prev, notes: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, notes: e.target.value }))
+            }
           />
           <Button size="sm" className="w-full" onClick={onAdd}>
             Save Record
@@ -242,13 +248,17 @@ export function SiteBilling({
                     type="number"
                     value={editState.amount}
                     onChange={(e) =>
-                      setEditState(prev => prev ? ({ ...prev, amount: e.target.value }) : prev)
+                      setEditState((prev) =>
+                        prev ? { ...prev, amount: e.target.value } : prev,
+                      )
                     }
                   />
                   <Select
                     value={editState.currency}
                     onValueChange={(v) =>
-                      setEditState(prev => prev ? ({ ...prev, currency: v as Currency }) : prev)
+                      setEditState((prev) =>
+                        prev ? { ...prev, currency: v as Currency } : prev,
+                      )
                     }
                   >
                     <SelectTrigger>
@@ -266,7 +276,9 @@ export function SiteBilling({
                 <Select
                   value={editState.cycle}
                   onValueChange={(v) =>
-                    setEditState(prev => prev ? ({ ...prev, cycle: v as BillingCycle }) : prev)
+                    setEditState((prev) =>
+                      prev ? { ...prev, cycle: v as BillingCycle } : prev,
+                    )
                   }
                 >
                   <SelectTrigger>
@@ -284,14 +296,18 @@ export function SiteBilling({
                   type="date"
                   value={editState.nextDueDate}
                   onChange={(e) =>
-                    setEditState(prev => prev ? ({ ...prev, nextDueDate: e.target.value }) : prev)
+                    setEditState((prev) =>
+                      prev ? { ...prev, nextDueDate: e.target.value } : prev,
+                    )
                   }
                 />
                 <Input
                   placeholder="Notes"
                   value={editState.notes}
                   onChange={(e) =>
-                    setEditState(prev => prev ? ({ ...prev, notes: e.target.value }) : prev)
+                    setEditState((prev) =>
+                      prev ? { ...prev, notes: e.target.value } : prev,
+                    )
                   }
                 />
                 <div className="flex gap-2">
@@ -324,7 +340,10 @@ export function SiteBilling({
                       / {b.cycle}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground" suppressHydrationWarning>
+                  <div
+                    className="flex items-center gap-1 text-xs text-muted-foreground"
+                    suppressHydrationWarning
+                  >
                     <Calendar className="size-3" />
                     Due: {new Date(b.nextDueDate).toLocaleDateString()}
                   </div>

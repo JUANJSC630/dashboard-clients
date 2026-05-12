@@ -11,7 +11,13 @@ import {
   IncidentUpdate,
   IncidentUpdateStatus,
 } from "@prisma/client";
-import { Plus, AlertTriangle, Trash2, CheckCircle2, MessageSquarePlus } from "lucide-react";
+import {
+  Plus,
+  AlertTriangle,
+  Trash2,
+  CheckCircle2,
+  MessageSquarePlus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -195,19 +201,26 @@ export function SiteIncidents({
           <Input
             placeholder="Title"
             value={form.title}
-            onChange={(e) => setForm(prev => ({ ...prev, title: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, title: e.target.value }))
+            }
           />
           <Textarea
             placeholder="Description (optional)"
             rows={2}
             value={form.description}
-            onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, description: e.target.value }))
+            }
           />
           <div className="grid grid-cols-2 gap-2">
             <Select
               value={form.priority}
               onValueChange={(v) =>
-                setForm(prev => ({ ...prev, priority: v as IncidentPriority }))
+                setForm((prev) => ({
+                  ...prev,
+                  priority: v as IncidentPriority,
+                }))
               }
             >
               <SelectTrigger>
@@ -224,7 +237,7 @@ export function SiteIncidents({
             <Select
               value={form.type}
               onValueChange={(v) =>
-                setForm(prev => ({ ...prev, type: v as IncidentType }))
+                setForm((prev) => ({ ...prev, type: v as IncidentType }))
               }
             >
               <SelectTrigger>
@@ -270,7 +283,10 @@ export function SiteIncidents({
                       {inc.type}
                     </span>
                     <span className="text-xs text-muted-foreground">·</span>
-                    <span className="text-xs text-muted-foreground" suppressHydrationWarning>
+                    <span
+                      className="text-xs text-muted-foreground"
+                      suppressHydrationWarning
+                    >
                       {new Date(inc.createdAt).toLocaleDateString()}
                     </span>
                   </div>

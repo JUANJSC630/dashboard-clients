@@ -71,11 +71,20 @@ function statusBadge(label: string, bg: string, color: string) {
   return `<span style="display:inline-block;background:${bg};color:${color};font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.5px;">${label}</span>`;
 }
 
-export async function sendDownAlert(to: string, site: SiteInfo, extra?: { latencyMs?: number; statusCode?: number; errorMessage?: string }) {
+export async function sendDownAlert(
+  to: string,
+  site: SiteInfo,
+  extra?: { latencyMs?: number; statusCode?: number; errorMessage?: string },
+) {
   const now = new Date();
-  const timeStr = now.toLocaleString("en-US", { dateStyle: "full", timeStyle: "short" });
+  const timeStr = now.toLocaleString("en-US", {
+    dateStyle: "full",
+    timeStyle: "short",
+  });
 
-  const body = layout("#ef4444", `
+  const body = layout(
+    "#ef4444",
+    `
     <tr>
       <td style="padding:32px 40px 8px;">
         <table cellpadding="0" cellspacing="0">
@@ -126,18 +135,30 @@ export async function sendDownAlert(to: string, site: SiteInfo, extra?: { latenc
                       <td style="font-size:13px;color:#64748b;padding-bottom:6px;">Detected at</td>
                       <td style="font-size:13px;color:#0f172a;padding-bottom:6px;">${timeStr}</td>
                     </tr>
-                    ${extra?.statusCode ? `<tr>
+                    ${
+                      extra?.statusCode
+                        ? `<tr>
                       <td style="font-size:13px;color:#64748b;padding-bottom:6px;">HTTP Status</td>
                       <td style="font-size:13px;color:#ef4444;font-weight:600;padding-bottom:6px;">${extra.statusCode}</td>
-                    </tr>` : ""}
-                    ${extra?.latencyMs ? `<tr>
+                    </tr>`
+                        : ""
+                    }
+                    ${
+                      extra?.latencyMs
+                        ? `<tr>
                       <td style="font-size:13px;color:#64748b;padding-bottom:6px;">Last latency</td>
                       <td style="font-size:13px;color:#0f172a;padding-bottom:6px;">${extra.latencyMs}ms</td>
-                    </tr>` : ""}
-                    ${extra?.errorMessage ? `<tr>
+                    </tr>`
+                        : ""
+                    }
+                    ${
+                      extra?.errorMessage
+                        ? `<tr>
                       <td style="font-size:13px;color:#64748b;">Error</td>
                       <td style="font-size:13px;color:#ef4444;font-family:monospace;">${extra.errorMessage}</td>
-                    </tr>` : ""}
+                    </tr>`
+                        : ""
+                    }
                   </table>
                 </td></tr>
               </table>
@@ -153,7 +174,8 @@ export async function sendDownAlert(to: string, site: SiteInfo, extra?: { latenc
         <a href="${APP_URL}/sites/${site.id}" style="display:inline-block;background:#ef4444;color:#fff;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;text-decoration:none;">View Incident →</a>
       </td>
     </tr>
-  `);
+  `,
+  );
 
   return resend.emails.send({
     from: FROM,
@@ -163,11 +185,20 @@ export async function sendDownAlert(to: string, site: SiteInfo, extra?: { latenc
   });
 }
 
-export async function sendRecoverAlert(to: string, site: SiteInfo, extra?: { downtimeMin?: number; uptimePercent?: number }) {
+export async function sendRecoverAlert(
+  to: string,
+  site: SiteInfo,
+  extra?: { downtimeMin?: number; uptimePercent?: number },
+) {
   const now = new Date();
-  const timeStr = now.toLocaleString("en-US", { dateStyle: "full", timeStyle: "short" });
+  const timeStr = now.toLocaleString("en-US", {
+    dateStyle: "full",
+    timeStyle: "short",
+  });
 
-  const body = layout("#22c55e", `
+  const body = layout(
+    "#22c55e",
+    `
     <tr>
       <td style="padding:32px 40px 8px;">
         <table cellpadding="0" cellspacing="0">
@@ -218,14 +249,22 @@ export async function sendRecoverAlert(to: string, site: SiteInfo, extra?: { dow
                       <td style="font-size:13px;color:#64748b;padding-bottom:6px;">Recovered at</td>
                       <td style="font-size:13px;color:#0f172a;padding-bottom:6px;">${timeStr}</td>
                     </tr>
-                    ${extra?.downtimeMin ? `<tr>
+                    ${
+                      extra?.downtimeMin
+                        ? `<tr>
                       <td style="font-size:13px;color:#64748b;padding-bottom:6px;">Total downtime</td>
                       <td style="font-size:13px;color:#0f172a;font-weight:600;padding-bottom:6px;">${extra.downtimeMin < 60 ? `${extra.downtimeMin} min` : `${Math.floor(extra.downtimeMin / 60)}h ${extra.downtimeMin % 60}min`}</td>
-                    </tr>` : ""}
-                    ${extra?.uptimePercent !== undefined ? `<tr>
+                    </tr>`
+                        : ""
+                    }
+                    ${
+                      extra?.uptimePercent !== undefined
+                        ? `<tr>
                       <td style="font-size:13px;color:#64748b;">Uptime (24h)</td>
                       <td style="font-size:13px;color:#16a34a;font-weight:600;">${extra.uptimePercent.toFixed(2)}%</td>
-                    </tr>` : ""}
+                    </tr>`
+                        : ""
+                    }
                   </table>
                 </td></tr>
               </table>
@@ -241,7 +280,8 @@ export async function sendRecoverAlert(to: string, site: SiteInfo, extra?: { dow
         <a href="${APP_URL}/sites/${site.id}" style="display:inline-block;background:#16a34a;color:#fff;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;text-decoration:none;">View Site →</a>
       </td>
     </tr>
-  `);
+  `,
+  );
 
   return resend.emails.send({
     from: FROM,

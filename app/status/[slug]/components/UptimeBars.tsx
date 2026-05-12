@@ -27,7 +27,9 @@ function buildDayBuckets(pingLogs: PingLog[], days: number) {
   const now = new Date();
 
   for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate() - i, 12));
+    const d = new Date(
+      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate() - i, 12),
+    );
     const dateStr = d.toISOString().split("T")[0];
     buckets.push({ date: dateStr, up: 0, total: 0 });
   }
@@ -93,11 +95,7 @@ function DayBar({
   );
 }
 
-export function UptimeBars({
-  components,
-}: {
-  components: StatusComponent[];
-}) {
+export function UptimeBars({ components }: { components: StatusComponent[] }) {
   const DAYS = 90;
 
   return (
@@ -130,7 +128,9 @@ export function UptimeBars({
               ))}
             </div>
             <div className="flex justify-between mt-1">
-              <span className="text-[10px] text-[#9ca3af]">{DAYS} days ago</span>
+              <span className="text-[10px] text-[#9ca3af]">
+                {DAYS} days ago
+              </span>
               <span className="text-[10px] text-[#9ca3af]">Today</span>
             </div>
           </div>

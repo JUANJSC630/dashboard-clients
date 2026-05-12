@@ -58,7 +58,10 @@ export function ActiveIncidents({
           {inc.updates.length > 0 && (
             <div className="space-y-3 pl-8">
               {inc.updates.map((upd) => (
-                <div key={upd.id} className="relative pl-4 border-l-2 border-[#fecaca] dark:border-[#7f1d1d]">
+                <div
+                  key={upd.id}
+                  className="relative pl-4 border-l-2 border-[#fecaca] dark:border-[#7f1d1d]"
+                >
                   <p className="text-xs">
                     <span
                       className={`font-semibold ${updateStatusColor[upd.status]}`}

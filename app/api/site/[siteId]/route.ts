@@ -9,7 +9,11 @@ export async function PATCH(
   { params }: { params: Promise<{ siteId: string }> },
 ) {
   try {
-    const [{ userId }, { siteId }, body] = await Promise.all([auth(), params, req.json()]);
+    const [{ userId }, { siteId }, body] = await Promise.all([
+      auth(),
+      params,
+      req.json(),
+    ]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -30,7 +34,11 @@ export async function PATCH(
     });
 
     // Log status change if it changed
-    if (existing && parsed.data.status && existing.status !== parsed.data.status) {
+    if (
+      existing &&
+      parsed.data.status &&
+      existing.status !== parsed.data.status
+    ) {
       await db.siteStatusLog.create({
         data: {
           siteId,

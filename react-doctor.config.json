@@ -38,7 +38,10 @@
         "rules": ["react-doctor/prefer-dynamic-import"]
       },
       {
-        "files": ["app/api/site/[siteId]/ping/route.ts", "app/api/cron/health-check/route.ts"],
+        "files": [
+          "app/api/site/[siteId]/ping/route.ts",
+          "app/api/cron/health-check/route.ts"
+        ],
         "rules": ["react-doctor/server-fetch-without-revalidate"]
       },
       {
@@ -47,7 +50,10 @@
       },
       {
         "files": ["components/DataFilters/DataFilters.tsx"],
-        "rules": ["react-doctor/nextjs-no-use-search-params-without-suspense", "react-doctor/react-compiler-destructure-method"]
+        "rules": [
+          "react-doctor/nextjs-no-use-search-params-without-suspense",
+          "react-doctor/react-compiler-destructure-method"
+        ]
       },
       {
         "files": [
@@ -56,7 +62,10 @@
           "app/(routes)/sites/[siteId]/page.tsx",
           "app/(routes)/clients/[clientId]/page.tsx"
         ],
-        "rules": ["react-doctor/async-defer-await", "react-doctor/rendering-hydration-mismatch-time"]
+        "rules": [
+          "react-doctor/async-defer-await",
+          "react-doctor/rendering-hydration-mismatch-time"
+        ]
       },
       {
         "files": [

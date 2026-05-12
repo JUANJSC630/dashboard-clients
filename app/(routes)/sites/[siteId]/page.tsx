@@ -10,11 +10,10 @@ import { SiteIncidents } from "./components/SiteIncidents/SiteIncidents";
 import { SiteStatusHistory } from "./components/SiteStatusHistory/SiteStatusHistory";
 import { SiteAlertConfig } from "./components/SiteAlertConfig/SiteAlertConfig";
 import dynamic from "next/dynamic";
-const SiteUptimeChart = dynamic(
-  () =>
-    import("./components/SiteUptimeChart/SiteUptimeChart").then(
-      (m) => m.SiteUptimeChart,
-    ),
+const SiteUptimeChart = dynamic(() =>
+  import("./components/SiteUptimeChart/SiteUptimeChart").then(
+    (m) => m.SiteUptimeChart,
+  ),
 );
 import { FooterSite } from "./components/FooterSite/FooterSite";
 
@@ -72,7 +71,10 @@ export default async function SiteIdPage({
       <SiteHeader site={site} />
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2 flex flex-col gap-6">
-          <SiteUptimeChart pingLogs={site.pingLogs} uptimePercent={site.uptimePercent} />
+          <SiteUptimeChart
+            pingLogs={site.pingLogs}
+            uptimePercent={site.uptimePercent}
+          />
           <SiteForm site={site} clients={clients} />
           <SiteIncidents incidents={site.incidents} siteId={site.id} />
           <SiteBilling

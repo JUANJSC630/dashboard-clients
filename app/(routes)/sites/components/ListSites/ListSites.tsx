@@ -107,7 +107,6 @@ export function ListSites({ sites }: { sites: SiteWithRelations[] }) {
               <p className="text-xs text-muted-foreground mt-0.5">
                 {site.client.businessName ??
                   `${site.client.firstName} ${site.client.lastName}`}
-                {site.techStack && ` · ${site.techStack}`}
               </p>
             </div>
           </div>

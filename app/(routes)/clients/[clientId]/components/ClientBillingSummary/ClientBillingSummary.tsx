@@ -94,7 +94,10 @@ export function ClientBillingSummary({ billings }: ClientBillingSummaryProps) {
                 key={b.id}
                 className="flex items-center justify-between text-sm"
               >
-                <span className="text-muted-foreground" suppressHydrationWarning>
+                <span
+                  className="text-muted-foreground"
+                  suppressHydrationWarning
+                >
                   {new Date(b.nextDueDate).toLocaleDateString()}
                 </span>
                 <div className="flex items-center gap-2">

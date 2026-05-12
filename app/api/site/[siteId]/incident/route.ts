@@ -9,7 +9,11 @@ export async function POST(
   { params }: { params: Promise<{ siteId: string }> },
 ) {
   try {
-    const [{ userId }, { siteId }, body] = await Promise.all([auth(), params, req.json()]);
+    const [{ userId }, { siteId }, body] = await Promise.all([
+      auth(),
+      params,
+      req.json(),
+    ]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 

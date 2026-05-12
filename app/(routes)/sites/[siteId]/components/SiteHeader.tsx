@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Shield, ShieldAlert, Clock } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  Shield,
+  ShieldAlert,
+  Clock,
+} from "lucide-react";
 import { Site, Platform, SiteStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +36,8 @@ const statusVariant: Record<
 
 export function SiteHeader({ site }: { site: Site }) {
   const sslOk = site.sslDaysLeft != null && site.sslDaysLeft > 30;
-  const sslWarn = site.sslDaysLeft != null && site.sslDaysLeft <= 30 && site.sslDaysLeft > 0;
+  const sslWarn =
+    site.sslDaysLeft != null && site.sslDaysLeft <= 30 && site.sslDaysLeft > 0;
   const sslExpired = site.sslDaysLeft != null && site.sslDaysLeft <= 0;
 
   return (
@@ -104,12 +111,13 @@ export function SiteHeader({ site }: { site: Site }) {
                     : "text-foreground"
               }
             >
-              {sslExpired
-                ? "Expired"
-                : `${site.sslDaysLeft}d left`}
+              {sslExpired ? "Expired" : `${site.sslDaysLeft}d left`}
             </strong>
             {site.sslExpiresAt && (
-              <span className="text-muted-foreground/70" suppressHydrationWarning>
+              <span
+                className="text-muted-foreground/70"
+                suppressHydrationWarning
+              >
                 (exp. {new Date(site.sslExpiresAt).toLocaleDateString()})
               </span>
             )}

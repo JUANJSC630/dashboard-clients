@@ -38,8 +38,14 @@ export async function POST(req: Request) {
     });
     if (!page) return new NextResponse("Not found", { status: 404 });
 
+    const { startsAt, endsAt, ...rest } = parsed.data;
+
     const maintenance = await db.scheduledMaintenance.create({
-      data: parsed.data,
+      data: {
+        ...rest,
+        startsAt: new Date(startsAt),
+        endsAt: new Date(endsAt),
+      },
     });
 
     return NextResponse.json(maintenance);
@@ -72,9 +78,15 @@ export async function PATCH(req: Request) {
       return new NextResponse("Not found", { status: 404 });
     }
 
+    const { startsAt, endsAt, ...updateData } = parsed.data;
+
     const maintenance = await db.scheduledMaintenance.update({
       where: { id },
-      data: parsed.data,
+      data: {
+        ...updateData,
+        ...(startsAt && { startsAt: new Date(startsAt) }),
+        ...(endsAt && { endsAt: new Date(endsAt) }),
+      },
     });
 
     return NextResponse.json(maintenance);

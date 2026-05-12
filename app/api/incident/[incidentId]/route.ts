@@ -9,7 +9,11 @@ export async function PATCH(
   { params }: { params: Promise<{ incidentId: string }> },
 ) {
   try {
-    const [{ userId }, { incidentId }, body] = await Promise.all([auth(), params, req.json()]);
+    const [{ userId }, { incidentId }, body] = await Promise.all([
+      auth(),
+      params,
+      req.json(),
+    ]);
 
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -18,9 +22,14 @@ export async function PATCH(
       return NextResponse.json(parsed.error.flatten(), { status: 400 });
     }
 
+    const { resolvedAt, ...rest } = parsed.data;
+
     const incident = await db.incident.update({
       where: { id: incidentId, userId },
-      data: parsed.data,
+      data: {
+        ...rest,
+        ...(resolvedAt && { resolvedAt: new Date(resolvedAt) }),
+      },
     });
 
     return NextResponse.json(incident);

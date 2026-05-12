@@ -107,22 +107,30 @@ export function SiteContacts({
           <Input
             placeholder="Name"
             value={form.name}
-            onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, name: e.target.value }))
+            }
           />
           <Input
             placeholder="Role"
             value={form.role}
-            onChange={(e) => setForm(prev => ({ ...prev, role: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, role: e.target.value }))
+            }
           />
           <Input
             placeholder="Email"
             value={form.email}
-            onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, email: e.target.value }))
+            }
           />
           <Input
             placeholder="Phone"
             value={form.phone}
-            onChange={(e) => setForm(prev => ({ ...prev, phone: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, phone: e.target.value }))
+            }
           />
           <Button size="sm" className="w-full" onClick={onAdd}>
             Save Contact
@@ -142,28 +150,28 @@ export function SiteContacts({
                   placeholder="Name"
                   value={editState.name}
                   onChange={(e) =>
-                    setEditState(prev => ({ ...prev, name: e.target.value }))
+                    setEditState((prev) => ({ ...prev, name: e.target.value }))
                   }
                 />
                 <Input
                   placeholder="Role"
                   value={editState.role}
                   onChange={(e) =>
-                    setEditState(prev => ({ ...prev, role: e.target.value }))
+                    setEditState((prev) => ({ ...prev, role: e.target.value }))
                   }
                 />
                 <Input
                   placeholder="Email"
                   value={editState.email}
                   onChange={(e) =>
-                    setEditState(prev => ({ ...prev, email: e.target.value }))
+                    setEditState((prev) => ({ ...prev, email: e.target.value }))
                   }
                 />
                 <Input
                   placeholder="Phone"
                   value={editState.phone}
                   onChange={(e) =>
-                    setEditState(prev => ({ ...prev, phone: e.target.value }))
+                    setEditState((prev) => ({ ...prev, phone: e.target.value }))
                   }
                 />
                 <div className="flex gap-2">

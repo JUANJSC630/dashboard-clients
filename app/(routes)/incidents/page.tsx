@@ -75,24 +75,16 @@ export const metadata = {
 const tableHead = (
   <thead>
     <tr className="border-b">
-      <th className="text-left p-4 font-medium text-muted-foreground">
-        Title
-      </th>
-      <th className="text-left p-4 font-medium text-muted-foreground">
-        Site
-      </th>
-      <th className="text-left p-4 font-medium text-muted-foreground">
-        Type
-      </th>
+      <th className="text-left p-4 font-medium text-muted-foreground">Title</th>
+      <th className="text-left p-4 font-medium text-muted-foreground">Site</th>
+      <th className="text-left p-4 font-medium text-muted-foreground">Type</th>
       <th className="text-left p-4 font-medium text-muted-foreground">
         Priority
       </th>
       <th className="text-left p-4 font-medium text-muted-foreground">
         Status
       </th>
-      <th className="text-left p-4 font-medium text-muted-foreground">
-        Date
-      </th>
+      <th className="text-left p-4 font-medium text-muted-foreground">Date</th>
     </tr>
   </thead>
 );
@@ -102,7 +94,10 @@ export default async function IncidentsPage({
 }: {
   searchParams: Promise<{ status?: string; priority?: string; group?: string }>;
 }) {
-  const [{ userId }, { status, priority, group }] = await Promise.all([auth(), searchParams]);
+  const [{ userId }, { status, priority, group }] = await Promise.all([
+    auth(),
+    searchParams,
+  ]);
   if (!userId) return redirect("/");
 
   const grouped = group === "site";
@@ -324,7 +319,9 @@ export default async function IncidentsPage({
                   <span className={priorityColor[inc.priority]}>
                     {inc.priority}
                   </span>
-                  <span suppressHydrationWarning>{new Date(inc.createdAt).toLocaleDateString()}</span>
+                  <span suppressHydrationWarning>
+                    {new Date(inc.createdAt).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
             ))}

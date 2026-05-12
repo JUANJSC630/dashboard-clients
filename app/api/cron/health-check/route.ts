@@ -95,12 +95,20 @@ async function checkSite(site: {
         data: { status: newStatus, lastCheckedAt: new Date() },
       }),
       db.siteStatusLog.create({
-        data: { siteId: site.id, userId: site.userId, from: site.status, to: newStatus },
+        data: {
+          siteId: site.id,
+          userId: site.userId,
+          from: site.status,
+          to: newStatus,
+        },
       }),
       ...(newStatus === "ACTIVE"
         ? [
             db.incident.updateMany({
-              where: { siteId: site.id, status: { in: ["OPEN", "IN_PROGRESS"] } },
+              where: {
+                siteId: site.id,
+                status: { in: ["OPEN", "IN_PROGRESS"] },
+              },
               data: { status: "RESOLVED", resolvedAt: new Date() },
             }),
           ]
@@ -223,20 +231,24 @@ async function checkSsl(siteId: string, url: string) {
     return;
   }
 
-  const cert = await new Promise<tls.PeerCertificate | null>(
-    (resolve) => {
-      const socket = tls.connect(
-        { host: hostname, port: 443, servername: hostname, timeout: 5000 },
-        () => {
-          const c = socket.getPeerCertificate();
-          socket.destroy();
-          resolve(c && c.valid_to ? c : null);
-        },
-      );
-      socket.on("error", () => { socket.destroy(); resolve(null); });
-      socket.on("timeout", () => { socket.destroy(); resolve(null); });
-    },
-  );
+  const cert = await new Promise<tls.PeerCertificate | null>((resolve) => {
+    const socket = tls.connect(
+      { host: hostname, port: 443, servername: hostname, timeout: 5000 },
+      () => {
+        const c = socket.getPeerCertificate();
+        socket.destroy();
+        resolve(c && c.valid_to ? c : null);
+      },
+    );
+    socket.on("error", () => {
+      socket.destroy();
+      resolve(null);
+    });
+    socket.on("timeout", () => {
+      socket.destroy();
+      resolve(null);
+    });
+  });
 
   if (!cert?.valid_to) return;
 
