@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,6 +8,13 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { Site, Client, Platform, SiteStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -70,11 +78,14 @@ type PartialClient = Pick<
 export function SiteForm({
   site,
   clients,
+  trigger,
 }: {
   site: Site;
   clients: PartialClient[];
+  trigger: React.ReactNode;
 }) {
   const { refresh } = useRouter();
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -99,6 +110,7 @@ export function SiteForm({
       });
       if (!res.ok) throw new Error();
       toast({ title: "Site updated successfully" });
+      setOpen(false);
       refresh();
     } catch {
       toast({ title: "Error updating site", variant: "destructive" });
@@ -106,10 +118,14 @@ export function SiteForm({
   };
 
   return (
-    <div className="bg-background rounded-lg p-6 shadow-sm border">
-      <h3 className="text-lg font-semibold mb-4">Site Details</h3>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Site Details</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -271,6 +287,7 @@ export function SiteForm({
           </div>
         </form>
       </Form>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

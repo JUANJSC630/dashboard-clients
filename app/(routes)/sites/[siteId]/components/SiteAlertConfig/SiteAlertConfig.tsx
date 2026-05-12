@@ -3,9 +3,16 @@
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
-import { Bell, BellOff, Trash2 } from "lucide-react";
+import { Bell, BellOff } from "lucide-react";
 import { SiteAlertConfig as AlertConfigType } from "@prisma/client";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -15,10 +22,16 @@ import { ConfirmDialog } from "@/components/ConfirmDialog/ConfirmDialog";
 interface SiteAlertConfigProps {
   siteId: string;
   config: AlertConfigType | null;
+  trigger: React.ReactNode;
 }
 
-export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
+export function SiteAlertConfig({
+  siteId,
+  config,
+  trigger,
+}: SiteAlertConfigProps) {
   const { refresh } = useRouter();
+  const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     alertEmail: config?.alertEmail ?? "",
     onDown: config?.onDown ?? true,
@@ -74,19 +87,23 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
   };
 
   return (
-    <div className="bg-background rounded-lg p-6 shadow-sm border">
-      <div className="flex items-center gap-2 mb-1">
-        <Bell className="size-4" />
-        <h3 className="text-lg font-semibold">Alert Settings</h3>
-        {config && (
-          <span className="ml-auto text-xs text-green-600 font-medium bg-green-50 dark:bg-green-950 px-2 py-0.5 rounded-full">
-            Active
-          </span>
-        )}
-      </div>
-      <p className="text-sm text-muted-foreground mb-4">
-        Receive an email when this site goes down or recovers.
-      </p>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Bell className="size-4" />
+            Alert Settings
+            {config && (
+              <span className="ml-auto text-xs text-green-600 font-medium bg-green-50 dark:bg-green-950 px-2 py-0.5 rounded-full">
+                Active
+              </span>
+            )}
+          </DialogTitle>
+          <p className="text-sm text-muted-foreground">
+            Receive an email when this site goes down or recovers.
+          </p>
+        </DialogHeader>
 
       <div className="space-y-4">
         <div className="space-y-1.5">
@@ -196,6 +213,7 @@ export function SiteAlertConfig({ siteId, config }: SiteAlertConfigProps) {
           </p>
         )}
       </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

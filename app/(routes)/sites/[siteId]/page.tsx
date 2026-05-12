@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db, getOrCreatePersonalClient } from "@/lib/db";
+import { Settings, Bell } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteForm } from "./components/SiteForm/SiteForm";
 import { SiteContacts } from "./components/SiteContacts/SiteContacts";
@@ -74,14 +76,42 @@ export default async function SiteIdPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <SiteHeader site={site} />
+      <SiteHeader
+        site={site}
+        actions={
+          <>
+            <SiteForm
+              site={site}
+              clients={clients}
+              trigger={
+                <Button variant="outline" size="sm">
+                  <Settings className="size-4 mr-1.5" />
+                  Settings
+                </Button>
+              }
+            />
+            <SiteAlertConfig
+              siteId={site.id}
+              config={site.alertConfig}
+              trigger={
+                <Button variant="outline" size="sm">
+                  <Bell className="size-4 mr-1.5" />
+                  Alerts
+                  {site.alertConfig && (
+                    <span className="ml-1.5 size-2 rounded-full bg-green-500" />
+                  )}
+                </Button>
+              }
+            />
+          </>
+        }
+      />
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2 flex flex-col gap-6">
           <SiteUptimeChart
             pingLogs={site.pingLogs}
             uptimePercent={site.uptimePercent}
           />
-          <SiteForm site={site} clients={clients} />
           <SiteIncidents incidents={site.incidents} siteId={site.id} />
           <SiteBilling
             billings={site.billings}
@@ -91,7 +121,6 @@ export default async function SiteIdPage({
         </div>
         <div className="flex flex-col gap-6">
           <SiteContacts contacts={site.contacts} siteId={site.id} />
-          <SiteAlertConfig siteId={site.id} config={site.alertConfig} />
           <SiteStatusHistory logs={site.statusLogs} />
           <FooterSite siteId={site.id} />
         </div>

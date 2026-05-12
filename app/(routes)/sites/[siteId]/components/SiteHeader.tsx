@@ -5,6 +5,8 @@ import {
   Shield,
   ShieldAlert,
   Clock,
+  Settings,
+  Bell,
 } from "lucide-react";
 import { Site, Platform, SiteStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
@@ -34,7 +36,13 @@ const statusVariant: Record<
   MAINTENANCE: "outline",
 };
 
-export function SiteHeader({ site }: { site: Site }) {
+export function SiteHeader({
+  site,
+  actions,
+}: {
+  site: Site;
+  actions?: React.ReactNode;
+}) {
   const sslOk = site.sslDaysLeft != null && site.sslDaysLeft > 30;
   const sslWarn =
     site.sslDaysLeft != null && site.sslDaysLeft <= 30 && site.sslDaysLeft > 0;
@@ -72,6 +80,7 @@ export function SiteHeader({ site }: { site: Site }) {
           )}
         </div>
         <div className="flex items-center gap-2">
+          {actions}
           <SitePingButton siteId={site.id} siteUrl={site.url} />
           <DuplicateSiteButton siteId={site.id} />
         </div>
