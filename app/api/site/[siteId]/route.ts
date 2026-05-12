@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { updateSiteSchema } from "@/lib/schemas";
 
 export async function PATCH(
@@ -42,8 +43,7 @@ export async function PATCH(
 
     return NextResponse.json(site);
   } catch (error) {
-    console.error("[SITE PATCH]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "SITE PATCH");
   }
 }
 
@@ -60,7 +60,6 @@ export async function DELETE(
 
     return NextResponse.json(deleted);
   } catch (error) {
-    console.error("[SITE DELETE]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "SITE DELETE");
   }
 }

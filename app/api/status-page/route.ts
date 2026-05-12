@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { z } from "zod";
 
 const createSchema = z.object({
@@ -29,8 +30,7 @@ export async function GET() {
 
     return NextResponse.json(pages);
   } catch (error) {
-    console.error("[STATUS_PAGE GET]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "STATUS_PAGE GET");
   }
 }
 
@@ -88,7 +88,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(statusPage);
   } catch (error) {
-    console.error("[STATUS_PAGE POST]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "STATUS_PAGE POST");
   }
 }

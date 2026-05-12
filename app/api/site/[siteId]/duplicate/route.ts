@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 
 export async function POST(
   _req: Request,
@@ -35,7 +36,6 @@ export async function POST(
 
     return NextResponse.json(copy);
   } catch (error) {
-    console.error("[SITE DUPLICATE]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "SITE DUPLICATE");
   }
 }

@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { createClientSchema } from "@/lib/schemas";
 
 export async function POST(req: Request) {
@@ -21,7 +22,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(client);
   } catch (error) {
-    console.error("[CLIENT POST]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "CLIENT POST");
   }
 }

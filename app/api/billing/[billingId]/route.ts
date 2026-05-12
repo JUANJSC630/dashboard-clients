@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { updateBillingSchema } from "@/lib/schemas";
 
 export async function PATCH(
@@ -24,8 +25,7 @@ export async function PATCH(
 
     return NextResponse.json(billing);
   } catch (error) {
-    console.error("[BILLING PATCH]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "BILLING PATCH");
   }
 }
 
@@ -44,7 +44,6 @@ export async function DELETE(
 
     return NextResponse.json(deleted);
   } catch (error) {
-    console.error("[BILLING DELETE]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "BILLING DELETE");
   }
 }

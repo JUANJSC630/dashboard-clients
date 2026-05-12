@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { updateContactSchema } from "@/lib/schemas";
 
 export async function PATCH(
@@ -33,8 +34,7 @@ export async function PATCH(
 
     return NextResponse.json(updated);
   } catch (error) {
-    console.error("[CONTACT PATCH]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "CONTACT PATCH");
   }
 }
 
@@ -60,7 +60,6 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    console.error("[CONTACT DELETE]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "CONTACT DELETE");
   }
 }

@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { alertConfigSchema } from "@/lib/schemas";
 
 export async function POST(
@@ -28,8 +29,7 @@ export async function POST(
 
     return NextResponse.json(config);
   } catch (error) {
-    console.error("[ALERT_CONFIG POST]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "ALERT_CONFIG POST");
   }
 }
 
@@ -46,7 +46,6 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    console.error("[ALERT_CONFIG DELETE]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "ALERT_CONFIG DELETE");
   }
 }

@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { z } from "zod";
 
 const createSchema = z.object({
@@ -43,8 +44,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(maintenance);
   } catch (error) {
-    console.error("[MAINTENANCE POST]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "MAINTENANCE POST");
   }
 }
 
@@ -79,7 +79,6 @@ export async function PATCH(req: Request) {
 
     return NextResponse.json(maintenance);
   } catch (error) {
-    console.error("[MAINTENANCE PATCH]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "MAINTENANCE PATCH");
   }
 }

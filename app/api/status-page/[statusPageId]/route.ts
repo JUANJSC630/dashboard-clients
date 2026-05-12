@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-error";
 import { z } from "zod";
 
 const updateSchema = z.object({
@@ -62,8 +63,7 @@ export async function PATCH(
 
     return NextResponse.json(statusPage);
   } catch (error) {
-    console.error("[STATUS_PAGE PATCH]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "STATUS_PAGE PATCH");
   }
 }
 
@@ -82,7 +82,6 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    console.error("[STATUS_PAGE DELETE]", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return handleApiError(error, "STATUS_PAGE DELETE");
   }
 }
